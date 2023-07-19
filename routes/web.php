@@ -13,6 +13,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::redirect('/', '/login');
+
+//require_once('web/auth.php');
+$m = 'Auth';
+require_once(
+  app_path('/Modules/' . $m . '/Routes/' . $m . 'Route.php')
+);
+
+$modules = [
+  'dashboard',
+];
+Route::group(['middleware' => ['auth']], function () use ($modules) {
+    foreach($modules as $module)
+    {
+        $m = ucfirst($module);
+
+        require_once(
+            app_path('/Modules/' . $m . '/Routes/' . $m . 'Route.php')
+        );
+    }
 });
