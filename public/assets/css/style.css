@@ -1,0 +1,11 @@
+.required:after {
+  content:" *";
+  color: red;
+  font-weight: bold;
+}
+
+.fake_required:after {
+  content:" *";
+  color: red;
+  font-weight: bold;
+}
