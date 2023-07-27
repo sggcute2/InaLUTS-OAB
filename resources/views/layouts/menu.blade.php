@@ -1,6 +1,26 @@
 <aside class="main-sidebar">
   <section class="sidebar">
     <ul class="sidebar-menu">
+      @canany(['kota-menu'])
+      <li class="treeview"
+        data-active-module_kota="1"
+      >
+        <a href="#">
+          <i class="fa fa-table"></i>
+          <span>Master Data</span>
+          <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right" style="padding-right:1em"></i>
+          </span>
+        </a>
+        <ul class="treeview-menu">
+          @can('kota-menu')
+          <li data-active-module_kota="1"><a href="{{ route('kota.index') }}"><i class="fa fa-circle-o"></i> Kota</a></li>
+          @endcan
+        </ul>
+      </li>
+      @endcanany
+
+{{--
       <li
         data-active-module_dashboard="1"
         data-active-module_hospital="1"
@@ -17,6 +37,8 @@
         </a>
       @endif
       </li>
+--}}
+
       @if (!IS_USER_TYPE_3)
       <li
         data-active-module_user="1"

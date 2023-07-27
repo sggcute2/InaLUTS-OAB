@@ -24,7 +24,16 @@ class Controller extends BaseController
             abort('403', 'Module not defined');
         }
 
-        define('ACTION', '');
+        $a = \Request::route()->getName() ?? '';
+        $x = explode('.', $a);
+        if (count($x) == 2) {
+          define('ACTION', $x[1]);
+          define('ROUTE', $a);
+        } else {
+          define('ACTION', '');
+          define('ROUTE', $a);
+        }
+
         define('IS_DETAIL_PATIENT', false);
         define('IS_USER_TYPE_1', false);
         define('IS_USER_TYPE_3', false);

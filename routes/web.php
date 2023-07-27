@@ -23,7 +23,7 @@ require_once(
 
 $modules = [
   'dashboard',
-  'user',
+  //'user',
 
   // Master Data
   'kota',
