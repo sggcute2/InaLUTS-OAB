@@ -23,8 +23,12 @@ require_once(
 
 $modules = [
   'dashboard',
+  'user',
+
+  // Master Data
+  'kota',
 ];
-Route::group(['middleware' => ['auth']], function () use ($modules) {
+Route::group(['middleware' => ['auth', 'check_login']], function () use ($modules) {
     foreach($modules as $module)
     {
         $m = ucfirst($module);

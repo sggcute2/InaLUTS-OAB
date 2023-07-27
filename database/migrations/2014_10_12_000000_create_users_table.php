@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Models\clearUser;
+use App\Models\User;
 
 return new class extends Migration
 {
@@ -19,15 +19,17 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->unsignedTinyInteger('type')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });
 
         User::create([
-            'name' => 'Administrator',
+            'name' => 'Admin',
             'email' => 'admin@no-email.com',
             'username' => 'admin',
             'password' => Hash::make('2023'),
+            'type' => 1,
         ]);
     }
 

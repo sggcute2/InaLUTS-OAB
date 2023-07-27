@@ -43,7 +43,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <span style="line-height:50px;color:white">{{ Auth::user()->fullname }} ({{ Auth::user()->rolename }})</span>
+          <span style="line-height:50px;color:white">{{ USER_NAME }} ({{ USER_ROLE }})</span>
           <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
               <!-- Notifications: style can be found in dropdown.less -->
