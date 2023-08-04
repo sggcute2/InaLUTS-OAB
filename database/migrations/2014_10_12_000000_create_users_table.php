@@ -20,14 +20,16 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->unsignedTinyInteger('type')->default(0);
+            $table->integer('rumah_sakit_id')->default(0);
+            $table->integer('departemen_id')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });
 
         User::create([
             'name' => 'Admin',
-            'email' => 'admin@no-email.com',
             'username' => 'admin',
+            'email' => 'admin@no-email.com',
             'password' => Hash::make('2023'),
             'type' => 1,
         ]);

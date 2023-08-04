@@ -9,5 +9,4 @@ final class UserType
     const RegionalCoordinator = 30;
     const LocalCoordinator = 40;
     const Submitter = 50;
-    
 }
