@@ -1,22 +1,23 @@
 <?php
 
-namespace App\Modules\Kota\Controllers;
+namespace App\Modules\Rumah_sakit\Controllers;
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Http\Controllers\Controller;
-use App\Modules\Kota\Models\Kota as ModuleModel;
+use App\Modules\Rumah_sakit\Models\Rumah_sakit as ModuleModel;
+use App\Modules\Kota\Models\Kota;
 use BS;
 use DT;
 use FORM;
 
-class KotaController extends Controller
+class Rumah_sakitController extends Controller
 {
     public function __construct(){
         parent::__construct([
-            'module' => 'kota',
-            'title' => 'Kota',
+            'module' => 'rumah_sakit',
+            'title' => 'Rumah Sakit',
         ]);
     }
 
@@ -26,6 +27,9 @@ class KotaController extends Controller
 
         $column = array();
         $column[] = array('Nama '.MODULE_TITLE, 'name');
+        $column[] = array('Kota', function($row) {
+            return Kota::find($row['kota_id'])->name ?? '';
+        });
         $column[] = array('Action', function($row) {
             if ($this->moduleAllow('edit', false)) {
                 return
@@ -37,7 +41,6 @@ class KotaController extends Controller
             } else {
                 return '';
             }
-
         });
         DT::add(false, ModuleModel::all(), $column);
 
@@ -57,6 +60,7 @@ class KotaController extends Controller
             'default' => $default,
             'page_title' => FORM::title($id, MODULE_TITLE),
             'form_action' => $form_action,
+            'kota' => Kota::all(),
         ]);
     }
 

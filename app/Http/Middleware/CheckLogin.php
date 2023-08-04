@@ -19,7 +19,9 @@ class CheckLogin
     {
         $user = $request->user();
 
+        define('USER_ID', $user->id);
         define('USER_NAME', $user->name);
+        define('USER_TYPE', $user->type);
 
         define('USER_IS_ADM', $user->type == UserType::Administrator);
         define('USER_IS_NAT_COO', $user->type == UserType::NationalCoordinator);

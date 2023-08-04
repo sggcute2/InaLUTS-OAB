@@ -22,6 +22,7 @@ static $z4_sub;
 static $z5_sub;
 static $rules;
 static $preview;
+static $has_required;
 
 # Setup
 static function setup($p = array()) {
@@ -38,16 +39,20 @@ static function setup($p = array()) {
     self::$config['cancel'] = 'Cancel';
   }
   self::$preview = false;
+  self::$has_required = false;
 }
 
 # Set Variables
-static function set_var($p = array()) {
+static function set_var($p) {
+  if (is_object($p)) {
+    $p = json_decode(json_encode($p), true);
+  }
   foreach($p as $i => $v) self::$set_var[$i] = $v;
 }
 
 # Get Variables
 static function get_var($n = '') {
-  return self::$set_var[$n] ?? NULL;
+  return self::$set_var[$n] ?? null;
 }
 
 # Set Preview
@@ -60,6 +65,16 @@ static function is_preview() {
   return self::$preview;
 }
 
+# Set has_required
+static function set_has_required($p = true) {
+  self::$has_required = $p;
+}
+
+# Has Required
+static function has_required($p = true) {
+  return self::$has_required;
+}
+
 # Reset
 static function reset() {
   self::$multipart = false;
@@ -70,6 +85,11 @@ static function reset() {
   self::$z2_L = array();
   self::$z2_R = array();
   self::$rules = array();
+}
+
+# Title
+static function title($id = 0, $t = '', $args = []) {
+  return ($id ? 'Edit' : 'Tambah') . ' ' . $t;
 }
 
 # Form Table Row
@@ -188,12 +208,13 @@ static function show($echo = true) {
     $str .= $extra;
     $str .= $on_submit;
     $str .= '>'.PHP_EOL;
+    $str .= '<input type="hidden" name="_token" value="'.csrf_token().'">'.PHP_EOL;
   }
   // Begin : Row 1 & 2
   $z1 = (self::$z1_L) ? self::_row_show(self::$z1_L, self::$z1_R, self::$z1_sub) : '';
   $z2 = (self::$z2_L) ? self::_row_show(self::$z2_L, self::$z2_R, self::$z2_sub) : '';
   $has_row2 = (trim($z2) != '');
-  $str .= '<div class="box-body">'.PHP_EOL;
+  $str .= '<div class="box-body" data-line="'.__LINE__.'">'.PHP_EOL;
   $str .= '<div class="row" style="padding:0 10px">'.PHP_EOL;
   if ($has_row2) {
     $str .= '<div class="col-md-6">'.$z1.'</div><!-- /.col-md-6 -->'.PHP_EOL;
@@ -205,27 +226,39 @@ static function show($echo = true) {
   $str .= '</div><!-- /.box-body -->'.PHP_EOL;
   // End : Row 1 & 2
   // Begin : Row 3
-  $z3 = (self::$z3_L) ? self::_row_show(self::$z3_L, self::$z3_R, self::$z3_sub) : '';
-  $str .= '<div class="box-body">'.PHP_EOL;
-  $str .= '<div class="row" style="padding:0 10px">'.PHP_EOL;
-  $str .= $z3;
-  $str .= '</div><!-- /.row -->'.PHP_EOL;
-  $str .= '</div><!-- /.box-body -->'.PHP_EOL;
+  if (self::$z3_L) {
+    $z3 = self::_row_show(self::$z3_L, self::$z3_R, self::$z3_sub);
+    $str .= '<div class="box-body" data-line="'.__LINE__.'">'.PHP_EOL;
+    $str .= '<div class="row" style="padding:0 10px">'.PHP_EOL;
+    $str .= $z3;
+    $str .= '</div><!-- /.row -->'.PHP_EOL;
+    $str .= '</div><!-- /.box-body -->'.PHP_EOL;
+  }
   // End : Row 3
   // Begin : Row 4 & 5
   $z4 = (self::$z4_L) ? self::_row_show(self::$z4_L, self::$z4_R, self::$z4_sub) : '';
   $z5 = (self::$z5_L) ? self::_row_show(self::$z5_L, self::$z5_R, self::$z5_sub) : '';
   $has_row2 = (trim($z5) != '');
-  $str .= '<div class="box-body">'.PHP_EOL;
-  $str .= '<div class="row" style="padding:0 10px">'.PHP_EOL;
   if ($has_row2) {
+    $str .= '<div class="box-body" data-line="'.__LINE__.'">'.PHP_EOL;
+    $str .= '<div class="row" style="padding:0 10px">'.PHP_EOL;
+
     $str .= '<div class="col-md-6">'.$z4.'</div><!-- /.col-md-6 -->'.PHP_EOL;
     $str .= '<div class="col-md-6">'.$z5.'</div><!-- /.col-md-6 -->'.PHP_EOL;
+
+    $str .= '</div><!-- /.row -->'.PHP_EOL;
+    $str .= '</div><!-- /.box-body -->'.PHP_EOL;
   } else {
-    $str .= $z4;
+    if (trim($z4) != '') {
+      $str .= '<div class="box-body" data-line="'.__LINE__.'">'.PHP_EOL;
+      $str .= '<div class="row" style="padding:0 10px">'.PHP_EOL;
+
+      $str .= $z4;
+
+      $str .= '</div><!-- /.row -->'.PHP_EOL;
+      $str .= '</div><!-- /.box-body -->'.PHP_EOL;
+    }
   }
-  $str .= '</div><!-- /.row -->'.PHP_EOL;
-  $str .= '</div><!-- /.box-body -->'.PHP_EOL;
   // End : Row 4 & 5
   if (self::$hidden) {
     foreach (self::$hidden as $v) {
@@ -241,6 +274,11 @@ static function show($echo = true) {
     $str .= '</div>'.PHP_EOL;
   } else {
     $str .= '<div class="box-footer">'.PHP_EOL;
+    if (self::has_required()) {
+      $str .= '<div style="margin:8px 0">'.PHP_EOL;
+      $str .= '  <label class="required"></label> = Required field'.PHP_EOL;
+      $str .= '</div>'.PHP_EOL;
+    }
     $str .= '  <div id="'.$NS.'waiting" '.PHP_EOL;
     $str .= '    style="margin:5px 0;font-size:150%;display:none">'.PHP_EOL;
     $str .= '    <i class="fa fa-spinner fa-spin"></i> Please wait while processing ...'.PHP_EOL;

@@ -2,7 +2,7 @@
 
 // $module is taken from routes/web.php
 
-$use_controller = App\Modules\Kota\Controllers\KotaController::class;
+$use_controller = App\Modules\Rumah_sakit\Controllers\Rumah_sakitController::class;
 $m = $module;
 
 Route::name($m.'.')->prefix($m)->controller($use_controller)->group(function(){

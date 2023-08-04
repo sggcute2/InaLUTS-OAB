@@ -112,6 +112,7 @@ static function textbox($p = array(), $echo = true){
   $a_class = (isset($p['class'])) ? ' '.$p['class'] : '';
   $readonly = $p['readonly'] ?? '';
   $required = $p['required'] ?? false;
+  if ($required) FORM::set_has_required();
   $fake_required = (defined('FORCE_DISABLED_REQUIRED') && FORCE_DISABLED_REQUIRED);
   if ($required) {
     if ($fake_required) $required = false;
@@ -174,8 +175,9 @@ static function select2($p = array(), $echo = true){
   $id = $p['id'] ?? $name;
   $with_blank = $p['with_blank'] ?? false;
   $field_value = $p['field_value'] ?? 'id';
-  $field_text = $p['field_text'] ?? 'text';
+  $field_text = $p['field_text'] ?? 'name';
   $required = $p['required'] ?? false;
+  if ($required) FORM::set_has_required();
   $fake_required = (defined('FORCE_DISABLED_REQUIRED') && FORCE_DISABLED_REQUIRED);
   if ($required) {
     if ($fake_required) $required = false;
@@ -231,6 +233,7 @@ static function radio_array($p = array(), $echo = true){
   $field_value = $p['field_value'] ?? 'value';
   $field_text = $p['field_text'] ?? 'text';
   $required = $p['required'] ?? false;
+  if ($required) FORM::set_has_required();
   $fake_required = (defined('FORCE_DISABLED_REQUIRED') && FORCE_DISABLED_REQUIRED);
   if ($required) {
     if ($fake_required) $required = false;
@@ -297,6 +300,7 @@ static function checkbox($p = array(), $echo = true){
   $id = $p['id'] ?? $name;
   $value = $p['value'] ?? '1';
   $required = $p['required'] ?? false;
+  if ($required) FORM::set_has_required();
   $fake_required = (defined('FORCE_DISABLED_REQUIRED') && FORCE_DISABLED_REQUIRED);
   if ($required) {
     if ($fake_required) $required = false;
@@ -350,6 +354,7 @@ static function datepicker($p = array(), $echo = true){
   $size = $p['size'] ?? '';
   $a_class = (isset($p['class'])) ? ' '.$p['class'] : '';
   $required = $p['required'] ?? false;
+  if ($required) FORM::set_has_required();
   $fake_required = (defined('FORCE_DISABLED_REQUIRED') && FORCE_DISABLED_REQUIRED);
   if ($required) {
     if ($fake_required) $required = false;

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Modules\Dashboard\Gates\DashboardGate;
 use App\Modules\Kota\Gates\KotaGate;
+use App\Modules\Rumah_sakit\Gates\Rumah_sakitGate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -25,5 +26,6 @@ class AuthServiceProvider extends ServiceProvider
         // Gates
         DashboardGate::apply();
         KotaGate::apply();
+        Rumah_sakitGate::apply();
     }
 }

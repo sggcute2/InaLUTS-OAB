@@ -30,9 +30,9 @@
         <!-- Logo -->
         <span class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
-          <span class="logo-mini"><img src="{{ URL::to('img/InaHRS-logo-optima-study-03.png') }}" alt="{{ Config::get('cfg.title') }}" title="{{ Config::get('cfg.title') }}" /></span>
+          <span class="logo-mini"><img src="{{ asset('img/logo-01.png') }}" alt="{{ Config::get('cfg.title') }}" title="{{ Config::get('cfg.title') }}" /></span>
           <!-- logo for regular state and mobile devices -->
-          <span class="logo-lg"><img src="{{ URL::to('img/InaHRS-logo-optima-study-04.png') }}" alt="{{ Config::get('cfg.title') }}" title="{{ Config::get('cfg.title') }}" /></span>
+          <span class="logo-lg"><img src="{{ asset('img/logo-02.png') }}" alt="{{ Config::get('cfg.title') }}" title="{{ Config::get('cfg.title') }}" /></span>
         </span>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top" role="navigation">

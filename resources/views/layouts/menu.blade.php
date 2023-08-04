@@ -4,6 +4,7 @@
       @canany(['kota-menu'])
       <li class="treeview"
         data-active-module_kota="1"
+        data-active-module_rumah_sakit="1"
       >
         <a href="#">
           <i class="fa fa-table"></i>
@@ -15,6 +16,9 @@
         <ul class="treeview-menu">
           @can('kota-menu')
           <li data-active-module_kota="1"><a href="{{ route('kota.index') }}"><i class="fa fa-circle-o"></i> Kota</a></li>
+          @endcan
+          @can('rumah_sakit-menu')
+          <li data-active-module_rumah_sakit="1"><a href="{{ route('rumah_sakit.index') }}"><i class="fa fa-circle-o"></i> Rumah Sakit</a></li>
           @endcan
         </ul>
       </li>
