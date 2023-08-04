@@ -28,6 +28,7 @@ $modules = [
   // Master Data
   'kota',
   'rumah_sakit',
+  'departemen',
 ];
 Route::group(['middleware' => ['auth', 'check_login']], function () use ($modules) {
     foreach($modules as $module)

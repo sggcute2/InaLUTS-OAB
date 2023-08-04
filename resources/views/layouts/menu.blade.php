@@ -5,6 +5,7 @@
       <li class="treeview"
         data-active-module_kota="1"
         data-active-module_rumah_sakit="1"
+        data-active-module_departemen="1"
       >
         <a href="#">
           <i class="fa fa-table"></i>
@@ -19,6 +20,9 @@
           @endcan
           @can('rumah_sakit-menu')
           <li data-active-module_rumah_sakit="1"><a href="{{ route('rumah_sakit.index') }}"><i class="fa fa-circle-o"></i> Rumah Sakit</a></li>
+          @endcan
+          @can('departemen-menu')
+          <li data-active-module_departemen="1"><a href="{{ route('departemen.index') }}"><i class="fa fa-circle-o"></i> Departemen</a></li>
           @endcan
         </ul>
       </li>
