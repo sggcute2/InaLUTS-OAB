@@ -17,7 +17,6 @@ return new class extends Migration
 
             //===[ FIELDS ]=====================================================
             $table->string('name')->default('');
-            $table->integer('pos')->default(0);
             //===[ /FIELDS ]====================================================
 
             $table->timestamp('created_at')->useCurrent();

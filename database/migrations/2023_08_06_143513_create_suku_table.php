@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Modules\Aktivitas_seksual\Models\Aktivitas_seksual;
+use App\Modules\Suku\Models\Suku;
 
 return new class extends Migration
 {
@@ -12,11 +12,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('m_aktivitas_seksual', function (Blueprint $table) {
+        Schema::create('m_suku', function (Blueprint $table) {
             $table->id();
 
             //===[ FIELDS ]=====================================================
             $table->string('name')->default('');
+            $table->integer('pos')->default(0);
             //===[ /FIELDS ]====================================================
 
             $table->timestamp('created_at')->useCurrent();
@@ -30,8 +31,15 @@ return new class extends Migration
             $table->integer('deleted_user_type')->default(0);
         });
 
-        Aktivitas_seksual::insert(['name' => 'Aktif Secara Seksual']);
-        Aktivitas_seksual::insert(['name' => 'Tidak Aktif Secara Seksual']);
+        Suku::insert(['name' => 'Jawa', 'pos' => 1]);
+        Suku::insert(['name' => 'Sunda', 'pos' => 2]);
+        Suku::insert(['name' => 'Batak', 'pos' => 3]);
+        Suku::insert(['name' => 'Bugis', 'pos' => 4]);
+        Suku::insert(['name' => 'Betawi', 'pos' => 5]);
+        Suku::insert(['name' => 'Dayak', 'pos' => 6]);
+        Suku::insert(['name' => 'Sasak', 'pos' => 7]);
+        Suku::insert(['name' => 'Tionghoa', 'pos' => 8]);
+        Suku::insert(['name' => 'Lainnya', 'pos' => 100]);
     }
 
     /**
@@ -39,6 +47,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('m_aktivitas_seksual');
+        Schema::dropIfExists('m_suku');
     }
 };
