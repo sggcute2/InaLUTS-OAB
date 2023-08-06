@@ -69,6 +69,10 @@
           {{ BS::error(Session::get('error')) }}
           @endif
 
+          @if(Session::has('errors'))
+          {{ BS::error('<ul><li>'.implode('</li><li>', $errors->all()).'</li></ul>') }}
+          @endif
+
           @if(Session::has('warning'))
           {{ BS::warning(Session::get('warning')) }}
           @endif
@@ -143,6 +147,20 @@
     <form id="frmLogout" method="post" action="{{ route('logout') }}">
       @csrf
     </form>
+    <script>
+      const UserType = {
+        Administrator: 1,
+        NationalCoordinator: 20,
+        RegionalCoordinator: 30,
+        LocalCoordinator: 40,
+        Submitter: 50,
+        1: "Administrator",
+        20: "NationalCoordinator",
+        30: "RegionalCoordinator",
+        40: "LocalCoordinator",
+        50: "Submitter"
+      }
+    </script>
     <script src="{{ asset('FWAdmin/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
     <script src="{{ asset('FWAdmin/bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('FWAdmin/plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>

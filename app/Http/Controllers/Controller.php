@@ -107,4 +107,19 @@ class Controller extends BaseController
         Lang::get('message.success_clear', ['title' => $title])
         );
     }
+
+    # Validator messages
+    public function get_validator_messages(){
+        $messages = [
+            'required' => 'The :attribute field is required.',
+            'same' => 'The :attribute and :other must match.',
+            'size' => 'The :attribute must be exactly :size.',
+            'between' => 'The :attribute value :input is '
+                .'not between :min - :max.',
+            'in' => 'The :attribute must be one of '
+                .'the following types: :values',
+        ];
+
+        return $messages;
+    }
 }

@@ -6,6 +6,7 @@ use App\Modules\Dashboard\Gates\DashboardGate;
 use App\Modules\Kota\Gates\KotaGate;
 use App\Modules\Rumah_sakit\Gates\Rumah_sakitGate;
 use App\Modules\Departemen\Gates\DepartemenGate;
+use App\Modules\User\Gates\UserGate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -29,5 +30,6 @@ class AuthServiceProvider extends ServiceProvider
         KotaGate::apply();
         Rumah_sakitGate::apply();
         DepartemenGate::apply();
+        UserGate::apply();
     }
 }

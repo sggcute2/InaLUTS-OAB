@@ -29,6 +29,7 @@ $modules = [
   'kota',
   'rumah_sakit',
   'departemen',
+  'user',
 ];
 Route::group(['middleware' => ['auth', 'check_login']], function () use ($modules) {
     foreach($modules as $module)
