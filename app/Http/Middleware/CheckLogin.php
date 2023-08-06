@@ -22,6 +22,8 @@ class CheckLogin
         define('USER_ID', $user->id);
         define('USER_NAME', $user->name);
         define('USER_TYPE', $user->type);
+        define('USER_RUMAH_SAKIT_ID', $user->rumah_sakit_id);
+        define('USER_DEPARTEMEN_ID', $user->departemen_id);
 
         define('USER_IS_ADM', $user->type == UserType::Administrator);
         define('USER_IS_NAT_COO', $user->type == UserType::NationalCoordinator);
