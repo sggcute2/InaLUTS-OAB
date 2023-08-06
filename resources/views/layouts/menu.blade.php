@@ -47,18 +47,12 @@
       </li>
 --}}
 
-      @if (!IS_USER_TYPE_3)
-      <li
-        data-active-module_user="1"
-      >
-        <a href="{{ URL::to('user') }}">
-          <i class="fa fa-users"></i> <span>User</span>
-        </a>
-      </li>
-      @endif
+      @can('user-menu')
+      <li data-active-module_user="1"><a href="{{ route('user.index') }}"><i class="fa fa-users"></i> User</a></li>
+      @endcan
       @can('profile-menu')
-          <li data-active-module_profile="1"><a href="{{ route('profile.index') }}"><i class="fa fa-user"></i> Profile</a></li>
-          @endcan
+      <li data-active-module_profile="1"><a href="{{ route('profile.index') }}"><i class="fa fa-user"></i> Profile</a></li>
+      @endcan
       @if (IS_DETAIL_PATIENT)
         @if (defined('DISALLOW_ACCESS_DETAIL_PATIENT') && DISALLOW_ACCESS_DETAIL_PATIENT)
         @else
