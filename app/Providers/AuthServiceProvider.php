@@ -9,6 +9,7 @@ use App\Modules\Departemen\Gates\DepartemenGate;
 use App\Modules\Dokter_pemeriksa\Gates\Dokter_pemeriksaGate;
 use App\Modules\User\Gates\UserGate;
 use App\Modules\Profile\Gates\ProfileGate;
+use App\Modules\Pasien\Gates\PasienGate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -35,5 +36,6 @@ class AuthServiceProvider extends ServiceProvider
         Dokter_pemeriksaGate::apply();
         UserGate::apply();
         ProfileGate::apply();
+        PasienGate::apply();
     }
 }

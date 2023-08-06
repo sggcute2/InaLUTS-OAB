@@ -32,8 +32,9 @@ $modules = [
   'dokter_pemeriksa',
   'user',
   'profile',
+  'pasien',
 ];
-Route::group(['middleware' => ['auth', 'check_login']], function () use ($modules) {
+Route::group(['middleware' => ['auth', 'check_login', 'modify_input']], function () use ($modules) {
     foreach($modules as $module)
     {
         $m = ucfirst($module);

@@ -200,6 +200,7 @@ static function show($echo = true) {
     $str .= '<div class="FW___FORM" id="div_'.$NS.'">'.PHP_EOL;
   } else {
     $str .= '<form ';
+    $str .= 'class="FW___FORM" ';
     $str .= 'role="form" ';
     $str .= 'method="post" ';
     $str .= 'action="'.(self::$config['action'] ?? '').'" ';

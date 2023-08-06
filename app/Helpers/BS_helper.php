@@ -154,6 +154,64 @@ static function email($p = array(), $echo = true){
   }
 }
 
+# Textarea
+static function textarea($p = array(), $echo = true){
+  $name = $p['name'] ?? '';
+  $preview = FORM::is_preview();
+  $default_value = FORM::get_var($name);
+  //dd($default_value);
+  $out = $default_value;
+  $out = htmlspecialchars($out, ENT_QUOTES);
+
+  if ($preview) {
+    if ($echo) {
+      echo $out;
+      return;
+    } else {
+      return $out;
+    }
+  }
+
+  $id = $p['id'] ?? $name;
+  $is_inline = $p['inline'] ?? false;
+  $placeholder = $p['placeholder'] ?? '';
+  $rows = $p['rows'] ?? '3';
+  $cols = $p['cols'] ?? '';
+  $a_class = (isset($p['class'])) ? ' '.$p['class'] : '';
+  $readonly = $p['readonly'] ?? '';
+  $required = $p['required'] ?? false;
+  if ($required) FORM::set_has_required();
+  $fake_required = (defined('FORCE_DISABLED_REQUIRED') && FORCE_DISABLED_REQUIRED);
+  if ($required) {
+    if ($fake_required) $required = false;
+  } else {
+    $fake_required = false;
+  }
+  $disabled = $p['disabled'] ?? '';
+
+  $buffer = array();
+  $buffer[] = 'class="input-text form-control'.(($is_inline)?'-inline':'').$a_class.'"';
+  $buffer[] = 'name="'.$name.'"';
+  $buffer[] = 'id="'.$id.'"';
+  $buffer[] = 'placeholder="'.$placeholder.'"';
+  if ($rows) $buffer[] = 'rows="'.$rows.'"';
+  if ($cols) $buffer[] = 'cols="'.$cols.'"';
+  if ($readonly) $buffer[] = 'readonly="readonly"';
+  if ($required) $buffer[] = 'required="required"';
+  if ($fake_required) $buffer[] = 'fake_required="fake_required"';
+  if ($disabled) $buffer[] = 'disabled="disabled"';
+
+  $ret  = '<textarea '.implode(' ', $buffer).'>';
+  $ret .= strval($default_value);
+  $ret .= '</textarea>';
+  if (self::$enable_show_name) $ret .= '<span style="background:yellow">'.$name.'</span>';
+  if ($echo) {
+    echo $ret;
+  } else {
+    return $ret;
+  }
+}
+
 # Select2
 static function select2($p = array(), $echo = true){
   $name = $p['name'] ?? '';

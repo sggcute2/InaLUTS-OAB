@@ -1,7 +1,12 @@
 <aside class="main-sidebar">
   <section class="sidebar">
     <ul class="sidebar-menu">
-      @canany(['kota-menu'])
+      @canany([
+        'kota-menu',
+        'rumah_sakit-menu',
+        'departemen-menu',
+        'dokter_pemeriksa-menu'
+      ])
       <li class="treeview"
         data-active-module_kota="1"
         data-active-module_rumah_sakit="1"
@@ -53,6 +58,9 @@
 
       @can('user-menu')
       <li data-active-module_user="1"><a href="{{ route('user.index') }}"><i class="fa fa-users"></i> User</a></li>
+      @endcan
+      @can('pasien-menu')
+      <li data-active-module_pasien="1"><a href="{{ route('pasien.index') }}"><i class="fa fa-user"></i> Pasien</a></li>
       @endcan
       @can('profile-menu')
       <li data-active-module_profile="1"><a href="{{ route('profile.index') }}"><i class="fa fa-user"></i> Profile</a></li>
