@@ -56,13 +56,9 @@
         </a>
       </li>
       @endif
-      <li
-        data-active-module_profile="1"
-      >
-        <a href="{{ URL::to('profile') }}">
-          <i class="fa fa-user"></i> <span>Profile</span>
-        </a>
-      </li>
+      @can('profile-menu')
+          <li data-active-module_profile="1"><a href="{{ route('profile.index') }}"><i class="fa fa-user"></i> Profile</a></li>
+          @endcan
       @if (IS_DETAIL_PATIENT)
         @if (defined('DISALLOW_ACCESS_DETAIL_PATIENT') && DISALLOW_ACCESS_DETAIL_PATIENT)
         @else
