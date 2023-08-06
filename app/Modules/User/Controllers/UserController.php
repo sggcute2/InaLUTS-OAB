@@ -113,7 +113,6 @@ class UserController extends Controller
             $this->get_validator_messages(),
             $attributes
         );
-
         if ($validator->fails()) {
             return redirect()->back()
                 ->withErrors($validator)
@@ -181,7 +180,6 @@ class UserController extends Controller
             $this->get_validator_messages(),
             $attributes
         );
-
         if ($validator->fails()) {
             return redirect()->back()
                 ->withErrors($validator)

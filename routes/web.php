@@ -29,6 +29,7 @@ $modules = [
   'kota',
   'rumah_sakit',
   'departemen',
+  'dokter_pemeriksa',
   'user',
   'profile',
 ];

@@ -6,6 +6,7 @@
         data-active-module_kota="1"
         data-active-module_rumah_sakit="1"
         data-active-module_departemen="1"
+        data-active-module_dokter_pemeriksa="1"
       >
         <a href="#">
           <i class="fa fa-table"></i>
@@ -23,6 +24,9 @@
           @endcan
           @can('departemen-menu')
           <li data-active-module_departemen="1"><a href="{{ route('departemen.index') }}"><i class="fa fa-circle-o"></i> Departemen</a></li>
+          @endcan
+          @can('dokter_pemeriksa-menu')
+          <li data-active-module_dokter_pemeriksa="1"><a href="{{ route('dokter_pemeriksa.index') }}"><i class="fa fa-circle-o"></i> Dokter Pemeriksa</a></li>
           @endcan
         </ul>
       </li>
