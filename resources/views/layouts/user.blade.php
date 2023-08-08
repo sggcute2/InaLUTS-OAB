@@ -215,6 +215,8 @@
         if($('div.section-vertical a[data-active-module-action_{{ MODULE }}___{{ ACTION }}]'))$('div.section-vertical a[data-active-module-action_{{ MODULE }}___{{ ACTION }}]').addClass('active');
 
         @yield('jquery_ready')
+
+        {{ BS::show_jquery_ready() }}
       });
     </script>
   </body>

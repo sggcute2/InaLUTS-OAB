@@ -2,6 +2,7 @@
 $sidebar_details = [];
 $sidebar_details[] = ['Anamnesis', '_anamnesis'];
 $sidebar_details[] = ['Keluhan Tambahan', '_keluhan_tambahan'];
+$sidebar_details[] = ['Faktor Resiko dan Penyakit Penyerta', '_faktor_resiko'];
 @endphp
 
 @foreach($sidebar_details as $sidebar_detail)

@@ -2,6 +2,7 @@
 class BS {
 
 private static $enable_show_name = false;
+private static $jquery_ready = [];
 
 # toArray
 static function toArray($obj){
@@ -288,6 +289,8 @@ static function radio_array($p = array(), $echo = true){
   }
 
   $id = $p['id'] ?? $name;
+  $toggle_div = $p['toggle_div'] ?? false;
+  $toggle_div_by_value = $p['toggle_div_by_value'] ?? [];
   $field_value = $p['field_value'] ?? 'value';
   $field_text = $p['field_text'] ?? 'text';
   $required = $p['required'] ?? false;
@@ -323,7 +326,40 @@ static function radio_array($p = array(), $echo = true){
     $temp .= $checked;
     $temp .= '> ';
     $temp .= '<label for="'.$name.'_'.$no.'">'.$v[$field_text].'</label>'.PHP_EOL;
+
+    if (isset($toggle_div_by_value[$v[$field_value]])) {
+      $tog = $toggle_div_by_value[$v[$field_value]];
+      $tog_id = $tog['id'] ?? '';
+      $tog_class = $tog['class'] ?? '';
+      $temp .= '<div id="'.$tog_id.'" class="'.$tog_class.'">';
+      $temp .= $tog['html'] ?? '';
+      $temp .= '</div>';
+
+      self::jquery_ready("
+        $('input[name=\"".$name."\"]').on('ifChecked', function(){
+          temp_value = $('input[name=\"".$name."\"]:checked').val();
+          if (temp_value == '".$v[$field_value]."') {
+            $('#".$tog_id."').show();
+          } else {
+            $('#".$tog_id."').hide();
+          }
+        });
+      ");
+    }
+
     $buffer[] = $temp;
+  }
+  if ($toggle_div) {
+    self::jquery_ready("
+      $('input[name=\"".$name."\"]').on('ifChecked', function(){
+        temp_value = $('input[name=\"".$name."\"]:checked').val();
+        if (temp_value == 'Ya') {
+          $('#div_".$name."_ya').show();
+        } else {
+          $('#div_".$name."_ya').hide();
+        }
+      });
+    ");
   }
   if ($vertical) {
     $ret = implode('<br>', $buffer).PHP_EOL;
@@ -340,16 +376,22 @@ static function radio_array($p = array(), $echo = true){
 
 # Radio Ya/Tidak
 static function radio_ya_tidak($p = array(), $echo = true){
-  $p['data'] = array(
-    array(
-      'value' => 'Ya',
-      'text' => 'Ya',
-    ),
-    array(
-      'value' => 'Tidak',
-      'text' => 'Tidak',
-    ),
-  );
+  $p['data'] = [];
+  $p['data'][] = [
+    'value' => 'Ya',
+    'text' => 'Ya',
+  ];
+  $p['data'][] = [
+    'value' => 'Tidak',
+    'text' => 'Tidak',
+  ];
+  if (isset($p['tidak_tahu']) && $p['tidak_tahu']) {
+    $p['data'][] = [
+      'value' => 'Tidak Tahu',
+      'text' => 'Tidak Tahu',
+    ];
+  }
+
   $ret = self::radio_array($p, false);
 
   if ($echo) {
@@ -496,6 +538,16 @@ static function back($caption = '', $url = '', $echo = true){
   } else {
     return $ret;
   }
+}
+
+# Add jQuery Ready
+static function jquery_ready($s = ''){
+  self::$jquery_ready[] = $s;
+}
+
+# Show jQuery Ready
+static function show_jquery_ready(){
+  echo implode(PHP_EOL.PHP_EOL, self::$jquery_ready);
 }
 
 }
