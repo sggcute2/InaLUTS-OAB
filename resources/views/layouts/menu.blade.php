@@ -44,15 +44,9 @@
         data-active-module-action_patient___add="1"
         data-active-module-action_patient___edit="1"
       >
-      @if (IS_USER_TYPE_1)
-        <a href="{{ route('dashboard') }}">
-          <i class="fa fa-dashboard"></i> <span>Dashboard</span>
-        </a>
-      @else
         <a href="#">
           <i class="fa fa-dashboard"></i> <span>Dashboard</span>
         </a>
-      @endif
       </li>
 --}}
 
@@ -65,14 +59,11 @@
       @can('profile-menu')
       <li data-active-module_profile="1"><a href="{{ route('profile.index') }}"><i class="fa fa-user"></i> Profile</a></li>
       @endcan
-      @if (IS_DETAIL_PATIENT)
-        @if (defined('DISALLOW_ACCESS_DETAIL_PATIENT') && DISALLOW_ACCESS_DETAIL_PATIENT)
-        @else
-      <li style="color:white"><a href="{{ route('hospital.list_patient', ['id' => $data_patient->Hospital_ID]) }}">{{ $data_patient->hospital_name }}</a></li>
-      <li class="header"><b style="color:cyan;font-size:125%">Detail Patient</b></li>
-          @if ($data_patient->Patient_Name)
-      <li class="header" style="color:white">{{ $data_patient->Patient_Code . ' - ' . $data_patient->Patient_Name }}</li>
-          @endif
+      @if (IS_DETAIL_PASIEN)
+      <li style="color:white"><a href="{{ route('pasien.index') }}">{{ $data_patient->rumah_sakit->name }}</a></li>
+      <li class="header"><b style="color:cyan;font-size:125%">Detail Pasien</b></li>
+        @if ($data_patient->name)
+      <li class="header" style="color:white">{{ $data_patient->code . ' - ' . $data_patient->name }}</li>
         @endif
       @endif
     </ul>

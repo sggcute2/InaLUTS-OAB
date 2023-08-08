@@ -192,7 +192,7 @@
 
 @section('jquery_ready')
 // Vars
-const disable_all = {{ USER_IS_SUB ? 'false' : 'true' }};
+const disable_all = {{ (USER_IS_SUB && $mode != 'detail') ? 'false' : 'true' }};
 
 // Data
 const m_propinsi = {!! $m_propinsi !!};

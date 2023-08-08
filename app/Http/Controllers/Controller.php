@@ -8,6 +8,8 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\View;
+use App\Modules\Pasien\Models\Pasien;
+use App\Modules\Rumah_sakit\Models\Rumah_sakit;
 use Session;
 use Lang;
 
@@ -46,10 +48,13 @@ class Controller extends BaseController
 
         define('ADD', ACTION == 'add');
         define('EDIT', ACTION == 'edit');
-        define('IS_DETAIL_PATIENT', false);
-        define('IS_USER_TYPE_1', false);
-        define('IS_USER_TYPE_3', false);
-        define('USER_HOSPITAL_ID', 0);
+        define('ID', intval(\Request::segment(2)));
+        define('IS_DETAIL_PASIEN', substr(ROUTE, 0, 13) == 'pasien.detail');
+
+        if (IS_DETAIL_PASIEN && ID) {
+            $data_patient = Pasien::find(ID);
+            \View::share('data_patient', $data_patient);
+        }
     }
 
     public function moduleView($view = '', $data = [])

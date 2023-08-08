@@ -10,6 +10,15 @@ Route::name($m.'.')->prefix($m)->controller($use_controller)->group(function(){
     Route::get('/add', 'add')->name('add');
     Route::get('/{id}/edit', 'edit')->name('edit');
 
+    Route::get('/{id}/detail', 'detail')->name('detail');
+    $a = [
+        'pilihan_penyakit',
+    ];
+    foreach($a as $v){
+        Route::get('/{id}/detail_'.$v, 'detail_'.$v)->name('detail_'.$v);
+        Route::post('/{id}/update_'.$v, 'update_'.$v.'_process')->name('update_'.$v);
+    }
+
     Route::post('/add', 'add_process')->name('add');
     Route::post('/{id}/edit', 'edit_process')->name('edit');
     Route::post('/ajax_check_nik', 'post_ajax_check_nik')

@@ -83,14 +83,14 @@
           @endif
         </section>
         <section class="content">
-          @if (IS_DETAIL_PATIENT)
+          @if (IS_DETAIL_PASIEN)
           <style>
           .section{
             margin-right:12px;
           }
           .section-vertical {
             width: 100px;
-            text-align: center;
+            text-align: left;
           }
           .section-vertical a {
             background-color: #eee;
@@ -113,16 +113,7 @@
               <div class="box box-primary">
                 <div class="box-body">
                   <div class="section-vertical">
-                    <a
-                      data-active-module-action_patient___detail="1"
-                      href="#"
-                      title="Section 1"
-                    >Section 1</a>
-                    <a
-                      data-active-module-action_patient___detail_pemeriksaan_klinis="1"
-                      href="#"
-                      title="Section 2"
-                    >Section 1</a>
+                    @include('layouts/sidebar-detail')
                   </div>
                 </div><!-- /.box-body -->
               </div><!-- /.box -->
@@ -133,7 +124,7 @@
 
           @yield('content')
 
-          @if (IS_DETAIL_PATIENT)
+          @if (IS_DETAIL_PASIEN)
             </div><!-- /div.flex.1 -->
           </div><!-- /div.flex -->
           @endif
