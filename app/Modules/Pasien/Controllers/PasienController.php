@@ -52,6 +52,12 @@ class PasienController extends Controller
     {
         $this->moduleAllow('view');
 
+        if (USER_IS_REG_COO || USER_IS_LOC_COO || USER_IS_SUB) {
+            $data = ModuleModel::where('rumah_sakit_id', USER_RUMAH_SAKIT_ID)
+                ->get();
+        } else {
+            $data = ModuleModel::all();
+        }
         $column = array();
         $column[] = array('Nama '.MODULE_TITLE, 'name');
         $column[] = array('Action', function($row) {
@@ -67,7 +73,7 @@ class PasienController extends Controller
             }
 
         });
-        DT::add(false, ModuleModel::all(), $column);
+        DT::add(false, $data, $column);
 
         return $this->moduleView('index');
     }
@@ -162,6 +168,12 @@ class PasienController extends Controller
         $this->moduleAllow('edit');
 
         $default = ModuleModel::findOrFail($id);
+        if ($default->rumah_sakit_id != USER_RUMAH_SAKIT_ID) {
+            abort(403, 'Access Denied ('.__LINE__.')');
+        }
+        if ($default->created_user_id != USER_ID) {
+            abort(403, 'Access Denied ('.__LINE__.')');
+        }
 
         return $this->_form($id, $default, 'edit');
     }
@@ -171,6 +183,12 @@ class PasienController extends Controller
         $this->moduleAllow('edit');
 
         $default = ModuleModel::findOrFail($id);
+        if ($default->rumah_sakit_id != USER_RUMAH_SAKIT_ID) {
+            abort(403, 'Access Denied ('.__LINE__.')');
+        }
+        if ($default->created_user_id != USER_ID) {
+            abort(403, 'Access Denied ('.__LINE__.')');
+        }
 
         $rules = [
             'nik' => 'required|max:50|unique:m_pasien,nik,'.$id,
