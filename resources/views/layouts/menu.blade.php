@@ -60,10 +60,10 @@
       <li data-active-module_profile="1"><a href="{{ route('profile.index') }}"><i class="fa fa-user"></i> Profile</a></li>
       @endcan
       @if (IS_DETAIL_PASIEN)
-      <li style="color:white"><a href="{{ route('pasien.index') }}">{{ $data_patient->rumah_sakit->name }}</a></li>
+      <li style="color:white"><a href="{{ route('pasien.index') }}">{{ $data_pasien->rumah_sakit->name }}</a></li>
       <li class="header"><b style="color:cyan;font-size:125%">Detail Pasien</b></li>
-        @if ($data_patient->name)
-      <li class="header" style="color:white">{{ $data_patient->code . ' - ' . $data_patient->name }}</li>
+        @if ($data_pasien->name)
+      <li class="header" style="color:white">{{ $data_pasien->code . ' - ' . $data_pasien->name }}</li>
         @endif
       @endif
     </ul>

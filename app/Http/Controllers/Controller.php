@@ -52,8 +52,8 @@ class Controller extends BaseController
         define('IS_DETAIL_PASIEN', substr(ROUTE, 0, 13) == 'pasien.detail');
 
         if (IS_DETAIL_PASIEN && ID) {
-            $data_patient = Pasien::find(ID);
-            \View::share('data_patient', $data_patient);
+            $data_pasien = Pasien::find(ID);
+            \View::share('data_pasien', $data_pasien);
         }
     }
 

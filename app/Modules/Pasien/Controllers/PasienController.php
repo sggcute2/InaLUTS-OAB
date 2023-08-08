@@ -25,8 +25,12 @@ use BS;
 use DT;
 use FORM;
 
+use App\Modules\Pasien\Controllers\Traits\OABTrait;
+
 class PasienController extends Controller
 {
+    use OABTrait;
+
     public function __construct(){
         parent::__construct([
             'module' => 'pasien',
@@ -287,6 +291,9 @@ class PasienController extends Controller
         $page_title = 'Pilihan Penyakit';
 
         Pasien_pilihan_penyakit::base_update_by_pasien_id($request->all(), $id);
+        ModuleModel::base_update_by_id([
+            'registry_id' => intval($request->get('registry_id'))
+        ], $id);
 
         $this->flash_success_update($page_title);
 

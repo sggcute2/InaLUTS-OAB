@@ -11,3 +11,7 @@ $sidebar_details[] = ['Pilihan Penyakit', '_pilihan_penyakit'];
     title="{{ $sidebar_detail[0] }}"
 >{{ $sidebar_detail[0] }}</a>
 @endforeach
+
+@if($data_pasien->registry_id == 1)
+  @include('layouts/sidebar-OAB')
+@endif

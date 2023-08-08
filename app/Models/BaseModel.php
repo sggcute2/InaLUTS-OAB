@@ -10,19 +10,22 @@ class BaseModel extends Model
     static protected $meta = [];
 
     static public function set_meta($meta = []){
-        self::$meta = $meta;
+        $cls = basename(get_called_class());
+        self::$meta[$cls] = $meta;
     }
 
     static private function _get_table(){
-        if (isset(self::$meta['table'])) {
-            return self::$meta['table'];
+        $cls = basename(get_called_class());
+        if (isset(self::$meta[$cls]['table'])) {
+            return self::$meta[$cls]['table'];
         } else {
             dd('Error : Table not found');
         }
     }
 
     static private function _get_fields(){
-        if (isset(self::$meta['table'])) {
+        $cls = basename(get_called_class());
+        if (isset(self::$meta[$cls]['table'])) {
             $skip_fields = [
                 'id',
                 /*
@@ -35,7 +38,7 @@ class BaseModel extends Model
                 */
             ];
 
-            $table = self::$meta['table'];
+            $table = self::$meta[$cls]['table'];
             $fields = \Schema::getColumnListing($table);
             $ret = [];
             foreach($fields as $field){

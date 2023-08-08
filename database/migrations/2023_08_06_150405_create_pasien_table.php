@@ -26,6 +26,7 @@ return new class extends Migration
             $table->decimal('tb', 5, 2)->default(0.00);
             $table->decimal('bb', 5, 2)->default(0.00);
             $table->decimal('imt', 5, 2)->default(0.00);
+            $table->integer('registry_id')->default(0);
             $table->integer('jenis_kelamin_id')->default(0);
             $table->integer('propinsi_id')->default(0);
             $table->integer('kabupaten_id')->default(0);

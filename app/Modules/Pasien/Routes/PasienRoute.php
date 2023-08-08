@@ -9,14 +9,26 @@ Route::name($m.'.')->prefix($m)->controller($use_controller)->group(function(){
     Route::get('/', 'index')->name('index');
     Route::get('/add', 'add')->name('add');
     Route::get('/{id}/edit', 'edit')->name('edit');
-
     Route::get('/{id}/detail', 'detail')->name('detail');
+
     $a = [
         'pilihan_penyakit',
     ];
     foreach($a as $v){
-        Route::get('/{id}/detail_'.$v, 'detail_'.$v)->name('detail_'.$v);
-        Route::post('/{id}/update_'.$v, 'update_'.$v.'_process')->name('update_'.$v);
+        Route::get('/{id}/detail_'.$v, 'detail_'.$v)
+            ->name('detail_'.$v);
+        Route::post('/{id}/update_'.$v, 'update_'.$v.'_process')
+            ->name('update_'.$v);
+    }
+
+    $oab = [
+        'anamnesis',
+    ];
+    foreach($oab as $v){
+        Route::get('/{id}/detail_oab_'.$v, 'detail_oab_'.$v)
+            ->name('detail_oab_'.$v);
+        Route::post('/{id}/update_oab_'.$v, 'update_oab_'.$v.'_process')
+            ->name('update_oab_'.$v);
     }
 
     Route::post('/add', 'add_process')->name('add');
