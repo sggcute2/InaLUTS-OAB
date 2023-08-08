@@ -1,6 +1,7 @@
 @php
 $sidebar_details = [];
 $sidebar_details[] = ['Anamnesis', '_anamnesis'];
+$sidebar_details[] = ['Keluhan Tambahan', '_keluhan_tambahan'];
 @endphp
 
 @foreach($sidebar_details as $sidebar_detail)

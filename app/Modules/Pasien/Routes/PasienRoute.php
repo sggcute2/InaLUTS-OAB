@@ -23,6 +23,7 @@ Route::name($m.'.')->prefix($m)->controller($use_controller)->group(function(){
 
     $oab = [
         'anamnesis',
+        'keluhan_tambahan',
     ];
     foreach($oab as $v){
         Route::get('/{id}/detail_oab_'.$v, 'detail_oab_'.$v)

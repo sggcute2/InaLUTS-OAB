@@ -338,6 +338,27 @@ static function radio_array($p = array(), $echo = true){
   }
 }
 
+# Radio Ya/Tidak
+static function radio_ya_tidak($p = array(), $echo = true){
+  $p['data'] = array(
+    array(
+      'value' => 'Ya',
+      'text' => 'Ya',
+    ),
+    array(
+      'value' => 'Tidak',
+      'text' => 'Tidak',
+    ),
+  );
+  $ret = self::radio_array($p, false);
+
+  if ($echo) {
+    echo $ret;
+  } else {
+    return $ret;
+  }
+}
+
 # Checkbox
 static function checkbox($p = array(), $echo = true){
   $name = $p['name'] ?? '';
