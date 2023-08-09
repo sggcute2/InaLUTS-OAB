@@ -164,7 +164,7 @@ class PasienController extends Controller
 
         $default = [];
 
-        return $this->_form(0, $default);
+        return $this->_form(0, $default, 'add');
     }
 
     public function add_process(Request $request): RedirectResponse

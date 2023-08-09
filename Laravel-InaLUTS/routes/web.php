@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::redirect('/', '/login');
+Route::redirect('/', '/inaluts/login');
 
 //require_once('web/auth.php');
 $m = 'Auth';

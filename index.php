@@ -4,6 +4,7 @@ use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
+$FOLDER_LARAVEL = 'Laravel-InaLUTS';
 
 /*
 |--------------------------------------------------------------------------
@@ -31,7 +32,8 @@ if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php'))
 |
 */
 
-require __DIR__.'/../vendor/autoload.php';
+//require __DIR__.'/../vendor/autoload.php';
+require $FOLDER_LARAVEL.'/vendor/autoload.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -44,7 +46,8 @@ require __DIR__.'/../vendor/autoload.php';
 |
 */
 
-$app = require_once __DIR__.'/../bootstrap/app.php';
+//$app = require_once __DIR__.'/../bootstrap/app.php';
+$app = require_once $FOLDER_LARAVEL.'/bootstrap/app.php';
 
 $kernel = $app->make(Kernel::class);
 
