@@ -13,13 +13,13 @@
     FORM::set_var($default);
 
     $temp = '
-    Antihipertensi
-    Obat diabetik
-    Obat-obatan psikiatri
-    Obat-obatan COPD
-    Obat-obatan asma
-    Obat-obatan alergi
-    Obat-obatan saraf
+        Antihipertensi
+        Obat diabetik
+        Obat-obatan psikiatri
+        Obat-obatan COPD
+        Obat-obatan asma
+        Obat-obatan alergi
+        Obat-obatan saraf
     ';
     $x = explode("\n", $temp);
     foreach($x as $v){

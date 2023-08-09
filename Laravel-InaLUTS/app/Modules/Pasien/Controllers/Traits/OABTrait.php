@@ -9,6 +9,7 @@ use App\Modules\Pasien\Models\OAB\OAB_anamnesis;
 use App\Modules\Pasien\Models\OAB\OAB_keluhan_tambahan;
 use App\Modules\Pasien\Models\OAB\OAB_faktor_resiko;
 use App\Modules\Pasien\Models\OAB\OAB_riwayat_pengobatan_1_bln;
+use App\Modules\Pasien\Models\OAB\OAB_riwayat_pengobatan_luts;
 
 trait OABTrait {
     public function detail_oab_anamnesis($id): View
@@ -125,23 +126,32 @@ trait OABTrait {
         $page_title = 'Faktor Resiko dan Penyakit Penyerta';
 
         $data = $request->all();
-        if ($data['gangguan_mood'] == 'Ya') {
-            if ($data['gangguan_mood_ya'] != 'Gangguan Mood') {
+        if (isset($data['gangguan_mood']) && $data['gangguan_mood'] == 'Ya') {
+            if (
+                isset($data['gangguan_mood_ya'])
+                && $data['gangguan_mood_ya'] != 'Gangguan Mood'
+            ) {
                 $data['gangguan_mood_ya2'] = '';
             }
         } else {
             $data['gangguan_mood_ya'] = '';
         }
-        if ($data['diabetes'] != 'Ya') {
+        if (isset($data['diabetes']) && $data['diabetes'] != 'Ya') {
             $data['diabetes_ya'] = '';
         }
-        if ($data['menopause'] != 'Ya') {
+        if (isset($data['menopause']) && $data['menopause'] != 'Ya') {
             $data['menopause_ya'] = '';
         }
-        if ($data['kanker_ginekologi'] != 'Ya') {
+        if (
+            isset($data['kanker_ginekologi'])
+            && $data['kanker_ginekologi'] != 'Ya'
+        ) {
             $data['kanker_ginekologi_ya'] = '';
         }
-        if ($data['spinal_cord_injury'] != 'Ya') {
+        if (
+            isset($data['spinal_cord_injury'])
+            && $data['spinal_cord_injury'] != 'Ya'
+        ) {
             $data['trauma_tulang_belakang'] = '';
             $data['tumor_tulang_belakang'] = '';
             $data['myelitis'] = '';
@@ -199,7 +209,7 @@ trait OABTrait {
             'obat_obatan_saraf',
         ];
         foreach($a as $v){
-            if ($data[$v] != 'Ya') $data[$v.'_ya'] = '';
+            if (isset($data[$v]) && $data[$v] != 'Ya') $data[$v.'_ya'] = '';
         }
         OAB_riwayat_pengobatan_1_bln::base_update_by_pasien_id(
             $data, $id
@@ -209,6 +219,92 @@ trait OABTrait {
 
         return redirect()->route(
             MODULE.'.detail_oab_riwayat_pengobatan_1_bln', $id
+        );
+    }
+
+    public function detail_oab_riwayat_pengobatan_luts($id): View
+    {
+        $pasien = $this->_allow_access($id);
+
+        if (!OAB_riwayat_pengobatan_luts::where('pasien_id', $id)->exists()) {
+            OAB_riwayat_pengobatan_luts::base_insert(['pasien_id' => $id]);
+        }
+        $default = OAB_riwayat_pengobatan_luts::where('pasien_id', $id)
+            ->first();
+        $page_title = 'Riwayat Pengobatan LUTS sebelumnya';
+        $view = $this->_get_method(__METHOD__);
+        $form_action = route(
+            'pasien.update_'.str_replace('detail_', '', $view),
+            $id
+        );
+
+        return $this->moduleView(
+            'OAB/form_'.str_replace('detail_oab_', '', $view),
+            [
+                'default' => $default,
+                'page_title' => $page_title,
+                'form_action' => $form_action,
+            ]
+        );
+    }
+
+    public function update_oab_riwayat_pengobatan_luts_process(
+        Request $request, $id
+    ): RedirectResponse
+    {
+        $pasien = $this->_allow_access($id);
+
+        $page_title = 'Riwayat Pengobatan LUTS sebelumnya';
+
+        $data = $request->all();
+        $a = [
+            'tamsulosin',
+            'alfuzosin',
+            'doxazosin',
+            'terazosin',
+            'silodosin',
+        ];
+        foreach($a as $v){
+            if (isset($data[$v]) && $data[$v] != 'Ya') {
+                $data[$v.'_hari'] = 0;
+                $data[$v.'_bulan'] = 0;
+                $data[$v.'_tahun'] = 0;
+            }
+        }
+        if (isset($data['pde_5_inhibitor']) && $data['pde_5_inhibitor'] == 'Ya') {
+            if (
+                isset($data['pde_5_inhibitor'])
+                && $data['pde_5_inhibitor'] != 'Ya'
+            ) {
+                $data['tadalafil_bulan'] = 0;
+            }
+        } else {
+            $data['tadalafil'] = '';
+            $data['tadalafil_bulan'] = 0;
+        }
+        $a = [
+            'finasteride',
+            'dutasteride',
+            'solifenacin',
+            'imidafenacin',
+            'tolterodine',
+            'propiverine',
+            'flavoxate',
+            'mirabegron',
+        ];
+        foreach($a as $v){
+            if (isset($data[$v]) && $data[$v] != 'Ya') {
+                $data[$v.'_bulan'] = 0;
+            }
+        }
+        OAB_riwayat_pengobatan_luts::base_update_by_pasien_id(
+            $data, $id
+        );
+
+        $this->flash_success_update($page_title);
+
+        return redirect()->route(
+            MODULE.'.detail_oab_riwayat_pengobatan_luts', $id
         );
     }
 }

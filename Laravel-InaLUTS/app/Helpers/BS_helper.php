@@ -109,6 +109,7 @@ static function textbox($p = array(), $echo = true){
   $id = $p['id'] ?? $name;
   $is_inline = $p['inline'] ?? false;
   $placeholder = $p['placeholder'] ?? '';
+  $style = $p['style'] ?? '';
   $size = $p['size'] ?? '';
   $a_class = (isset($p['class'])) ? ' '.$p['class'] : '';
   $readonly = $p['readonly'] ?? '';
@@ -133,6 +134,7 @@ static function textbox($p = array(), $echo = true){
   if ($required) $buffer[] = 'required="required"';
   if ($fake_required) $buffer[] = 'fake_required="fake_required"';
   if ($disabled) $buffer[] = 'disabled="disabled"';
+  if ($style) $buffer[] = 'style="'.$style.'"';
   $buffer[] = 'value="'.strval($default_value).'"';
 
   $ret = '<input '.implode(' ', $buffer).' />';
@@ -148,6 +150,18 @@ static function textbox($p = array(), $echo = true){
 static function email($p = array(), $echo = true){
   $ret = self::textbox($p, false);
   $ret = str_replace('type="text"', 'type="email"', $ret);
+  if ($echo) {
+    echo $ret;
+  } else {
+    return $ret;
+  }
+}
+
+# Number
+static function number($p = array(), $echo = true){
+  if (!isset($p['style'])) $p['style'] = 'width:60px';
+  $ret = self::textbox($p, false);
+  $ret = str_replace('type="text"', 'type="number"', $ret);
   if ($echo) {
     echo $ret;
   } else {
