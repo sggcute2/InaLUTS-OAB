@@ -89,7 +89,7 @@
             margin-right:12px;
           }
           .section-vertical {
-            width: 100px;
+            width: 175px;
             text-align: left;
           }
           .section-vertical a {
