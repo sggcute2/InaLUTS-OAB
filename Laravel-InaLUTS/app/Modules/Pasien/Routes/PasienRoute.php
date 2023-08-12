@@ -27,6 +27,7 @@ Route::name($m.'.')->prefix($m)->controller($use_controller)->group(function(){
         'faktor_resiko',
         'riwayat_pengobatan_1_bln',
         'riwayat_pengobatan_luts',
+        'riwayat_operasi_urologi',
     ];
     foreach($oab as $v){
         Route::get('/{id}/detail_oab_'.$v, 'detail_oab_'.$v)

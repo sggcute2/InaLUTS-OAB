@@ -26,15 +26,9 @@ class ModifyInput
                 $_POST[$field] =
                 $input[$field] = FORMAT::date_from_datepicker($input[$field]);
               }
-              if ($type == 'checkbox') {
-                $_POST[$field] =
-                $input[$field] = '1';
-              }
+              if ($type == 'checkbox') $_POST[$field] = $input[$field] = '1';
             } else {
-              if ($type == 'checkbox') {
-                $_POST[$field] =
-                $input[$field] = '0';
-              }
+              if ($type == 'checkbox') $_POST[$field] = $input[$field] = '0';
             }
           }
         }

@@ -24,7 +24,7 @@ static function date($dt = '') {
 # Date from Datepicker
 static function date_from_datepicker($dt = ''){
   // DD-MM-YYYY
-  $ret = '';
+  $ret = null;
   $x = explode('-', $dt);
   if (count($x) == 3) {
     $d = $x[0] * 1;

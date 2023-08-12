@@ -457,8 +457,11 @@ static function checkbox($p = array(), $echo = true){
   //if ($disabled) $buffer[] = 'disabled="disabled"';
   if ($default_value == $value) $buffer[] = 'checked="checked"';
 
-  $ret  = '<input '.implode(' ', $buffer).' />'.$caption;
+  $ret  = '';
+  $ret .= '<div style="padding:0.125em 0">';
+  $ret .= '<input '.implode(' ', $buffer).' />'.$caption;
   $ret .= '<input type="hidden" name="_input_type['.$id.']" value="checkbox">';
+  $ret .= '</div>';
   if ($echo) {
     echo $ret;
   } else {
