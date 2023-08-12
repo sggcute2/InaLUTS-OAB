@@ -13,6 +13,7 @@ use App\Modules\Pasien\Models\OAB\OAB_riwayat_pengobatan_luts;
 use App\Modules\Pasien\Models\OAB\OAB_riwayat_operasi_urologi;
 use App\Modules\Pasien\Models\OAB\OAB_riwayat_operasi_non_urologi;
 use App\Modules\Pasien\Models\OAB\OAB_riwayat_radiasi;
+use App\Modules\Pasien\Models\OAB\OAB_sistem_skor;
 
 trait OABTrait {
     public function detail_oab_anamnesis($id): View
@@ -517,6 +518,49 @@ trait OABTrait {
 
         return redirect()->route(
             MODULE.'.detail_oab_riwayat_radiasi', $id
+        );
+    }
+
+    public function detail_oab_sistem_skor($id): View
+    {
+        $pasien = $this->_allow_access($id);
+
+        if (!OAB_sistem_skor::where('pasien_id', $id)->exists()) {
+            OAB_sistem_skor::base_insert(['pasien_id' => $id]);
+        }
+        $default = OAB_sistem_skor::where('pasien_id', $id)
+            ->first();
+        $page_title = 'Sistem skor';
+        $view = $this->_get_method(__METHOD__);
+        $form_action = route(
+            'pasien.update_'.str_replace('detail_', '', $view),
+            $id
+        );
+
+        return $this->moduleView(
+            'OAB/form_'.str_replace('detail_oab_', '', $view),
+            [
+                'default' => $default,
+                'page_title' => $page_title,
+                'form_action' => $form_action,
+            ]
+        );
+    }
+
+    public function update_oab_sistem_skor_process(
+        Request $request, $id
+    ): RedirectResponse
+    {
+        $pasien = $this->_allow_access($id);
+
+        $page_title = 'Sistem skor';
+
+        OAB_sistem_skor::base_update_by_pasien_id($request->all(), $id);
+
+        $this->flash_success_update($page_title);
+
+        return redirect()->route(
+            MODULE.'.detail_oab_sistem_skor', $id
         );
     }
 }
