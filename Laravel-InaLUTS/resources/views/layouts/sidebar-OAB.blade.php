@@ -7,6 +7,7 @@ $sidebar_details[] = ['Riwayat Pengobatan Dalam 1 bulan terakhir', '_riwayat_pen
 $sidebar_details[] = ['Riwayat Pengobatan LUTS sebelumnya', '_riwayat_pengobatan_luts'];
 $sidebar_details[] = ['Riwayat operasi / endoskopi urologi', '_riwayat_operasi_urologi'];
 $sidebar_details[] = ['Riwayat Operasi Non Urologi', '_riwayat_operasi_non_urologi'];
+$sidebar_details[] = ['Riwayat Radiasi dan Kemoterapi', '_riwayat_radiasi'];
 @endphp
 
 @foreach($sidebar_details as $sidebar_detail)
