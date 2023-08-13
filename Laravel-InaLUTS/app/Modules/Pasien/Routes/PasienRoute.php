@@ -31,6 +31,7 @@ Route::name($m.'.')->prefix($m)->controller($use_controller)->group(function(){
         'riwayat_operasi_non_urologi',
         'riwayat_radiasi',
         'sistem_skor',
+        'pemeriksaan_fisik',
     ];
     foreach($oab as $v){
         Route::get('/{id}/detail_oab_'.$v, 'detail_oab_'.$v)
