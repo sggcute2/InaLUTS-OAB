@@ -11,6 +11,7 @@ $sidebar_details[] = ['Riwayat Radiasi dan Kemoterapi', '_riwayat_radiasi'];
 $sidebar_details[] = ['Sistem skor', '_sistem_skor'];
 $sidebar_details[] = ['Pemeriksaan fisik', '_pemeriksaan_fisik'];
 $sidebar_details[] = ['Pemeriksaan Laboratorium', '_pemeriksaan_laboratorium'];
+$sidebar_details[] = ['Penunjang - Uroflowmetri', '_penunjang_uroflowmetri'];
 @endphp
 
 @foreach($sidebar_details as $sidebar_detail)
