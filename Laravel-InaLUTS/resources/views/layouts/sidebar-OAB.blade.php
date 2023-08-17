@@ -10,12 +10,21 @@ $sidebar_details[] = ['Riwayat Operasi Non Urologi', '_riwayat_operasi_non_urolo
 $sidebar_details[] = ['Riwayat Radiasi dan Kemoterapi', '_riwayat_radiasi'];
 $sidebar_details[] = ['Sistem skor', '_sistem_skor'];
 $sidebar_details[] = ['Pemeriksaan fisik', '_pemeriksaan_fisik'];
+$sidebar_details[] = ['Pemeriksaan Laboratorium', '_pemeriksaan_laboratorium'];
 @endphp
 
 @foreach($sidebar_details as $sidebar_detail)
+  @if($sidebar_detail[1]=='_pemeriksaan_laboratorium')
+  <a
+    data-active-module-action_pasien___list_oab{{ $sidebar_detail[1] }}="1"
+    href="{{ route('pasien.list_oab'.$sidebar_detail[1], ID) }}"
+    title="{{ $sidebar_detail[0] }}"
+>{{ $sidebar_detail[0] }}</a>
+  @else
 <a
     data-active-module-action_pasien___detail_oab{{ $sidebar_detail[1] }}="1"
     href="{{ route('pasien.detail_oab'.$sidebar_detail[1], ID) }}"
     title="{{ $sidebar_detail[0] }}"
 >{{ $sidebar_detail[0] }}</a>
+  @endif
 @endforeach

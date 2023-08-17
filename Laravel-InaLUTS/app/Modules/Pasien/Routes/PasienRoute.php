@@ -32,8 +32,18 @@ Route::name($m.'.')->prefix($m)->controller($use_controller)->group(function(){
         'riwayat_radiasi',
         'sistem_skor',
         'pemeriksaan_fisik',
+        'pemeriksaan_laboratorium',
     ];
     foreach($oab as $v){
+        if ($v == 'pemeriksaan_laboratorium') {
+            Route::get('/{id}/list_oab_'.$v, 'list_oab_'.$v)
+                ->name('list_oab_'.$v);
+            Route::get('/{id}/add_oab_'.$v, 'add_oab_'.$v)
+                ->name('add_oab_'.$v);
+
+            Route::post('/{id}/add_oab_'.$v, 'add_oab_'.$v.'_process')
+                ->name('add_oab_'.$v);
+        }
         Route::get('/{id}/detail_oab_'.$v, 'detail_oab_'.$v)
             ->name('detail_oab_'.$v);
         Route::post('/{id}/update_oab_'.$v, 'update_oab_'.$v.'_process')

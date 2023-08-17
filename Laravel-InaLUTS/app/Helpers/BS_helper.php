@@ -159,7 +159,7 @@ static function email($p = array(), $echo = true){
 
 # Number
 static function number($p = array(), $echo = true){
-  if (!isset($p['style'])) $p['style'] = 'width:60px';
+  if (!isset($p['style'])) $p['style'] = 'width:90px';
   $ret = self::textbox($p, false);
   $ret = str_replace('type="text"', 'type="number"', $ret);
   if ($echo) {

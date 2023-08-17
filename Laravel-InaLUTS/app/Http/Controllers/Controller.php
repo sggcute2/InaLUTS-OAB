@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\View;
 use App\Modules\Pasien\Models\Pasien;
 use App\Modules\Rumah_sakit\Models\Rumah_sakit;
+use App\Modules\Pasien\Models\OAB\OAB_pemeriksaan_laboratorium;
 use Session;
 use Lang;
 
@@ -49,10 +50,18 @@ class Controller extends BaseController
         define('ADD', ACTION == 'add');
         define('EDIT', ACTION == 'edit');
         define('ID', intval(\Request::segment(2)));
-        define('IS_DETAIL_PASIEN', substr(ROUTE, 0, 13) == 'pasien.detail');
+        define('IS_DETAIL_PASIEN',
+            substr(ROUTE, 0, 14) == 'pasien.detail_'
+            || ACTION == 'list_oab_pemeriksaan_laboratorium'
+        );
 
         if (IS_DETAIL_PASIEN && ID) {
-            $data_pasien = Pasien::find(ID);
+            if (ACTION == 'detail_oab_pemeriksaan_laboratorium') {
+                $temp = OAB_pemeriksaan_laboratorium::find(ID);
+                $data_pasien = Pasien::find($temp->pasien_id);
+            } else {
+                $data_pasien = Pasien::find(ID);
+            }
             \View::share('data_pasien', $data_pasien);
         }
     }
@@ -76,16 +85,18 @@ class Controller extends BaseController
     }
 
     # Flash for Success Add
-    public function flash_success_add(){
+    public function flash_success_add($title = ''){
+        $title = (trim($title) == '') ? MODULE_TITLE : trim($title);
         Session::flash('success',
-        Lang::get('message.success_add', ['title' => MODULE_TITLE ?? ''])
+            Lang::get('message.success_add', ['title' => $title])
         );
     }
 
     # Flash for Success Edit
-    public function flash_success_edit(){
+    public function flash_success_edit($title = ''){
+        $title = (trim($title) == '') ? MODULE_TITLE : trim($title);
         Session::flash('success',
-        Lang::get('message.success_edit', ['title' => MODULE_TITLE ?? ''])
+            Lang::get('message.success_edit', ['title' => $title])
         );
     }
 
@@ -93,7 +104,7 @@ class Controller extends BaseController
     public function flash_success_update($title = ''){
         $title = (trim($title) == '') ? MODULE_TITLE : trim($title);
         Session::flash('success',
-        Lang::get('message.success_update', ['title' => $title])
+            Lang::get('message.success_update', ['title' => $title])
         );
     }
 
@@ -101,7 +112,7 @@ class Controller extends BaseController
     public function flash_success_delete($title = ''){
         $title = (trim($title) == '') ? MODULE_TITLE : trim($title);
         Session::flash('success',
-        Lang::get('message.success_delete', ['title' => $title])
+            Lang::get('message.success_delete', ['title' => $title])
         );
     }
 
@@ -109,7 +120,7 @@ class Controller extends BaseController
     public function flash_success_clear($title = ''){
         $title = (trim($title) == '') ? MODULE_TITLE : trim($title);
         Session::flash('success',
-        Lang::get('message.success_clear', ['title' => $title])
+            Lang::get('message.success_clear', ['title' => $title])
         );
     }
 
