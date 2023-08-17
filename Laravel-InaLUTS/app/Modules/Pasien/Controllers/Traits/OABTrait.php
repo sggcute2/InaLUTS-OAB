@@ -19,6 +19,7 @@ use App\Modules\Pasien\Models\OAB\OAB_pemeriksaan_laboratorium;
 use App\Modules\Pasien\Models\OAB\OAB_penunjang_uroflowmetri;
 use App\Modules\Pasien\Models\OAB\OAB_penunjang_urodinamik;
 use App\Modules\Pasien\Models\OAB\OAB_pemeriksaan_imaging;
+use App\Modules\Pasien\Models\OAB\OAB_penunjang;
 use BS;
 use DT;
 use FORMAT;
@@ -957,6 +958,68 @@ trait OABTrait {
 
         return redirect()->route(
             MODULE.'.detail_oab_pemeriksaan_imaging', $id
+        );
+    }
+
+    public function detail_oab_penunjang($id): View
+    {
+        $pasien = $this->_allow_access($id);
+
+        if (!OAB_penunjang::where('pasien_id', $id)->exists()) {
+            OAB_penunjang::base_insert(['pasien_id' => $id]);
+        }
+        $default = OAB_penunjang::where('pasien_id', $id)
+            ->first();
+        $page_title = 'Penunjang';
+        $view = $this->_get_method(__METHOD__);
+        $form_action = route(
+            'pasien.update_'.str_replace('detail_', '', $view),
+            $id
+        );
+
+        return $this->moduleView(
+            'OAB/form_'.str_replace('detail_oab_', '', $view),
+            [
+                'default' => $default,
+                'page_title' => $page_title,
+                'form_action' => $form_action,
+            ]
+        );
+    }
+
+    public function update_oab_penunjang_process(
+        Request $request, $id
+    ): RedirectResponse
+    {
+        $pasien = $this->_allow_access($id);
+
+        $page_title = 'Penunjang';
+
+        $data = $request->all();
+        if (isset($data['upp']) && $data['upp'] != 'Dikerjakan') {
+            $data['maximal_urethral_pressure'] = '';
+            $data['functional_urethral_length'] = '';
+        }
+        if (isset($data['sistoskopi']) && $data['sistoskopi'] != 'Dikerjakan') {
+            $data['mukosa_buli'] = '';
+            $data['trabekulasi'] = '';
+            $data['sakulasi_divertikel'] = '';
+            $data['kapasitas_buli'] = '';
+            $data['batu'] = '';
+            $data['tumor'] = '';
+            $data['lobus_medius'] = '';
+            $data['kissing_lobe'] = '';
+            $data['muara_ureter'] = '';
+            $data['urethra'] = '';
+            $data['mue'] = '';
+            $data['lichen_schlerosis'] = '';
+        }
+        OAB_penunjang::base_update_by_pasien_id($data, $id);
+
+        $this->flash_success_update($page_title);
+
+        return redirect()->route(
+            MODULE.'.detail_oab_penunjang', $id
         );
     }
 }

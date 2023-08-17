@@ -51,7 +51,7 @@ class Controller extends BaseController
         define('EDIT', ACTION == 'edit');
         define('ID', intval(\Request::segment(2)));
         define('IS_DETAIL_PASIEN',
-            substr(ROUTE, 0, 14) == 'pasien.detail_'
+            substr(ROUTE, 0, 13) == 'pasien.detail'
             || ACTION == 'list_oab_pemeriksaan_laboratorium'
         );
 
