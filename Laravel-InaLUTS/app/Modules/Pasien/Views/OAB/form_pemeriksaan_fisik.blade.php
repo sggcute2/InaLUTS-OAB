@@ -141,7 +141,7 @@
             'toggle_div_by_value' => [
                 'Tidak' => [
                     'id' => 'div_'.$field.'_tidak',
-                    'class' => 'indent2',
+                    'class' => 'indent1',
                     'html' =>
                         BS::checkbox([
                             'name' => 'c_uretra_caruncle',
@@ -205,7 +205,7 @@
             'toggle_div_by_value' => [
                 'Tidak' => [
                     'id' => 'div_'.$field.'_tidak',
-                    'class' => 'indent2',
+                    'class' => 'indent1',
                     'html' =>
                         BS::radio_array([
                             'name' => 'prostat_tidak',
