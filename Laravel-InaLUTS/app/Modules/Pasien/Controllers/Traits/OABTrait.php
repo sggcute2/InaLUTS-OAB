@@ -17,6 +17,7 @@ use App\Modules\Pasien\Models\OAB\OAB_sistem_skor;
 use App\Modules\Pasien\Models\OAB\OAB_pemeriksaan_fisik;
 use App\Modules\Pasien\Models\OAB\OAB_pemeriksaan_laboratorium;
 use App\Modules\Pasien\Models\OAB\OAB_penunjang_uroflowmetri;
+use App\Modules\Pasien\Models\OAB\OAB_penunjang_urodinamik;
 use BS;
 use DT;
 use FORMAT;
@@ -832,52 +833,16 @@ trait OABTrait {
 
         $data = $request->all();
         $a = [
-            'gangguan_neurologi',
+            'voided_volume',
+            'q_max',
+            'q_ave',
+            'pvr',
+            'voiding_time',
         ];
         foreach($a as $v){
             if (isset($data[$v]) && $data[$v] != 'Ya') {
-                $b = [
-                    'tremor',
-                    'fascial_palsy',
-                    'hemiparesis',
-                    'paraparesis',
-                    'tetraparesis',
-                    'hemiplegi',
-                    'paraplegi',
-                ];
-                foreach($b as $vb){
-                    $data['c_'.$v.'_'.$vb] = 0;
-                }
-            }
-        }
-        $a = [
-            'pop',
-        ];
-        foreach($a as $v){
-            if (isset($data[$v]) && $data[$v] != 'Ya') {
+                $data[$v.'_ya_date'] = null;
                 $data[$v.'_ya'] = '';
-            }
-        }
-        $a = [
-            'uretra',
-        ];
-        foreach($a as $v){
-            if (isset($data[$v]) && $data[$v] != 'Tidak') {
-                $b = [
-                    'caruncle',
-                    'stenosis',
-                ];
-                foreach($b as $vb){
-                    $data['c_'.$v.'_'.$vb] = 0;
-                }
-            }
-        }
-        $a = [
-            'prostat',
-        ];
-        foreach($a as $v){
-            if (isset($data[$v]) && $data[$v] != 'Tidak') {
-                $data[$v.'_tidak'] = '';
             }
         }
         OAB_penunjang_uroflowmetri::base_update_by_pasien_id($data, $id);
@@ -886,6 +851,64 @@ trait OABTrait {
 
         return redirect()->route(
             MODULE.'.detail_oab_penunjang_uroflowmetri', $id
+        );
+    }
+
+    public function detail_oab_penunjang_urodinamik($id): View
+    {
+        $pasien = $this->_allow_access($id);
+
+        if (!OAB_penunjang_urodinamik::where('pasien_id', $id)->exists()) {
+            OAB_penunjang_urodinamik::base_insert(['pasien_id' => $id]);
+        }
+        $default = OAB_penunjang_urodinamik::where('pasien_id', $id)
+            ->first();
+        $page_title = 'Penunjang - urodinamik';
+        $view = $this->_get_method(__METHOD__);
+        $form_action = route(
+            'pasien.update_'.str_replace('detail_', '', $view),
+            $id
+        );
+
+        return $this->moduleView(
+            'OAB/form_'.str_replace('detail_oab_', '', $view),
+            [
+                'default' => $default,
+                'page_title' => $page_title,
+                'form_action' => $form_action,
+            ]
+        );
+    }
+
+    public function update_oab_penunjang_urodinamik_process(
+        Request $request, $id
+    ): RedirectResponse
+    {
+        $pasien = $this->_allow_access($id);
+
+        $page_title = 'Penunjang - urodinamik';
+
+        $data = $request->all();
+        if (isset($data['pemeriksaan_urodinamik']) && $data['pemeriksaan_urodinamik'] != 'Ya') {
+            $data['pemeriksaan_urodinamik_ya_date'] = null;
+            $data['kapasitas_kandung_kemih_1'] = '';
+            $data['kapasitas_kandung_kemih_2'] = '';
+            $data['compliance'] = '';
+            $data['detrusor_overactivity'] = '';
+            $data['detrusor_overactivity_incontinence'] = '';
+            $data['urodynamic_stress_urinary_incontinence'] = '';
+            $data['obstruksi_infravesical'] = '';
+            $data['detrusor_underactivity'] = '';
+            $data['disfunctional_voiding'] = '';
+            $data['pvr_1'] = '';
+            $data['pvr_2'] = '';
+        }
+        OAB_penunjang_urodinamik::base_update_by_pasien_id($data, $id);
+
+        $this->flash_success_update($page_title);
+
+        return redirect()->route(
+            MODULE.'.detail_oab_penunjang_urodinamik', $id
         );
     }
 }

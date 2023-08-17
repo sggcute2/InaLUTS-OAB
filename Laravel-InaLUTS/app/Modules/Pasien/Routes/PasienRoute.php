@@ -34,6 +34,7 @@ Route::name($m.'.')->prefix($m)->controller($use_controller)->group(function(){
         'pemeriksaan_fisik',
         'pemeriksaan_laboratorium',
         'penunjang_uroflowmetri',
+        'penunjang_urodinamik',
     ];
     foreach($oab as $v){
         if ($v == 'pemeriksaan_laboratorium') {
