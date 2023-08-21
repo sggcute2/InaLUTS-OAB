@@ -9,6 +9,11 @@ $sidebar_details[] = ['Riwayat operasi / endoskopi urologi', '_riwayat_operasi_u
 $sidebar_details[] = ['Riwayat Operasi Non Urologi', '_riwayat_operasi_non_urologi'];
 $sidebar_details[] = ['Riwayat Radiasi dan Kemoterapi', '_riwayat_radiasi'];
 $sidebar_details[] = ['Sistem skor', '_sistem_skor'];
+if (isset($sistem_skor)) {
+  if (isset($sistem_skor->c_oabss) && $sistem_skor->c_oabss) {
+    $sidebar_details[] = ['OABSS', '_kuesioner_oabss'];
+  }
+}
 $sidebar_details[] = ['Pemeriksaan fisik', '_pemeriksaan_fisik'];
 $sidebar_details[] = ['Pemeriksaan Laboratorium', '_pemeriksaan_laboratorium'];
 $sidebar_details[] = ['Penunjang - Uroflowmetri', '_penunjang_uroflowmetri'];

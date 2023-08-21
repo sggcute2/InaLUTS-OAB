@@ -14,6 +14,7 @@ use App\Modules\Pasien\Models\OAB\OAB_riwayat_operasi_urologi;
 use App\Modules\Pasien\Models\OAB\OAB_riwayat_operasi_non_urologi;
 use App\Modules\Pasien\Models\OAB\OAB_riwayat_radiasi;
 use App\Modules\Pasien\Models\OAB\OAB_sistem_skor;
+use App\Modules\Pasien\Models\OAB\OAB_kuesioner_oabss;
 use App\Modules\Pasien\Models\OAB\OAB_pemeriksaan_fisik;
 use App\Modules\Pasien\Models\OAB\OAB_pemeriksaan_laboratorium;
 use App\Modules\Pasien\Models\OAB\OAB_penunjang_uroflowmetri;
@@ -1020,6 +1021,55 @@ trait OABTrait {
 
         return redirect()->route(
             MODULE.'.detail_oab_penunjang', $id
+        );
+    }
+
+    public function detail_oab_kuesioner_oabss($id): View
+    {
+        $pasien = $this->_allow_access($id);
+
+        if (!OAB_kuesioner_oabss::where('pasien_id', $id)->exists()) {
+            OAB_kuesioner_oabss::base_insert(['pasien_id' => $id]);
+        }
+        $default = OAB_kuesioner_oabss::where('pasien_id', $id)
+            ->first();
+        $page_title = 'Kuesioner OABSS';
+        $view = $this->_get_method(__METHOD__);
+        $form_action = route(
+            'pasien.update_'.str_replace('detail_', '', $view),
+            $id
+        );
+
+        return $this->moduleView(
+            'OAB/form_'.str_replace('detail_oab_', '', $view),
+            [
+                'default' => $default,
+                'page_title' => $page_title,
+                'form_action' => $form_action,
+            ]
+        );
+    }
+
+    public function update_oab_kuesioner_oabss_process(
+        Request $request, $id
+    ): RedirectResponse
+    {
+        $pasien = $this->_allow_access($id);
+
+        $page_title = 'Kuesioner OABSS';
+
+        $data = $request->all();
+        $data['total_score'] =
+            ($request->get('score_1', 0))
+            + ($request->get('score_2', 0))
+            + ($request->get('score_3', 0))
+            + ($request->get('score_4', 0));
+        OAB_kuesioner_oabss::base_update_by_pasien_id($data, $id);
+
+        $this->flash_success_update($page_title);
+
+        return redirect()->route(
+            MODULE.'.detail_oab_kuesioner_oabss', $id
         );
     }
 }

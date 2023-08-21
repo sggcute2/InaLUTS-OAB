@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\View;
 use App\Modules\Pasien\Models\Pasien;
 use App\Modules\Rumah_sakit\Models\Rumah_sakit;
 use App\Modules\Pasien\Models\OAB\OAB_pemeriksaan_laboratorium;
+use App\Modules\Pasien\Models\OAB\OAB_sistem_skor;
 use Session;
 use Lang;
 
@@ -62,7 +63,11 @@ class Controller extends BaseController
             } else {
                 $data_pasien = Pasien::find(ID);
             }
+            $sistem_skor = OAB_sistem_skor::where(
+                'pasien_id', $data_pasien->id
+            )->first();
             \View::share('data_pasien', $data_pasien);
+            \View::share('sistem_skor', $sistem_skor);
         }
     }
 

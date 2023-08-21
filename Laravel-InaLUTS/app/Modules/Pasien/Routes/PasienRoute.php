@@ -31,6 +31,7 @@ Route::name($m.'.')->prefix($m)->controller($use_controller)->group(function(){
         'riwayat_operasi_non_urologi',
         'riwayat_radiasi',
         'sistem_skor',
+        'kuesioner_oabss',
         'pemeriksaan_fisik',
         'pemeriksaan_laboratorium',
         'penunjang_uroflowmetri',

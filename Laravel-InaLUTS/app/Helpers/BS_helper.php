@@ -289,7 +289,7 @@ static function radio_array($p = array(), $echo = true){
   $name = $p['name'] ?? '';
   $preview = FORM::is_preview();
   $default_value = FORM::get_var($name);
-  //dd($default_value);
+  //dump($default_value);
   $data = self::toArray($p['data'] ?? array());
   $out = $data[$default_value] ?? '';
 
@@ -327,7 +327,7 @@ static function radio_array($p = array(), $echo = true){
         $field_text => $v,
       );
     }
-    $checked = ($default_value == $v[$field_value]) ? ' checked="checked"' : '';
+    $checked = ($default_value && $default_value == $v[$field_value]) ? ' checked="checked"' : '';
     $temp  = '';
     $temp .= '<input';
     $temp .= ' type="radio"';
