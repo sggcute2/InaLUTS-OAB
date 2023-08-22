@@ -17,6 +17,7 @@ use App\Modules\Pasien\Controllers\Traits\OAB\{
     OAB_sistem_skorTrait,
     OAB_kuesioner_oabssTrait,
     OAB_kuesioner_qolTrait,
+    OAB_kuesioner_fsfiTrait,
     OAB_pemeriksaan_fisikTrait,
     OAB_pemeriksaan_laboratoriumTrait,
     OAB_penunjang_uroflowmetriTrait,
@@ -41,6 +42,7 @@ trait OABTrait {
     use OAB_sistem_skorTrait;
     use OAB_kuesioner_oabssTrait;
     use OAB_kuesioner_qolTrait;
+    use OAB_kuesioner_fsfiTrait;
     use OAB_pemeriksaan_fisikTrait;
     use OAB_pemeriksaan_laboratoriumTrait;
     use OAB_penunjang_uroflowmetriTrait;

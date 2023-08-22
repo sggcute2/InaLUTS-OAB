@@ -328,7 +328,11 @@ static function radio_array($p = array(), $echo = true){
         $field_text => $v,
       );
     }
-    $checked = ($default_value && $default_value == $v[$field_value]) ? ' checked="checked"' : '';
+    $checked = '';
+    if (is_null($default_value) || is_bool($default_value)) {
+    } else {
+      $checked = ($default_value == $v[$field_value]) ? ' checked="checked"' : '';
+    }
     $temp  = '';
     $temp .= '<input';
     $temp .= ' type="radio"';
