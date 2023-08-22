@@ -316,6 +316,7 @@ static function radio_array($p = array(), $echo = true){
     $fake_required = false;
   }
   $vertical = $p['vertical'] ?? false;
+  $no_text = $p['no_text'] ?? false;
 
   $buffer = array();
   $no = 0;
@@ -339,7 +340,9 @@ static function radio_array($p = array(), $echo = true){
     if ($fake_required) $temp .= ' fake_required="fake_required"';
     $temp .= $checked;
     $temp .= '> ';
-    $temp .= '<label for="'.$name.'_'.$no.'">'.$v[$field_text].'</label>'.PHP_EOL;
+    if (!$no_text) {
+      $temp .= '<label for="'.$name.'_'.$no.'">'.$v[$field_text].'</label>'.PHP_EOL;
+    }
 
     if (isset($toggle_div_by_value[$v[$field_value]])) {
       $tog = $toggle_div_by_value[$v[$field_value]];

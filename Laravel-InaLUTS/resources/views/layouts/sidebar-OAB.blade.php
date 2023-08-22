@@ -13,6 +13,9 @@ if (isset($sistem_skor)) {
   if (isset($sistem_skor->c_oabss) && $sistem_skor->c_oabss) {
     $sidebar_details[] = ['OABSS', '_kuesioner_oabss'];
   }
+  if (isset($sistem_skor->c_qol) && $sistem_skor->c_qol) {
+    $sidebar_details[] = ['QOL', '_kuesioner_qol'];
+  }
 }
 $sidebar_details[] = ['Pemeriksaan fisik', '_pemeriksaan_fisik'];
 $sidebar_details[] = ['Pemeriksaan Laboratorium', '_pemeriksaan_laboratorium'];

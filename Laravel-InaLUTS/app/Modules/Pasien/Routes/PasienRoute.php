@@ -32,6 +32,7 @@ Route::name($m.'.')->prefix($m)->controller($use_controller)->group(function(){
         'riwayat_radiasi',
         'sistem_skor',
         'kuesioner_oabss',
+        'kuesioner_qol',
         'pemeriksaan_fisik',
         'pemeriksaan_laboratorium',
         'penunjang_uroflowmetri',
