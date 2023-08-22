@@ -25,6 +25,9 @@ if (isset($sistem_skor)) {
   if (isset($sistem_skor->c_ehs) && $sistem_skor->c_ehs) {
     $sidebar_details[] = ['EHS', '_kuesioner_ehs'];
   }
+  if (isset($sistem_skor->c_bladder_diary) && $sistem_skor->c_bladder_diary) {
+    $sidebar_details[] = ['Bladder Diary', '_kuesioner_bladder_diary'];
+  }
 }
 $sidebar_details[] = ['Pemeriksaan fisik', '_pemeriksaan_fisik'];
 $sidebar_details[] = ['Pemeriksaan Laboratorium', '_pemeriksaan_laboratorium'];

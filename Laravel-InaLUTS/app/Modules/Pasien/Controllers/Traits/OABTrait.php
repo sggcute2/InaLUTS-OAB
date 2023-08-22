@@ -20,6 +20,7 @@ use App\Modules\Pasien\Controllers\Traits\OAB\{
     OAB_kuesioner_fsfiTrait,
     OAB_kuesioner_iiefTrait,
     OAB_kuesioner_ehsTrait,
+    OAB_kuesioner_bladder_diaryTrait,
     OAB_pemeriksaan_fisikTrait,
     OAB_pemeriksaan_laboratoriumTrait,
     OAB_penunjang_uroflowmetriTrait,
@@ -47,6 +48,7 @@ trait OABTrait {
     use OAB_kuesioner_fsfiTrait;
     use OAB_kuesioner_iiefTrait;
     use OAB_kuesioner_ehsTrait;
+    use OAB_kuesioner_bladder_diaryTrait;
     use OAB_pemeriksaan_fisikTrait;
     use OAB_pemeriksaan_laboratoriumTrait;
     use OAB_penunjang_uroflowmetriTrait;

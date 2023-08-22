@@ -36,6 +36,7 @@ Route::name($m.'.')->prefix($m)->controller($use_controller)->group(function(){
         'kuesioner_fsfi',
         'kuesioner_iief',
         'kuesioner_ehs',
+        'kuesioner_bladder_diary',
         'pemeriksaan_fisik',
         'pemeriksaan_laboratorium',
         'penunjang_uroflowmetri',
