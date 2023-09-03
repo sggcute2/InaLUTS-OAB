@@ -36,6 +36,11 @@ $sidebar_details[] = ['Penunjang - Urodinamik', '_penunjang_urodinamik'];
 $sidebar_details[] = ['Pemeriksaan Imaging', '_pemeriksaan_imaging'];
 $sidebar_details[] = ['Penunjang', '_penunjang'];
 $sidebar_details[] = ['Terapi', '_terapi'];
+if (isset($terapi)) {
+  if (isset($terapi->c_modifikasi_gaya_hidup) && $terapi->c_modifikasi_gaya_hidup) {
+    $sidebar_details[] = ['Terapi Modifikasi Gaya Hidup', '_terapi_modifikasi_gaya_hidup'];
+  }
+}
 @endphp
 
 @foreach($sidebar_details as $sidebar_detail)

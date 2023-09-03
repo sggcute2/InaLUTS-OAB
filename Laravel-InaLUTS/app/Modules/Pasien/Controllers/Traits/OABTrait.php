@@ -28,6 +28,7 @@ use App\Modules\Pasien\Controllers\Traits\OAB\{
     OAB_pemeriksaan_imagingTrait,
     OAB_penunjangTrait,
     OAB_terapiTrait,
+    OAB_terapi_modifikasi_gaya_hidupTrait,
 };
 use BS;
 use DT;
@@ -57,5 +58,6 @@ trait OABTrait {
     use OAB_pemeriksaan_imagingTrait;
     use OAB_penunjangTrait;
     use OAB_terapiTrait;
+    use OAB_terapi_modifikasi_gaya_hidupTrait;
 
 }
