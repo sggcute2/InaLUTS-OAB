@@ -31,6 +31,7 @@ use App\Modules\Pasien\Controllers\Traits\OAB\{
     OAB_terapi_modifikasi_gaya_hidupTrait,
     OAB_terapi_rehabilitasiTrait,
     OAB_terapi_non_operatifTrait,
+    OAB_terapi_medikamentosaTrait,
 };
 use BS;
 use DT;
@@ -63,5 +64,6 @@ trait OABTrait {
     use OAB_terapi_modifikasi_gaya_hidupTrait;
     use OAB_terapi_rehabilitasiTrait;
     use OAB_terapi_non_operatifTrait;
+    use OAB_terapi_medikamentosaTrait;
 
 }

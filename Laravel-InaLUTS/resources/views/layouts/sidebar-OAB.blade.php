@@ -46,6 +46,9 @@ if (isset($terapi)) {
   if (isset($terapi->c_non_operatif) && $terapi->c_non_operatif) {
     $sidebar_details[] = ['Terapi Non-Operatif', '_terapi_non_operatif'];
   }
+  if (isset($terapi->c_medikamentosa) && $terapi->c_medikamentosa) {
+    $sidebar_details[] = ['Terapi Medikamentosa', '_terapi_medikamentosa'];
+  }
 }
 @endphp
 

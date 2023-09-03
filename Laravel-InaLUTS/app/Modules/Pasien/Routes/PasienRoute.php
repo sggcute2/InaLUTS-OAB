@@ -47,6 +47,7 @@ Route::name($m.'.')->prefix($m)->controller($use_controller)->group(function(){
         'terapi_modifikasi_gaya_hidup',
         'terapi_rehabilitasi',
         'terapi_non_operatif',
+        'terapi_medikamentosa',
     ];
     foreach($oab as $v){
         if ($v == 'pemeriksaan_laboratorium') {
