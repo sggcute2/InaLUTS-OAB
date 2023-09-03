@@ -16,6 +16,7 @@ return new class extends Migration
 
             //===[ FIELDS ]=====================================================
             $table->integer('pasien_id')->default(0);
+            $table->date('terapi_date')->nullable();
             $table->string('menurunkan_berat_badan', 5)->default('');
             $table->string('penilaian_jenis', 5)->default('');
             $table->string('bladder_training', 5)->default('');

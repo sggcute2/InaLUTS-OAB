@@ -12,6 +12,12 @@
     ]);
     FORM::set_var($default);
 
+    FORM::row('Tanggal',
+        BS::datepicker([
+            'name' => 'terapi_date',
+        ], false)
+    );
+
     $temp = '
     Menurunkan berat badan;menurunkan_berat_badan
     Penilaian jenis dan jumlah asupan cairan;penilaian_jenis
