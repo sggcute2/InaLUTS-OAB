@@ -32,6 +32,7 @@ use App\Modules\Pasien\Controllers\Traits\OAB\{
     OAB_terapi_rehabilitasiTrait,
     OAB_terapi_non_operatifTrait,
     OAB_terapi_medikamentosaTrait,
+    OAB_terapi_operatifTrait,
 };
 use BS;
 use DT;
@@ -65,5 +66,6 @@ trait OABTrait {
     use OAB_terapi_rehabilitasiTrait;
     use OAB_terapi_non_operatifTrait;
     use OAB_terapi_medikamentosaTrait;
+    use OAB_terapi_operatifTrait;
 
 }

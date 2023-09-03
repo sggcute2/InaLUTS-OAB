@@ -13,6 +13,7 @@ use App\Modules\Rumah_sakit\Models\Rumah_sakit;
 use App\Modules\Pasien\Models\OAB\OAB_pemeriksaan_laboratorium;
 use App\Modules\Pasien\Models\OAB\OAB_sistem_skor;
 use App\Modules\Pasien\Models\OAB\OAB_terapi;
+use App\Modules\Pasien\Models\OAB\OAB_terapi_operatif_injeksi_botox;
 use Session;
 use Lang;
 
@@ -60,6 +61,9 @@ class Controller extends BaseController
         if (IS_DETAIL_PASIEN && ID) {
             if (ACTION == 'detail_oab_pemeriksaan_laboratorium') {
                 $temp = OAB_pemeriksaan_laboratorium::find(ID);
+                $data_pasien = Pasien::find($temp->pasien_id);
+            } else if (ACTION == 'detail_oab_terapi_operatif_injeksi_botox') {
+                $temp = OAB_terapi_operatif_injeksi_botox::find(ID);
                 $data_pasien = Pasien::find($temp->pasien_id);
             } else {
                 $data_pasien = Pasien::find(ID);

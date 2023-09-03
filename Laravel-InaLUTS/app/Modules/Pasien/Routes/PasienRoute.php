@@ -48,6 +48,7 @@ Route::name($m.'.')->prefix($m)->controller($use_controller)->group(function(){
         'terapi_rehabilitasi',
         'terapi_non_operatif',
         'terapi_medikamentosa',
+        'terapi_operatif',
     ];
     foreach($oab as $v){
         if ($v == 'pemeriksaan_laboratorium') {
@@ -58,6 +59,19 @@ Route::name($m.'.')->prefix($m)->controller($use_controller)->group(function(){
 
             Route::post('/{id}/add_oab_'.$v, 'add_oab_'.$v.'_process')
                 ->name('add_oab_'.$v);
+        }
+        if ($v == 'terapi_operatif') {
+            Route::get('/{id}/list_oab_'.$v.'_injeksi_botox', 'list_oab_'.$v.'_injeksi_botox')
+                ->name('list_oab_'.$v.'_injeksi_botox');
+            Route::get('/{id}/add_oab_'.$v.'_injeksi_botox', 'add_oab_'.$v.'_injeksi_botox')
+                ->name('add_oab_'.$v.'_injeksi_botox');
+            Route::get('/{id}/detail_oab_'.$v.'_injeksi_botox', 'detail_oab_'.$v.'_injeksi_botox')
+                ->name('detail_oab_'.$v.'_injeksi_botox');
+
+            Route::post('/{id}/add_oab_'.$v.'_injeksi_botox', 'add_oab_'.$v.'_injeksi_botox_process')
+                ->name('add_oab_'.$v.'_injeksi_botox');
+            Route::post('/{id}/update_oab_'.$v.'_injeksi_botox', 'update_oab_'.$v.'_injeksi_botox_process')
+                ->name('update_oab_'.$v.'_injeksi_botox');
         }
         Route::get('/{id}/detail_oab_'.$v, 'detail_oab_'.$v)
             ->name('detail_oab_'.$v);
