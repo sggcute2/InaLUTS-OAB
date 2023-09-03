@@ -40,6 +40,9 @@ if (isset($terapi)) {
   if (isset($terapi->c_modifikasi_gaya_hidup) && $terapi->c_modifikasi_gaya_hidup) {
     $sidebar_details[] = ['Terapi Modifikasi Gaya Hidup', '_terapi_modifikasi_gaya_hidup'];
   }
+  if (isset($terapi->c_rehabilitasi) && $terapi->c_rehabilitasi) {
+    $sidebar_details[] = ['Terapi Rehabilitasi', '_terapi_rehabilitasi'];
+  }
 }
 @endphp
 
