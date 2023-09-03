@@ -35,6 +35,7 @@ $sidebar_details[] = ['Penunjang - Uroflowmetri', '_penunjang_uroflowmetri'];
 $sidebar_details[] = ['Penunjang - Urodinamik', '_penunjang_urodinamik'];
 $sidebar_details[] = ['Pemeriksaan Imaging', '_pemeriksaan_imaging'];
 $sidebar_details[] = ['Penunjang', '_penunjang'];
+$sidebar_details[] = ['Terapi', '_terapi'];
 @endphp
 
 @foreach($sidebar_details as $sidebar_detail)

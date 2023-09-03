@@ -26,7 +26,8 @@ use App\Modules\Pasien\Controllers\Traits\OAB\{
     OAB_penunjang_uroflowmetriTrait,
     OAB_penunjang_urodinamikTrait,
     OAB_pemeriksaan_imagingTrait,
-    OAB_penunjangTrait
+    OAB_penunjangTrait,
+    OAB_terapiTrait,
 };
 use BS;
 use DT;
@@ -55,5 +56,6 @@ trait OABTrait {
     use OAB_penunjang_urodinamikTrait;
     use OAB_pemeriksaan_imagingTrait;
     use OAB_penunjangTrait;
+    use OAB_terapiTrait;
 
 }
