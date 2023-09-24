@@ -163,6 +163,13 @@ static private function _row_show($L = array(), $R = array(), $L_sub = array()) 
       $z .= 'font-weight:bold;color:white">'.PHP_EOL;
       $z .= $R[$index].PHP_EOL;
       $z .= '</div>'.PHP_EOL;
+    } else if ($value == ':header2') {
+      $z .= '<div ';
+      $z .= 'class="form-group" ';
+      $z .= 'style="text-align:center;background:#00a65a;padding:5px;';
+      $z .= 'font-weight:bold;color:white">'.PHP_EOL;
+      $z .= $R[$index].PHP_EOL;
+      $z .= '</div>'.PHP_EOL;
     } else if ($value == ':title') {
       $z .= '<div class="form-group" style="color:green;font-weight:bold">'.PHP_EOL;
       $z .= $R[$index].PHP_EOL;

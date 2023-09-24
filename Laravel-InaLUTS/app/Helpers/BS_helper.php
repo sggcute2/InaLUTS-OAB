@@ -521,6 +521,16 @@ static function datepicker($p = array(), $echo = true){
   if ($disabled) $buffer[] = 'disabled="disabled"';
   if ($default_value) $buffer[] = 'value="'.$default_value.'"';
 
+  $button_clear = '';
+  if (!$disabled) {
+    $button_clear = '
+    <div class="input-group-addon2"
+      onclick="javascript:$(\'#'.$id.'\').datepicker(\'update\', \'\').trigger(\'changeDate\');">
+      <span class="fa fa-close" style="color:#ff4848"></span>
+    </div>
+    ';
+  }
+
   $ret = '
   <div style="max-width:180px">
     <div id="div_datepicker_'.$id.'" class="input-group date div_datepicker">
@@ -528,10 +538,7 @@ static function datepicker($p = array(), $echo = true){
       <div class="input-group-addon">
         <span class="fa fa-calendar"></span>
       </div>
-      <div class="input-group-addon2"
-        onclick="javascript:$(\'#'.$id.'\').datepicker(\'update\', \'\').trigger(\'changeDate\');">
-        <span class="fa fa-close" style="color:#ff4848"></span>
-      </div>
+      '.$button_clear.'
     </div>
   </div>
   <input type="hidden" name="_input_type['.$id.']" value="date">

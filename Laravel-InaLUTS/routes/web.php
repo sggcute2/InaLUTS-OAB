@@ -33,6 +33,7 @@ $modules = [
   'user',
   'profile',
   'pasien',
+  'follow_up',
 ];
 Route::group(['middleware' => ['auth', 'check_login', 'modify_input']], function () use ($modules) {
     foreach($modules as $module)

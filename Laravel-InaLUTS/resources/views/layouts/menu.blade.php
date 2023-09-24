@@ -56,6 +56,9 @@
       @can('pasien-menu')
       <li data-active-module_pasien="1"><a href="{{ route('pasien.index') }}"><i class="fa fa-user"></i> Pasien</a></li>
       @endcan
+      @can('follow_up-menu')
+      <li data-active-module_follow_up="1"><a href="{{ route('follow_up.index') }}"><i class="fa fa-user"></i> Follow Up</a></li>
+      @endcan
       @can('profile-menu')
       <li data-active-module_profile="1"><a href="{{ route('profile.index') }}"><i class="fa fa-user"></i> Profile</a></li>
       @endcan

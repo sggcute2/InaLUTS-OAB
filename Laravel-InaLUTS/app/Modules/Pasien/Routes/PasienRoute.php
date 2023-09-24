@@ -42,6 +42,7 @@ Route::name($m.'.')->prefix($m)->controller($use_controller)->group(function(){
         'penunjang_uroflowmetri',
         'penunjang_urodinamik',
         'pemeriksaan_imaging',
+        'diagnosis',
         'penunjang',
         'terapi',
         'terapi_modifikasi_gaya_hidup',

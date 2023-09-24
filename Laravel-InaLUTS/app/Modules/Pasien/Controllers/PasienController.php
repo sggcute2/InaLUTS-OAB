@@ -163,6 +163,9 @@ class PasienController extends Controller
         $this->moduleAllow('add');
 
         $default = [];
+        if (request()->get('nik')) {
+            $default['nik'] = trim(request()->get('nik'));
+        }
 
         return $this->_form(0, $default, 'add');
     }

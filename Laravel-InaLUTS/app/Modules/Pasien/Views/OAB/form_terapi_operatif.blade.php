@@ -12,6 +12,7 @@
     ]);
     FORM::set_var($default);
 
+    //=========================[ Begin Follow Up : Form OAB_terapi_operatif ]===
     ob_start();
     echo '<p class="pull-right">'.PHP_EOL;
     echo BS::button('Add New', $add_action).PHP_EOL;
@@ -21,7 +22,8 @@
     $injeksi_botox = ob_get_contents();
     ob_end_clean();
 
-    $field = 'injeksi_botox';
+    $ns = '';
+    $field = $ns.'injeksi_botox';
     FORM::row(
         'Injeksi Botox',
         BS::radio_ya_tidak([
@@ -47,7 +49,7 @@
     foreach($x as $v){
         if (trim($v) != '') {
             $caption = trim($v);
-            $field = strtolower(str_replace(array(' ', '/'), '_', $caption));
+            $field = $ns.strtolower(str_replace(array(' ', '/'), '_', $caption));
 
             FORM::row(
                 $caption,
@@ -72,6 +74,7 @@
             }
         }
     }
+    //===========================[ End Follow Up : Form OAB_terapi_operatif ]===
 
     FORM::show();
   @endphp

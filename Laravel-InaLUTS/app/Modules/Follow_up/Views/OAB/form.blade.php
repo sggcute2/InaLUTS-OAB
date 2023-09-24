@@ -12,8 +12,23 @@
     ]);
     FORM::set_var($default);
 
-    // Begin Follow Up : Form OAB_terapi_medikamentosa
-    $ns = '';
+    FORM::row(':header2', 'Diagnosis Terakhir');
+    //===============================[ Begin Follow Up : Form OAB_diagnosis ]===
+    $ns = 'OAB_diagnosis_';
+    $temp = 'OAB Tipe Basah,OAB Tipe Kering';
+    FORM::row(
+      'Diagnosis',
+      BS::select2([
+        'name' => $ns.'diagnosis',
+        'data' => explode(',', $temp),
+        'with_blank' => true,
+        ], false)
+    );
+    //=================================[ End Follow Up : Form OAB_diagnosis ]===
+
+    FORM::row(':header2', 'Terapi Medikamentosa Terakhir');
+    //====================[ Begin Follow Up : Form OAB_terapi_medikamentosa ]===
+    $ns = 'OAB_terapi_medikamentosa_';
     $field = $ns.'medikamentosa';
     FORM::row(
         'Medikamentosa',
@@ -144,7 +159,81 @@
             'name' => $field,
         ], false)
     );
-    // End Follow Up : Form OAB_terapi_medikamentosa
+    //======================[ End Follow Up : Form OAB_terapi_medikamentosa ]===
+
+    FORM::row(':header2', 'Terapi Operatif Terakhir');
+    //=========================[ Begin Follow Up : Form OAB_terapi_operatif ]===
+    ob_start();
+    DT::view('injeksi_botox');
+    $injeksi_botox = ob_get_contents();
+    ob_end_clean();
+
+    $ns = 'OAB_terapi_operatif_';
+    $field = $ns.'injeksi_botox';
+    FORM::row(
+        'Injeksi Botox',
+        BS::radio_ya_tidak([
+            'name' => $field,
+            'toggle_div' => true,
+        ], false)
+    );
+    FORM::row(':merge',
+        '<div id="div_'.$field.'_ya" class="indent1">'
+        .$injeksi_botox
+        .'</div>'
+    );
+    if (isset($default[$field]) && $default[$field] == 'Ya') {
+    } else {
+        BS::jquery_ready("$('#div_{$field}_ya').hide();");
+    }
+
+    $temp = '
+        SNS
+        Augmentasi/Cystoplasty
+    ';
+    $x = explode("\n", $temp);
+    foreach($x as $v){
+        if (trim($v) != '') {
+            $caption = trim($v);
+            $field = $ns.strtolower(str_replace(array(' ', '/'), '_', $caption));
+
+            FORM::row(
+                $caption,
+                BS::radio_ya_tidak([
+                    'name' => $field,
+                    'toggle_div' => true,
+                ], false)
+            );
+
+            FORM::row(':merge',
+                '<div id="div_'.$field.'_ya" class="indent1">'
+                .'Tanggal : '
+                .BS::datepicker([
+                    'name' => $field.'_ya_date',
+                    'required' => false,
+                    'disabled' => true,
+                ], false)
+                .'</div>'
+            );
+            if (isset($default[$field]) && $default[$field] == 'Ya') {
+            } else {
+                BS::jquery_ready("$('#div_{$field}_ya').hide();");
+            }
+        }
+    }
+    //===========================[ End Follow Up : Form OAB_terapi_operatif ]===
+
+    FORM::row(':header2', 'Follow Up');
+    FORM::row('Tanggal Pemeriksaan',
+        BS::datepicker([
+            'name' => 'pemeriksaan_date',
+            'required' => true,
+        ], false)
+    );
+    FORM::row('Tempat Pemeriksaan', '<span style="color:green">'.USER_RUMAH_SAKIT_NAME.'</span>');
+    if ($mode == 'add') {
+        FORM::hidden('rumah_sakit_id', USER_RUMAH_SAKIT_ID);
+    }
 
     FORM::show();
   @endphp
@@ -156,5 +245,8 @@
 const disable_all = {{ USER_IS_SUB ? 'false' : 'true' }};
 
 // Init
-if (disable_all) form_disable_all_fields('{{ MODULE }}');
+//if (disable_all) form_disable_all_fields('{{ MODULE }}');
+form_disable_all_fields_by_ns('OAB_diagnosis_');
+form_disable_all_fields_by_ns('OAB_terapi_medikamentosa_');
+form_disable_all_fields_by_ns('OAB_terapi_operatif_');
 @endsection
