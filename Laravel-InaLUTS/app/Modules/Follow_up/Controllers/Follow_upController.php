@@ -32,6 +32,13 @@ class Follow_upController extends Controller
         ]);
     }
 
+    private function _get_method($method = ''): string
+    {
+        $x = explode('::', basename($method));
+
+        return (count($x) == 2) ? $x[1] : $x[0];
+    }
+
     public function index(): View
     {
         $form_action = route(MODULE.'.search');
@@ -340,7 +347,7 @@ class Follow_upController extends Controller
         $data = $data2 = null;
         switch($pasien->registry_id) {
             case 1:
-                $this->detail_oab($pasien_id, $id);
+                return $this->detail_oab($pasien_id, $id);
                 break;
 
             default:

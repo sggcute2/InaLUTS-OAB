@@ -15,13 +15,14 @@ return new class extends Migration
             $table->id();
 
             //===[ FIELDS ]=====================================================
+            $table->integer('pasien_id')->default(0);
             $table->integer('follow_up_id')->default(0);
 
             $table->string('oabss', 5)->default('');
             $table->text('oabss_ya')->default('a:0:{}');
             $table->string('qol', 5)->default('');
             $table->text('qol_ya')->default('a:0:{}');
-            $table->string('bladder_diary', 5)->default('');
+            $table->text('bladder_diary')->default('a:0:{}');
 
             $table->string('mulut_kering', 5)->default('');
             $table->string('mata_kering', 5)->default('');

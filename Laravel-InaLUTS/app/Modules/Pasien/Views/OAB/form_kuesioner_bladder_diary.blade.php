@@ -12,6 +12,8 @@
     ]);
     FORM::set_var($default);
 
+    //=================[ Begin Follow Up : Form OAB_kuesioner_bladder_diary ]===
+    $ns = '';
     $a = [
         ['Intake cairan / 24 jam', 'intake_cairan'],
         ['Frekuensi kencing dalam 24 jam', 'frekuensi_kencing'],
@@ -22,16 +24,6 @@
         ['Inkontinensia urine', 'inkontinensia_urine'],
         ['Poliuria nocturnal', 'poliuria_nocturnal'],
     ];
-/*
-Intake cairan / 24 jam ( … ml s.d … ml)
-Frekuensi kencing dalam 24 jam ( …. S.d …)
-Nocturia (…. s.d …./malam)
-Porsi miksi  ….. ml   s.d ……. ml
-Produksi urin/24 jam (… ml s/d … ml)
-Urgency ( … x s/d … x)
-Inkontinensia urine ( … x s/d … x)
-Poliuria nocturnal (ya/tidak)
-*/
     $UOM = [
         'intake_cairan' => 'ml',
         'porsi_miksi' => 'ml',
@@ -56,13 +48,13 @@ Poliuria nocturnal (ya/tidak)
                 $uom = (isset($UOM[$av[1]])) ? $UOM[$av[1]] : '';
                 $uom2 = (isset($UOM2[$av[1]])) ? $UOM2[$av[1]] : '';
                 $field = BS::number([
-                        'name' => $av[1].'_1',
+                        'name' => $ns.$av[1].'_1',
                         'inline' => true,
                     ], false)
                     .' '.$uom
                     .' s/d '
                     .BS::number([
-                        'name' => $av[1].'_2',
+                        'name' => $ns.$av[1].'_2',
                         'inline' => true,
                     ], false).' '.$uom
                     .$uom2;
@@ -70,13 +62,14 @@ Poliuria nocturnal (ya/tidak)
 
             case 'poliuria_nocturnal':
                 $field = BS::radio_ya_tidak([
-                    'name' => $av[1],
+                    'name' => $ns.$av[1],
                 ], false);
                 break;
         }
 
         FORM::row($av[0], $field);
     }
+    //=================[ Begin Follow Up : Form OAB_kuesioner_bladder_diary ]===
 
     FORM::show();
   @endphp
