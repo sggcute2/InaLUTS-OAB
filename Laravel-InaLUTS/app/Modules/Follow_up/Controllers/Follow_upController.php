@@ -143,24 +143,30 @@ class Follow_upController extends Controller
                 OAB_diagnosis::where('pasien_id', $pasien_id)
                     ->first();
             $ns = 'OAB_diagnosis_';
-            foreach($OAB_diagnosis->toArray() as $field => $v){
-                $default[$ns.$field] = $v;
+            if ($OAB_diagnosis !== null) {
+                foreach($OAB_diagnosis->toArray() as $field => $v){
+                    $default[$ns.$field] = $v;
+                }
             }
 
             $OAB_terapi_medikamentosa =
                 OAB_terapi_medikamentosa::where('pasien_id', $pasien_id)
                     ->first();
             $ns = 'OAB_terapi_medikamentosa_';
-            foreach($OAB_terapi_medikamentosa->toArray() as $field => $v){
-                $default[$ns.$field] = $v;
+            if ($OAB_terapi_medikamentosa !== null) {
+                foreach($OAB_terapi_medikamentosa->toArray() as $field => $v){
+                    $default[$ns.$field] = $v;
+                }
             }
 
             $OAB_terapi_operatif =
                 OAB_terapi_operatif::where('pasien_id', $pasien_id)
                     ->first();
             $ns = 'OAB_terapi_operatif_';
-            foreach($OAB_terapi_operatif->toArray() as $field => $v){
-                $default[$ns.$field] = $v;
+            if ($OAB_terapi_operatif !== null) {
+                foreach($OAB_terapi_operatif->toArray() as $field => $v){
+                    $default[$ns.$field] = $v;
+                }
             }
             /*
             dump(
