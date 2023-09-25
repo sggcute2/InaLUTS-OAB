@@ -269,19 +269,27 @@ class Follow_upController extends Controller
                     )
                     ->orderBy('injeksi_botox_date', 'desc')
                     ->get();
-        
-                $data2['diagnosis_terakhir'] = serialize(
-                    $OAB_diagnosis->toArray()
-                );
-                $data2['terapi_medikamentosa_terakhir'] = serialize(
-                    $OAB_terapi_medikamentosa->toArray()
-                );
-                $data2['terapi_operatif_terakhir'] = serialize(
-                    $OAB_terapi_operatif->toArray()
-                );
-                $data2['terapi_operatif_injeksi_botox_terakhir'] = serialize(
-                    $OAB_terapi_operatif_injeksi_botox->toArray()
-                );
+
+                if ($OAB_diagnosis !== null) {
+                    $data2['diagnosis_terakhir'] = serialize(
+                        $OAB_diagnosis->toArray()
+                    );
+                }
+                if ($OAB_terapi_medikamentosa !== null) {
+                    $data2['terapi_medikamentosa_terakhir'] = serialize(
+                        $OAB_terapi_medikamentosa->toArray()
+                    );
+                }
+                if ($OAB_terapi_operatif !== null) {
+                    $data2['terapi_operatif_terakhir'] = serialize(
+                        $OAB_terapi_operatif->toArray()
+                    );
+                }
+                if ($OAB_terapi_operatif_injeksi_botox !== null) {
+                    $data2['terapi_operatif_injeksi_botox_terakhir'] = serialize(
+                        $OAB_terapi_operatif_injeksi_botox->toArray()
+                    );
+                }
                 //dd($data);
                 break;
         }
