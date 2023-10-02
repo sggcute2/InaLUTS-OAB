@@ -402,6 +402,56 @@
                     //====[ End Follow Up : Form OAB_kuesioner_pemeriksaan_penunjang__usg ]===
                     break;
 
+                case 'pemeriksaan_penunjang_uroflowmetri':
+                    //==================[ Begin Follow Up : Form OAB_penunjang_uroflowmetri ]===
+                    $ns = 'pemeriksaan_penunjang_uroflowmetri_';
+                    $temp3 = '
+                        Voided volume;ml
+                        Q max;ml / detik
+                        Q ave;ml
+                        PVR;ml
+                        Voiding time;detik
+                    ';
+                    $x3 = explode("\n", $temp3);
+                    foreach($x3 as $v3){
+                        if (trim($v3) != '') {
+                            $caption3 = trim($v3);
+                            $x3_2 = explode(';', $caption3);
+                            $caption3 = $x3_2[0];
+                            $field3 = strtolower(str_replace(array(' ', '-'), '_', $x3_2[0]));
+                            $uom3 = $x3_2[1];
+
+                            $temp_choice2 .= '<b>'.$caption3.'</b><br>';
+                            $temp_choice2 .= BS::radio_ya_tidak([
+                                'name' => $ns.$field3,
+                                'toggle_div' => true,
+                            ], false);
+                            $temp_choice2 .= '<br>';
+
+                            $temp_choice2 .= '<div id="div_'.$ns.$field3.'_ya" class="indent1" style="margin-bottom:1em">';
+                            $temp_choice2 .= 'Tanggal : ';
+                            $temp_choice2 .= BS::datepicker([
+                                'name' => $ns.$field3.'_ya_date',
+                                'required' => false,
+                            ], false);
+                            $temp_choice2 .= '<br>';
+                            $temp_choice2 .= BS::number([
+                                'name' => $ns.$field3.'_ya',
+                                'inline' => true
+                            ], false);
+                            $temp_choice2 .= ' '.$uom3;
+                            $temp_choice2 .= '</div>';
+                            if ($field3 != 'voiding_time') $temp_choice2 .= '<br>';
+
+                            if (isset($default[$ns.$field3]) && $default[$ns.$field3] == 'Ya') {
+                            } else {
+                                BS::jquery_ready("$('#div_{$ns}{$field3}_ya').hide();");
+                            }
+                        }
+                    }
+                    //====================[ End Follow Up : Form OAB_penunjang_uroflowmetri ]===
+                    break;
+
                 case 'pemeriksaan_laboratorium':
                     /*
                     ob_start();

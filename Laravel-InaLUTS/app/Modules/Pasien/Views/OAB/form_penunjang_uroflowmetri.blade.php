@@ -12,6 +12,8 @@
     ]);
     FORM::set_var($default);
 
+    //==================[ Begin Follow Up : Form OAB_penunjang_uroflowmetri ]===
+    $ns = '';
     $temp = '
         Voided volume;ml
         Q max;ml / detik
@@ -24,38 +26,40 @@
         if (trim($v) != '') {
             $caption = trim($v);
             $x2 = explode(';', $caption);
+            $caption = $x2[0];
             $field = strtolower(str_replace(array(' ', '-'), '_', $x2[0]));
             $uom = $x2[1];
 
             FORM::row(
                 $caption,
                 BS::radio_ya_tidak([
-                    'name' => $field,
+                    'name' => $ns.$field,
                     'toggle_div' => true,
                 ], false)
             );
 
             FORM::row(':merge',
-                '<div id="div_'.$field.'_ya" class="indent1">'
+                '<div id="div_'.$ns.$field.'_ya" class="indent1">'
                 .'Tanggal : '
                 .BS::datepicker([
-                    'name' => $field.'_ya_date',
+                    'name' => $ns.$field.'_ya_date',
                     'required' => false,
                 ], false)
                 .'<br>'
                 .BS::number([
-                    'name' => $field.'_ya',
+                    'name' => $ns.$field.'_ya',
                     'inline' => true
                 ], false)
                 .' '.$uom
                 .'</div>'
             );
-            if (isset($default[$field]) && $default[$field] == 'Ya') {
+            if (isset($default[$ns.$field]) && $default[$ns.$field] == 'Ya') {
             } else {
-                BS::jquery_ready("$('#div_{$field}_ya').hide();");
+                BS::jquery_ready("$('#div_{$ns}{$field}_ya').hide();");
             }
         }
     }
+    //====================[ End Follow Up : Form OAB_penunjang_uroflowmetri ]===
 
     FORM::show();
   @endphp
