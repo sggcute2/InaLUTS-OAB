@@ -1164,6 +1164,124 @@
                     break;
 
                 case 'terapi_rehabilitasi':
+                    //=====================[ Begin Follow Up : Form OAB_terapi_rehabilitasi ]===
+                    $ns = 'terapi_rehabilitasi_';
+                    $temp_choice2 .= '<b>Tanggal</b><br>';
+                    $temp_choice2 .=
+                        BS::datepicker([
+                            'name' => $ns.'terapi_date',
+                        ], false);
+
+                    $temp3 = '1,2,3,4,5';
+                    $temp_choice2 .= '<div style="padding:1em 0"><b>Penilaian otot dasar panggul</b></div>';
+                    $temp_choice2 .= 'Oxford '.BS::select2([
+                        'name' => $ns.'penilaian_otot_dasar_panggul',
+                        'data' => explode(',', $temp3),
+                        'with_blank' => true,
+                        'inline' => true,
+                        ], false);
+                    $temp_choice2 .= '<br><br>';
+
+                    $temp3 = '
+                    Biofeedback;biofeedback
+                    Latihan penguatan otot dasar panggul;latihan_penguatan_otot_dasar_panggul
+                    Latihan relaksasi otot dasar panggul;latihan_relaksasi_otot_dasar_panggul
+                    Kursi magnetic;kursi_magnetic
+                    PTNS;ptns
+                    ';
+                    $x3 = explode("\n", $temp3);
+                    foreach($x3 as $v3){
+                        if (trim($v3) != '') {
+                            $x3_2 = explode(';', trim($v3));
+                            $caption3 = trim($x3_2[0]);
+                            $field3 = trim($x3_2[1]);
+
+                            $temp_choice2 .= '<b>'.$caption3.'</b><br>';
+                            $temp_choice2 .=
+                                BS::radio_ya_tidak([
+                                    'name' => $ns.$field3,
+                                    'toggle_div' => in_array($field3, [
+                                        'biofeedback',
+                                        'ptns',
+                                    ]),
+                                ], false);
+
+                            if ($field3 == 'biofeedback') {
+                                $a3 = [
+                                    'Max Power;',
+                                    'Durasi;detik',
+                                ];
+                                $buffer = [];
+                                foreach($a3 as $va3){
+                                    $xa3 = explode(';', trim($va3));
+                                    $caption_va3 = trim($xa3[0]);
+                                    $ext_va3 = trim($xa3[1]);
+                                    $field_va3 = strtolower(
+                                        str_replace(array(' ', '-'), '_', $caption_va3)
+                                    );
+
+                                    $buffer[] = '<div style="margin-bottom:1em">'.$caption_va3.' : '.BS::number([
+                                        'name' => $ns.$field3.'_'.$field_va3,
+                                        'caption' => $caption_va3,
+                                        'inline' => true,
+                                    ], false).' '.$ext_va3.'</div>';
+                                }
+
+                                $temp_choice2 .=
+                                    '<div id="div_'.$ns.$field3.'_ya" class="indent1">'
+                                    .implode('', $buffer)
+                                    .'</div>';
+
+                                if (isset($default[$ns.$field3]) && $default[$ns.$field3] == 'Ya') {
+                                } else {
+                                    BS::jquery_ready("$('#div_{$ns}{$field3}_ya').hide();");
+                                }
+                            } else if ($field3 == 'ptns') {
+                                $a3 = [
+                                    'Frekuensi;x/minggu',
+                                    'Durasi;x',
+                                ];
+                                $buffer = [];
+                                foreach($a3 as $va3){
+                                    $xa3 = explode(';', trim($va3));
+                                    $caption_va3 = trim($xa3[0]);
+                                    $ext_va3 = trim($xa3[1]);
+                                    $field_va3 = strtolower(
+                                        str_replace(array(' ', '-'), '_', $caption_va3)
+                                    );
+
+                                    $buffer[] = '<div style="margin-bottom:1em">'.$caption_va3.' : '.BS::number([
+                                        'name' => $ns.$field3.'_'.$field_va3,
+                                        'caption' => $caption_va3,
+                                        'inline' => true,
+                                    ], false).' '.$ext_va3.'</div>';
+                                }
+
+                                $temp_choice2 .=
+                                    '<div id="div_'.$ns.$field3.'_ya" class="indent1">'
+                                    .implode('', $buffer)
+                                    .'</div>';
+
+                                if (isset($default[$ns.$field3]) && $default[$ns.$field3] == 'Ya') {
+                                } else {
+                                    BS::jquery_ready("$('#div_{$ns}{$field3}_ya').hide();");
+                                }
+                            } else {
+                                $temp_choice2 .=
+                                    '<div id="div_'.$ns.$field3.'_ya" class="indent1">'
+                                    .'</div>';
+                                $temp_choice2 .= '<br>';
+
+                                if (isset($default[$ns.$field3]) && $default[$ns.$field3] == 'Ya') {
+                                } else {
+                                    BS::jquery_ready("$('#div_{$ns}{$field3}_ya').hide();");
+                                }
+                            }
+
+                            $temp_choice2 .= '<br>';
+                        }
+                    }
+                    //=======================[ End Follow Up : Form OAB_terapi_rehabilitasi ]===
                     break;
 
                 case 'terapi_operatif':

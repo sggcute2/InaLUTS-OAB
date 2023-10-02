@@ -12,9 +12,11 @@
     ]);
     FORM::set_var($default);
 
+    //=====================[ Begin Follow Up : Form OAB_terapi_rehabilitasi ]===
+    $ns = '';
     FORM::row('Tanggal',
         BS::datepicker([
-            'name' => 'terapi_date',
+            'name' => $ns.'terapi_date',
         ], false)
     );
 
@@ -22,7 +24,7 @@
     FORM::row(
       'Penilaian otot dasar panggul',
       'Oxford '.BS::select2([
-        'name' => 'penilaian_otot_dasar_panggul',
+        'name' => $ns.'penilaian_otot_dasar_panggul',
         'data' => explode(',', $temp),
         'with_blank' => true,
         'inline' => true,
@@ -46,7 +48,7 @@
             FORM::row(
                 $caption,
                 BS::radio_ya_tidak([
-                    'name' => $field,
+                    'name' => $ns.$field,
                     'toggle_div' => in_array($field, [
                         'biofeedback',
                         'ptns',
@@ -69,20 +71,20 @@
                     );
 
                     $buffer[] = '<div style="margin-bottom:1em">'.$caption_va.' : '.BS::number([
-                        'name' => $field.'_'.$field_va,
+                        'name' => $ns.$field.'_'.$field_va,
                         'caption' => $caption_va,
                         'inline' => true,
                     ], false).' '.$ext_va.'</div>';
                 }
 
                 FORM::row(':merge',
-                    '<div id="div_'.$field.'_ya" class="indent1">'
+                    '<div id="div_'.$ns.$field.'_ya" class="indent1">'
                     .implode('', $buffer)
                     .'</div>'
                 );
-                if (isset($default[$field]) && $default[$field] == 'Ya') {
+                if (isset($default[$ns.$field]) && $default[$ns.$field] == 'Ya') {
                 } else {
-                    BS::jquery_ready("$('#div_{$field}_ya').hide();");
+                    BS::jquery_ready("$('#div_{$ns}{$field}_ya').hide();");
                 }
             } else if ($field == 'ptns') {
                 $a = [
@@ -99,33 +101,34 @@
                     );
 
                     $buffer[] = '<div style="margin-bottom:1em">'.$caption_va.' : '.BS::number([
-                        'name' => $field.'_'.$field_va,
+                        'name' => $ns.$field.'_'.$field_va,
                         'caption' => $caption_va,
                         'inline' => true,
                     ], false).' '.$ext_va.'</div>';
                 }
 
                 FORM::row(':merge',
-                    '<div id="div_'.$field.'_ya" class="indent1">'
+                    '<div id="div_'.$ns.$field.'_ya" class="indent1">'
                     .implode('', $buffer)
                     .'</div>'
                 );
-                if (isset($default[$field]) && $default[$field] == 'Ya') {
+                if (isset($default[$ns.$field]) && $default[$ns.$field] == 'Ya') {
                 } else {
-                    BS::jquery_ready("$('#div_{$field}_ya').hide();");
+                    BS::jquery_ready("$('#div_{$ns}{$field}_ya').hide();");
                 }
             } else {
                 FORM::row(':merge',
-                    '<div id="div_'.$field.'_ya" class="indent1">'
+                    '<div id="div_'.$ns.$field.'_ya" class="indent1">'
                     .'</div>'
                 );
-                if (isset($default[$field]) && $default[$field] == 'Ya') {
+                if (isset($default[$ns.$field]) && $default[$ns.$field] == 'Ya') {
                 } else {
-                    BS::jquery_ready("$('#div_{$field}_ya').hide();");
+                    BS::jquery_ready("$('#div_{$ns}{$field}_ya').hide();");
                 }
             }
         }
     }
+    //=======================[ End Follow Up : Form OAB_terapi_rehabilitasi ]===
 
     FORM::show();
   @endphp
