@@ -197,6 +197,72 @@ trait OABTrait {
         //===[ End Process : Pemeriksaan Penunjang ]============================
 
         //===[ Begin Process : Terapi Lanjutan ]================================
+
+        //===[ Begin Process : Terapi Lanjutan : Modifikasi Gaya Hidup ]========
+        $ns = 'terapi_modifikasi_gaya_hidup_';$field = $ns.'ya';
+        try {
+            $data_arr = unserialize($default[$field]);
+        } catch (Exception $exception) {
+            $data_arr = [];
+        }
+        if (count($data_arr) > 0) {
+            foreach($data_arr as $f => $v)$default[$f] = $v;
+        }
+        //dd($default);
+        //===[ End Process : Terapi Lanjutan : Modifikasi Gaya Hidup ]==========
+
+        //===[ Begin Process : Terapi Lanjutan : Non-Operatif ]=================
+        $ns = 'terapi_non_operatif_';$field = $ns.'ya';
+        try {
+            $data_arr = unserialize($default[$field]);
+        } catch (Exception $exception) {
+            $data_arr = [];
+        }
+        if (count($data_arr) > 0) {
+            foreach($data_arr as $f => $v)$default[$f] = $v;
+        }
+        //dd($default);
+        //===[ End Process : Terapi Lanjutan : Non-Operatif ]===================
+
+        //===[ Begin Process : Terapi Lanjutan : Medikamentosa ]================
+        $ns = 'terapi_medikamentosa_';$field = $ns.'ya';
+        try {
+            $data_arr = unserialize($default[$field]);
+        } catch (Exception $exception) {
+            $data_arr = [];
+        }
+        if (count($data_arr) > 0) {
+            foreach($data_arr as $f => $v)$default[$f] = $v;
+        }
+        //dd($default);
+        //===[ End Process : Terapi Lanjutan : Medikamentosa ]==================
+
+        //===[ Begin Process : Terapi Lanjutan : Rehabilitasi ]=================
+        $ns = 'terapi_rehabilitasi_';$field = $ns.'ya';
+        try {
+            $data_arr = unserialize($default[$field]);
+        } catch (Exception $exception) {
+            $data_arr = [];
+        }
+        if (count($data_arr) > 0) {
+            foreach($data_arr as $f => $v)$default[$f] = $v;
+        }
+        //dd($default);
+        //===[ End Process : Terapi Lanjutan : Rehabilitasi ]===================
+
+        //===[ Begin Process : Terapi Lanjutan : Operatif ]=====================
+        $ns = 'terapi_operatif_';$field = $ns.'ya';
+        try {
+            $data_arr = unserialize($default[$field]);
+        } catch (Exception $exception) {
+            $data_arr = [];
+        }
+        if (count($data_arr) > 0) {
+            foreach($data_arr as $f => $v)$default[$f] = $v;
+        }
+        //dd($default);
+        //===[ End Process : Terapi Lanjutan : Operatif ]=======================
+
         //===[ End Process : Terapi Lanjutan ]==================================
 
         return $this->moduleView(

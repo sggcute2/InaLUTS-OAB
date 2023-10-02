@@ -841,6 +841,91 @@
             $temp_choice2 = '';
             switch($field2){
                 case 'terapi_modifikasi_gaya_hidup':
+                    //============[ Begin Follow Up : Form OAB_terapi_modifikasi_gaya_hidup ]===
+                    $ns = 'terapi_modifikasi_gaya_hidup_';
+                    $temp_choice2 .= '<b>Tanggal</b><br>';
+                    $temp_choice2 .= BS::datepicker([
+                        'name' => $ns.'terapi_date',
+                    ], false);
+                    $temp_choice2 .= '<br>';
+
+                    $temp3 = '
+                    Menurunkan berat badan;menurunkan_berat_badan
+                    Penilaian jenis dan jumlah asupan cairan;penilaian_jenis
+                    Bladder training;bladder_training
+                    Stop merokok;stop_merokok
+                    Management stress;management_stress
+                    Manajemen komorbid (termasuk konstipasi, PPOK, asma, dll);manajemen_komorbid
+                    ';
+                    $x3 = explode("\n", $temp3);
+                    foreach($x3 as $v3){
+                        if (trim($v3) != '') {
+                            $x3_2 = explode(';', trim($v3));
+                            $caption3 = trim($x3_2[0]);
+                            $field3 = trim($x3_2[1]);
+
+                            $temp_choice2 .= '<b>'.$caption3.'</b><br>';
+                            $temp_choice2 .= BS::radio_ya_tidak([
+                                'name' => $ns.$field3,
+                                'toggle_div' => true,
+                            ], false);
+
+                            if ($field3 == 'bladder_training') {
+                                $a3 = [
+                                    'Timed Voiding',
+                                    'Prompt Voiding',
+                                    'Urge Suppression Strategies',
+                                ];
+                                $buffer = [];
+                                foreach($a3 as $va3){
+                                    $field_va3 = strtolower(
+                                        str_replace(array(' ', '-'), '_', $va3)
+                                    );
+
+                                    $ext3 = '';
+                                    if ($field_va3 == 'timed_voiding') {
+                                        $ext3 .= '<div id="div_c_bladder_training_timed_voiding" class="indent1">';
+                                        $ext3 .= BS::checkbox([
+                                            'name' => $ns.'c_bladder_training_timed_voiding_berkemih_spontan',
+                                            'caption' => 'Berkemih Spontan',
+                                        ], false);
+                                        $ext3 .= BS::checkbox([
+                                            'name' => $ns.'c_bladder_training_timed_voiding_katerisasi',
+                                            'caption' => 'Katerisasi',
+                                        ], false);
+                                        $ext3 .= '</div>';
+                                    }
+
+                                    $buffer[] = BS::checkbox([
+                                        'name' => $ns.'c_'.$field.'_'.$field_va3,
+                                        'caption' => $va3,
+                                    ], false).$ext3;
+                                }
+
+                                $temp_choice2 .=
+                                    '<div id="div_'.$ns.$field3.'_ya" class="indent1">'
+                                    .implode('', $buffer)
+                                    .'</div>';
+
+                                if (isset($default[$ns.$field3]) && $default[$ns.$field3] == 'Ya') {
+                                } else {
+                                    BS::jquery_ready("$('#div_{$ns}{$field3}_ya').hide();");
+                                }
+                            } else {
+                                $temp_choice2 .=
+                                    '<span id="div_'.$ns.$field3.'_ya" class="indent1">'
+                                    .'</span>';
+
+                                if (isset($default[$ns.$field3]) && $default[$ns.$field3] == 'Ya') {
+                                } else {
+                                    BS::jquery_ready("$('#div_{$ns}{$field3}_ya').hide();");
+                                }
+                            }
+
+                            $temp_choice2 .= '<br><br>';
+                        }
+                    }
+                    //==============[ End Follow Up : Form OAB_terapi_modifikasi_gaya_hidup ]===
                     break;
 
                 case 'terapi_non_operatif':
@@ -930,5 +1015,28 @@ $('input[name=\"{{ $ns }}score_{{ $i }}\"]').on('ifChecked', function(){
 {{ $ns }}score_onCheck(2);
 {{ $ns }}score_onCheck(3);
 {{ $ns }}score_onCheck(4);
+
+// Functions
+@php
+$ns = 'terapi_modifikasi_gaya_hidup_';
+@endphp
+function show_hide_c_bladder_training_timed_voiding(){
+  const len = ($('input[name="{{ $ns }}c_follow_up_terapi_timed_voiding"]:checked').length !== 0);
+  //console.log("len = " + len);
+  if (len == '1') {
+    $('#div_c_bladder_training_timed_voiding').show();
+  } else {
+    $('#div_c_bladder_training_timed_voiding').hide();
+  }
+}
+
+// Behaviours
+$('input[name="{{ $ns }}c_follow_up_terapi_timed_voiding"]').on('ifChanged', function(){
+  //console.log("{{ $ns }}c_follow_up_terapi_timed_voiding = ifChanged");
+  show_hide_c_bladder_training_timed_voiding();
+});
+
+// Init
+show_hide_c_bladder_training_timed_voiding();
 
 @endsection

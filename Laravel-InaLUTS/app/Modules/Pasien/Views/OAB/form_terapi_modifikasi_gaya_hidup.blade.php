@@ -12,9 +12,11 @@
     ]);
     FORM::set_var($default);
 
+    //============[ Begin Follow Up : Form OAB_terapi_modifikasi_gaya_hidup ]===
+    $ns = '';
     FORM::row('Tanggal',
         BS::datepicker([
-            'name' => 'terapi_date',
+            'name' => $ns.'terapi_date',
         ], false)
     );
 
@@ -36,7 +38,7 @@
             FORM::row(
                 $caption,
                 BS::radio_ya_tidak([
-                    'name' => $field,
+                    'name' => $ns.$field,
                     'toggle_div' => true,
                 ], false)
             );
@@ -57,43 +59,44 @@
                     if ($field_va == 'timed_voiding') {
                         $ext .= '<div id="div_c_bladder_training_timed_voiding" class="indent1">';
                         $ext .= BS::checkbox([
-                            'name' => 'c_bladder_training_timed_voiding_berkemih_spontan',
+                            'name' => $ns.'c_bladder_training_timed_voiding_berkemih_spontan',
                             'caption' => 'Berkemih Spontan',
                         ], false);
                         $ext .= BS::checkbox([
-                            'name' => 'c_bladder_training_timed_voiding_katerisasi',
+                            'name' => $ns.'c_bladder_training_timed_voiding_katerisasi',
                             'caption' => 'Katerisasi',
                         ], false);
                         $ext .= '</div>';
                     }
 
                     $buffer[] = BS::checkbox([
-                        'name' => 'c_'.$field.'_'.$field_va,
+                        'name' => $ns.'c_'.$field.'_'.$field_va,
                         'caption' => $va,
                     ], false).$ext;
                 }
 
                 FORM::row(':merge',
-                    '<div id="div_'.$field.'_ya" class="indent1">'
+                    '<div id="div_'.$ns.$field.'_ya" class="indent1">'
                     .implode('', $buffer)
                     .'</div>'
                 );
-                if (isset($default[$field]) && $default[$field] == 'Ya') {
+                if (isset($default[$ns.$field]) && $default[$ns.$field] == 'Ya') {
                 } else {
-                    BS::jquery_ready("$('#div_{$field}_ya').hide();");
+                    BS::jquery_ready("$('#div_{$ns}{$field}_ya').hide();");
                 }
             } else {
                 FORM::row(':merge',
-                    '<div id="div_'.$field.'_ya" class="indent1">'
+                    '<div id="div_'.$ns.$field.'_ya" class="indent1">'
                     .'</div>'
                 );
-                if (isset($default[$field]) && $default[$field] == 'Ya') {
+                if (isset($default[$ns.$field]) && $default[$ns.$field] == 'Ya') {
                 } else {
-                    BS::jquery_ready("$('#div_{$field}_ya').hide();");
+                    BS::jquery_ready("$('#div_{$ns}{$field}_ya').hide();");
                 }
             }
         }
     }
+    //==============[ End Follow Up : Form OAB_terapi_modifikasi_gaya_hidup ]===
 
     FORM::show();
   @endphp
