@@ -196,6 +196,9 @@ trait OABTrait {
         DT::add('pemeriksaan_penunjang__pemeriksaan_laboratorium', $data, $column);
         //===[ End Process : Pemeriksaan Penunjang ]============================
 
+        //===[ Begin Process : Terapi Lanjutan ]================================
+        //===[ End Process : Terapi Lanjutan ]==================================
+
         return $this->moduleView(
             'OAB/form_'.str_replace('detail_oab_', '', $view),
             [
@@ -369,6 +372,90 @@ trait OABTrait {
         //===[ End Process : Pemeriksaan Penunjang : Sistoskopi ]===============
 
         //===[ End Process : Pemeriksaan Penunjang ]============================
+
+        //===[ Begin Process : Terapi Lanjutan ]================================
+
+        //===[ Begin Process : Terapi Lanjutan : Modifikasi Gaya Hidup ]========
+        $field = 'terapi_modifikasi_gaya_hidup';
+        if (isset($data[$field]) && $data[$field] == 'Ya') {
+            $data_temp = [];
+            $ns = $field.'_';
+            foreach($data as $f => $v){
+                if (substr($f, 0, strlen($ns)) == $ns) {
+                    $data_temp[$f] = $v;
+                }
+            }
+            $data[$field.'_ya'] = serialize($data_temp);
+        } else {
+            $data[$field.'_ya'] = serialize([]);
+        }
+        //===[ End Process : Terapi Lanjutan : Modifikasi Gaya Hidup ]==========
+
+        //===[ Begin Process : Terapi Lanjutan : Non-Operatif ]=================
+        $field = 'terapi_non_operatif';
+        if (isset($data[$field]) && $data[$field] == 'Ya') {
+            $data_temp = [];
+            $ns = $field.'_';
+            foreach($data as $f => $v){
+                if (substr($f, 0, strlen($ns)) == $ns) {
+                    $data_temp[$f] = $v;
+                }
+            }
+            $data[$field.'_ya'] = serialize($data_temp);
+        } else {
+            $data[$field.'_ya'] = serialize([]);
+        }
+        //===[ End Process : Terapi Lanjutan : Non-Operatif ]===================
+
+        //===[ Begin Process : Terapi Lanjutan : Medikamentosa ]================
+        $field = 'terapi_medikamentosa';
+        if (isset($data[$field]) && $data[$field] == 'Ya') {
+            $data_temp = [];
+            $ns = $field.'_';
+            foreach($data as $f => $v){
+                if (substr($f, 0, strlen($ns)) == $ns) {
+                    $data_temp[$f] = $v;
+                }
+            }
+            $data[$field.'_ya'] = serialize($data_temp);
+        } else {
+            $data[$field.'_ya'] = serialize([]);
+        }
+        //===[ End Process : Terapi Lanjutan : Medikamentosa ]==================
+
+        //===[ Begin Process : Terapi Lanjutan : Rehabilitasi ]=================
+        $field = 'terapi_rehabilitasi';
+        if (isset($data[$field]) && $data[$field] == 'Ya') {
+            $data_temp = [];
+            $ns = $field.'_';
+            foreach($data as $f => $v){
+                if (substr($f, 0, strlen($ns)) == $ns) {
+                    $data_temp[$f] = $v;
+                }
+            }
+            $data[$field.'_ya'] = serialize($data_temp);
+        } else {
+            $data[$field.'_ya'] = serialize([]);
+        }
+        //===[ End Process : Terapi Lanjutan : Rehabilitasi ]===================
+
+        //===[ Begin Process : Terapi Lanjutan : Operatif ]=====================
+        $field = 'terapi_operatif';
+        if (isset($data[$field]) && $data[$field] == 'Ya') {
+            $data_temp = [];
+            $ns = $field.'_';
+            foreach($data as $f => $v){
+                if (substr($f, 0, strlen($ns)) == $ns) {
+                    $data_temp[$f] = $v;
+                }
+            }
+            $data[$field.'_ya'] = serialize($data_temp);
+        } else {
+            $data[$field.'_ya'] = serialize([]);
+        }
+        //===[ End Process : Terapi Lanjutan : Operatif ]=======================
+
+        //===[ End Process : Terapi Lanjutan ]==================================
 
         //dd($data);
 

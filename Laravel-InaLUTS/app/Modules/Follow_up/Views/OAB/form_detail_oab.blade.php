@@ -819,6 +819,76 @@
         BS::jquery_ready("$('#div_{$field}_ya').hide();");
     }
 
+    //====================================================[ Terapi Lanjutan ]===
+    FORM::row(':header2', 'Terapi Lanjutan');
+    $ns = 'follow_up_terapi_';
+    $field = 'follow_up_terapi';
+    $caption = 'Apakah ada follow up terapi';
+    $choice2 = '';
+    $temp2 = '
+        Modifikasi Gaya Hidup
+        Non-Operatif
+        Medikamentosa
+        Rehabilitasi
+        Operatif
+    ';
+    $x2 = explode("\n", $temp2);
+    foreach($x2 as $v2){
+        if (trim($v2) != '') {
+            $caption2 = trim($v2);
+            $field2 = 'terapi_'.strtolower(str_replace(array(' ', '-'), '_', $caption2));
+
+            $temp_choice2 = '';
+            switch($field2){
+                case 'terapi_modifikasi_gaya_hidup':
+                    break;
+
+                case 'terapi_non_operatif':
+                    break;
+
+                case 'terapi_medikamentosa':
+                    break;
+
+                case 'terapi_rehabilitasi':
+                    break;
+
+                case 'terapi_operatif':
+                    break;
+            }
+
+            $choice2 .= '<b>'.$caption2.'</b><br>';
+            $choice2 .= BS::radio_ya_tidak([
+                'name' => $field2,
+                'toggle_div' => true,
+            ], false);
+            $choice2 .= '<div id="div_'.$field2.'_ya" class="indent2">';
+            $choice2 .= $temp_choice2;
+            $choice2 .= '</div>';
+            $choice2 .= '<br><br>';
+
+            if (isset($default[$field2]) && $default[$field2] == 'Ya') {
+            } else {
+                BS::jquery_ready("$('#div_{$field2}_ya').hide();");
+            }
+        }
+    }
+    FORM::row(
+        $caption,
+        BS::radio_ya_tidak([
+            'name' => $field,
+            'toggle_div' => true,
+        ], false)
+    );
+    FORM::row(':merge',
+        '<div id="div_'.$field.'_ya" class="indent1">'
+        .$choice2
+        .'</div>'
+    );
+    if (isset($default[$field]) && $default[$field] == 'Ya') {
+    } else {
+        BS::jquery_ready("$('#div_{$field}_ya').hide();");
+    }
+
     FORM::show();
   @endphp
   {{ BS::box_end() }}
