@@ -1027,6 +1027,140 @@
                     break;
 
                 case 'terapi_medikamentosa':
+                    //====================[ Begin Follow Up : Form OAB_terapi_medikamentosa ]===
+                    $ns = 'terapi_medikamentosa_';
+                    $field3 = $ns.'medikamentosa';
+                    $temp_choice2 .= '<b>Medikamentosa</b><br>';
+                    $temp_choice2 .=
+                        BS::radio_ya_tidak([
+                            'name' => $field3,
+                            'toggle_div' => true,
+                        ], false);
+
+                    $temp_choice2 .=
+                        '<div id="div_'.$field3.'_ya" class="indent1">'
+                        .BS::radio_array([
+                            'name' => $field3.'_ya',
+                            'data' => array(
+                                'Teratur',
+                                'Tidak Teratur',
+                            ),
+                            ], false
+                        )
+                        .'</div>';
+
+                    if (isset($default[$field3]) && $default[$field3] == 'Ya') {
+                    } else {
+                        BS::jquery_ready("$('#div_{$field3}_ya').hide();");
+                    }
+
+                    $temp_choice2 .= $div_header.'Anti Muskarinik</div>';
+                    $field3 = $ns.'solifenacin';
+                    $temp_choice2 .= '<b>Solifenacin</b><br>';
+                    $temp_choice2 .=
+                        BS::radio_ya_tidak([
+                            'name' => $field3,
+                            'toggle_div' => true,
+                        ], false);
+
+                    $temp_choice2 .=
+                        '<div id="div_'.$field3.'_ya" class="indent1">'
+                        .BS::radio_array([
+                            'name' => $field3.'_ya',
+                            'data' => array(
+                                '5 mg',
+                                '10 mg',
+                            ),
+                            ], false
+                        )
+                        .'</div><br>';
+
+                    if (isset($default[$field3]) && $default[$field3] == 'Ya') {
+                    } else {
+                        BS::jquery_ready("$('#div_{$field3}_ya').hide();");
+                    }
+
+                    $field3 = $ns.'imidafenacin';
+                    $temp_choice2 .= '<b>Imidafenacin</b><br>';
+                    $temp_choice2 .=
+                        BS::radio_ya_tidak([
+                            'name' => $field3,
+                            'toggle_div' => true,
+                        ], false);
+
+                    $temp_choice2 .=
+                        '<div id="div_'.$field3.'_ya" class="indent1">'
+                        .BS::number([
+                            'name' => $field3.'_ya',
+                            'inline' => true,
+                            ], false
+                        )
+                        .' dosis'
+                        .'</div><br>';
+
+                    if (isset($default[$field3]) && $default[$field3] == 'Ya') {
+                    } else {
+                        BS::jquery_ready("$('#div_{$field3}_ya').hide();");
+                    }
+
+                    $field3 = $ns.'tolterodinepropiverine';
+                    $temp_choice2 .= '<b>Tolterodinepropiverine</b><br>';
+                    $temp_choice2 .=
+                        BS::radio_ya_tidak([
+                            'name' => $field3,
+                            'toggle_div' => true,
+                        ], false);
+
+                    $temp_choice2 .=
+                        '<div id="div_'.$field3.'_ya" class="indent1">'
+                        .BS::number([
+                            'name' => $field3.'_ya',
+                            'inline' => true,
+                            ], false
+                        )
+                        .' dosis'
+                        .'</div><br>';
+
+                    if (isset($default[$field3]) && $default[$field3] == 'Ya') {
+                    } else {
+                        BS::jquery_ready("$('#div_{$field3}_ya').hide();");
+                    }
+
+                    $temp_choice2 .= $div_header.'B3 Agonis</div>';
+                    $field3 = $ns.'mirabegron';
+                    $temp_choice2 .= '<b>Mirabegron</b><br>';
+                    $temp_choice2 .=
+                        BS::radio_ya_tidak([
+                            'name' => $field3,
+                            'toggle_div' => true,
+                        ], false);
+
+                    $temp_choice2 .=
+                        '<div id="div_'.$field3.'_ya" class="indent1">'
+                        .BS::radio_array([
+                            'name' => $field3.'_ya',
+                            'data' => array(
+                                '25 mg',
+                                '50 mg',
+                            ),
+                            ], false
+                        )
+                        .'</div><br>';
+
+                    if (isset($default[$field3]) && $default[$field3] == 'Ya') {
+                    } else {
+                        BS::jquery_ready("$('#div_{$field3}_ya').hide();");
+                    }
+
+                    $field3 = $ns.'flavoxate';
+                    $temp_choice2 .= '<b>Flavoxate</b><br>';
+                    $temp_choice2 .=
+                        BS::radio_ya_tidak([
+                            'name' => $field3,
+                        ], false);
+
+                    // End Follow Up : Form OAB_terapi_medikamentosa
+                    //======================[ End Follow Up : Form OAB_terapi_medikamentosa ]===
                     break;
 
                 case 'terapi_rehabilitasi':
