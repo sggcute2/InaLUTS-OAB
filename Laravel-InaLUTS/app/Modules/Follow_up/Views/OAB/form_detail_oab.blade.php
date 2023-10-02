@@ -1285,6 +1285,7 @@
                     break;
 
                 case 'terapi_operatif':
+                    $temp_choice2 .= '<div style="padding:1em;background:lightgoldenrodyellow;font-weight:bold;">Under Construction</div>';
                     break;
             }
 
