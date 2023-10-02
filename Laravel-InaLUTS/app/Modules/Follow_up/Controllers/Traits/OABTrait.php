@@ -138,6 +138,32 @@ trait OABTrait {
         //dd($default);
         //===[ End Process : Pemeriksaan Penunjang : UPP ]======================
 
+        //===[ Begin Process : Pemeriksaan Penunjang : Urodinamik ]=============
+        $ns = 'pemeriksaan_penunjang_urodinamik_';$field = $ns.'ya';
+        try {
+            $data_arr = unserialize($default[$field]);
+        } catch (Exception $exception) {
+            $data_arr = [];
+        }
+        if (count($data_arr) > 0) {
+            foreach($data_arr as $f => $v)$default[$f] = $v;
+        }
+        //dd($default);
+        //===[ End Process : Pemeriksaan Penunjang : Urodinamik ]===============
+
+        //===[ Begin Process : Pemeriksaan Penunjang : Sistoskopi ]=============
+        $ns = 'pemeriksaan_penunjang_sistoskopi_';$field = $ns.'ya';
+        try {
+            $data_arr = unserialize($default[$field]);
+        } catch (Exception $exception) {
+            $data_arr = [];
+        }
+        if (count($data_arr) > 0) {
+            foreach($data_arr as $f => $v)$default[$f] = $v;
+        }
+        //dd($default);
+        //===[ End Process : Pemeriksaan Penunjang : Sistoskopi ]===============
+
         $temp_view = 'list_oab_pemeriksaan_laboratorium';
         $pemeriksaan_penunjang__pemeriksaan_laboratorium__add_action = route(
             'follow_up.add_'.str_replace('list_', '', $temp_view),
@@ -309,6 +335,38 @@ trait OABTrait {
             $data[$field.'_ya'] = serialize([]);
         }
         //===[ End Process : Pemeriksaan Penunjang : UPP ]======================
+
+        //===[ Begin Process : Pemeriksaan Penunjang : Urodinamik ]=============
+        $field = 'pemeriksaan_penunjang_urodinamik';
+        if (isset($data[$field]) && $data[$field] == 'Ya') {
+            $data_temp = [];
+            $ns = $field.'_';
+            foreach($data as $f => $v){
+                if (substr($f, 0, strlen($ns)) == $ns) {
+                    $data_temp[$f] = $v;
+                }
+            }
+            $data[$field.'_ya'] = serialize($data_temp);
+        } else {
+            $data[$field.'_ya'] = serialize([]);
+        }
+        //===[ End Process : Pemeriksaan Penunjang : Urodinamik ]===============
+
+        //===[ Begin Process : Pemeriksaan Penunjang : Sistoskopi ]=============
+        $field = 'pemeriksaan_penunjang_sistoskopi';
+        if (isset($data[$field]) && $data[$field] == 'Ya') {
+            $data_temp = [];
+            $ns = $field.'_';
+            foreach($data as $f => $v){
+                if (substr($f, 0, strlen($ns)) == $ns) {
+                    $data_temp[$f] = $v;
+                }
+            }
+            $data[$field.'_ya'] = serialize($data_temp);
+        } else {
+            $data[$field.'_ya'] = serialize([]);
+        }
+        //===[ End Process : Pemeriksaan Penunjang : Sistoskopi ]===============
 
         //===[ End Process : Pemeriksaan Penunjang ]============================
 

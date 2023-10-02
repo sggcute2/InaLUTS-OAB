@@ -68,10 +68,12 @@
     }
     //=============================[ End Follow Up : Form OAB_penunjang_upp ]===
 
+    //====================[ Begin Follow Up : Form OAB_penunjang_sistoskopi ]===
+    $ns = '';
     FORM::row(
         'Sistoskopi',
         BS::radio_array([
-            'name' => 'sistoskopi',
+            'name' => $ns.'sistoskopi',
             'data' => array(
                 'Dikerjakan',
                 'Tidak Dikerjakan',
@@ -79,13 +81,13 @@
             'vertical' => true,
             'toggle_div_by_value' => [
                 'Dikerjakan' => [
-                    'id' => 'sistoskopi_dikerjakan',
+                    'id' => $ns.'sistoskopi_dikerjakan',
                     'class' => 'indent1',
                     'html' => ''
                         .'<div>'
                         .'<b>Mukosa buli :</b> '
                         .BS::radio_array([
-                            'name' => 'mukosa_buli',
+                            'name' => $ns.'mukosa_buli',
                             'data' => ['Hiperemis', 'Tidak'],
                             'inline' => true,
                         ], false)
@@ -93,7 +95,7 @@
                         .'<div style="margin-top:1em">'
                         .'<b>Trabekulasi :</b> '
                         .BS::radio_array([
-                            'name' => 'trabekulasi',
+                            'name' => $ns.'trabekulasi',
                             'data' => ['Ringan', 'Sedang', 'Berat'],
                             'inline' => true,
                         ], false)
@@ -101,7 +103,7 @@
                         .'<div style="margin-top:1em">'
                         .'<b>Sakulasi Divertikel :</b> '
                         .BS::radio_array([
-                            'name' => 'sakulasi_divertikel',
+                            'name' => $ns.'sakulasi_divertikel',
                             'data' => ['Ya', 'Tidak'],
                             'inline' => true,
                         ], false)
@@ -109,14 +111,14 @@
                         .'<div style="margin-top:1em">'
                         .'<b>Kapasitas Buli :</b> '
                         .BS::number([
-                            'name' => 'kapasitas_buli',
+                            'name' => $ns.'kapasitas_buli',
                             'inline' => true,
                         ], false)
                         .'</div>'
                         .'<div style="margin-top:1em">'
                         .'<b>Batu :</b> '
                         .BS::radio_array([
-                            'name' => 'batu',
+                            'name' => $ns.'batu',
                             'data' => ['Ya', 'Tidak'],
                             'inline' => true,
                         ], false)
@@ -124,7 +126,7 @@
                         .'<div style="margin-top:1em">'
                         .'<b>Tumor :</b> '
                         .BS::radio_array([
-                            'name' => 'tumor',
+                            'name' => $ns.'tumor',
                             'data' => ['Ya', 'Tidak'],
                             'inline' => true,
                         ], false)
@@ -132,7 +134,7 @@
                         .'<div style="margin-top:1em">'
                         .'<b>Lobus Medius :</b> '
                         .BS::radio_array([
-                            'name' => 'lobus_medius',
+                            'name' => $ns.'lobus_medius',
                             'data' => ['Tinggi', 'Tidak Tinggi'],
                             'inline' => true,
                         ], false)
@@ -140,16 +142,16 @@
                         .'<div style="margin-top:1em">'
                         .'<b>Kissing Lobe :</b><br>'
                         .BS::radio_array([
-                            'name' => 'kissing_lobe',
+                            'name' => $ns.'kissing_lobe',
                             'data' => ['Ya', 'Tidak'],
                             'vertical' => true,
                             'toggle_div_by_value' => [
                                 'Ya' => [
-                                        'id' => 'kissing_lobe_ya',
+                                        'id' => $ns.'kissing_lobe_ya',
                                         'class' => 'indent1',
                                         'html' => ''
                                             .BS::number([
-                                                'name' => 'kissing_lobe_ya',
+                                                'name' => $ns.'kissing_lobe_ya',
                                                 'required' => false,
                                                 'inline' => true,
                                             ], false)
@@ -161,7 +163,7 @@
                         .'<div style="margin-top:1em">'
                         .'<b>Muara Ureter :</b> '
                         .BS::radio_array([
-                            'name' => 'muara_ureter',
+                            'name' => $ns.'muara_ureter',
                             'data' => ['Normal', 'Tidak Normal'],
                             'inline' => true,
                         ], false)
@@ -169,7 +171,7 @@
                         .'<div style="margin-top:1em">'
                         .'<b>Urethra :</b> '
                         .BS::radio_array([
-                            'name' => 'urethra',
+                            'name' => $ns.'urethra',
                             'data' => ['Ya', 'Tidak'],
                             'inline' => true,
                         ], false)
@@ -177,7 +179,7 @@
                         .'<div style="margin-top:1em">'
                         .'<b>MUE :</b> '
                         .BS::radio_array([
-                            'name' => 'mue',
+                            'name' => $ns.'mue',
                             'data' => ['Stenosis', 'Tidak'],
                             'inline' => true,
                         ], false)
@@ -185,7 +187,7 @@
                         .'<div style="margin-top:1em">'
                         .'<b>Lichen Schlerosis :</b> '
                         .BS::radio_array([
-                            'name' => 'lichen_schlerosis',
+                            'name' => $ns.'lichen_schlerosis',
                             'data' => ['Ya', 'Tidak'],
                             'inline' => true,
                         ], false)
@@ -195,14 +197,15 @@
             ], false
         )
     );
-    if (isset($default['sistoskopi']) && $default['sistoskopi'] == 'Dikerjakan') {
+    if (isset($default[$ns.'sistoskopi']) && $default[$ns.'sistoskopi'] == 'Dikerjakan') {
     } else {
-        BS::jquery_ready("$('#sistoskopi_dikerjakan').hide();");
+        BS::jquery_ready("$('#{$ns}sistoskopi_dikerjakan').hide();");
     }
-    if (isset($default['kissing_lobe']) && $default['kissing_lobe'] == 'Ya') {
+    if (isset($default[$ns.'kissing_lobe']) && $default[$ns.'kissing_lobe'] == 'Ya') {
     } else {
-        BS::jquery_ready("$('#kissing_lobe_ya').hide();");
+        BS::jquery_ready("$('#{$ns}kissing_lobe_ya').hide();");
     }
+    //======================[ End Follow Up : Form OAB_penunjang_sistoskopi ]===
 
     FORM::show();
   @endphp

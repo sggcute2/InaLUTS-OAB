@@ -12,6 +12,8 @@
     ]);
     FORM::set_var($default);
 
+    //====================[ Begin Follow Up : Form OAB_penunjang_urodinamik ]===
+    $ns = '';
     $temp = '
         Kapasitas kandung kemih
         Compliance
@@ -28,7 +30,7 @@
     $buffer[] = '<b>Tanggal</b>'
         .'<br>'
         .BS::datepicker([
-            'name' => 'pemeriksaan_urodinamik_ya_date',
+            'name' => $ns.'pemeriksaan_urodinamik_ya_date',
             'required' => false,
         ], false);
     foreach($x as $v){
@@ -41,12 +43,12 @@
                     $buffer[] = '<b>'.$caption.'</b>'
                         .'<br>'
                         .BS::number([
-                            'name' => $field.'_1',
+                            'name' => $ns.$field.'_1',
                             'inline' => true
                         ], false)
                         .' - '
                         .BS::number([
-                            'name' => $field.'_2',
+                            'name' => $ns.$field.'_2',
                             'inline' => true
                         ], false)
                         .' ml';
@@ -56,7 +58,7 @@
                     $buffer[] = '<b>'.$caption.'</b>'
                         .'<br>'
                         .BS::radio_array([
-                                'name' => $field,
+                                'name' => $ns.$field,
                                 'data' => ['Normal', 'Tidak Normal'],
                             ], false);
                     break;
@@ -65,7 +67,7 @@
                     $buffer[] = '<b>'.$caption.'</b>'
                         .'<br>'
                         .BS::radio_array([
-                                'name' => $field,
+                                'name' => $ns.$field,
                                 'data' => ['Ya', 'Tidak', 'Tidak Diperiksa'],
                             ], false);
                     break;
@@ -74,12 +76,13 @@
                     $buffer[] = '<b>'.$caption.'</b>'
                         .'<br>'
                         .BS::radio_ya_tidak([
-                            'name' => $field,
+                            'name' => $ns.$field,
                         ], false);
                     break;
             }
         }
     }
+    //======================[ End Follow Up : Form OAB_penunjang_urodinamik ]===
 
     FORM::row(
         'Pemeriksaan urodinamik',
