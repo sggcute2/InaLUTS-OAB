@@ -463,6 +463,69 @@
                     ob_end_clean();
                     */
                     break;
+                case 'pemeriksaan_penunjang_bladder_diary':
+                    //=================[ Begin Follow Up : Form OAB_kuesioner_bladder_diary ]===
+                    $ns = 'pemeriksaan_penunjang_bladder_diary_';
+                    $a3 = [
+                        ['Intake cairan / 24 jam', 'intake_cairan'],
+                        ['Frekuensi kencing dalam 24 jam', 'frekuensi_kencing'],
+                        ['Nocturia', 'nocturia'],
+                        ['Porsi miksi', 'porsi_miksi'],
+                        ['Produksi urin / 24 jam', 'produksi_urin'],
+                        ['Urgency', 'urgency'],
+                        ['Inkontinensia urine', 'inkontinensia_urine'],
+                        ['Poliuria nocturnal', 'poliuria_nocturnal'],
+                    ];
+                    $UOM3 = [
+                        'intake_cairan' => 'ml',
+                        'porsi_miksi' => 'ml',
+                        'produksi_urin' => 'ml',
+                        'urgency' => 'x',
+                        'inkontinensia_urine' => 'x',
+                    ];
+                    $UOM3_2 = [
+                        'nocturia' => ' /malam',
+                    ];
+                    foreach($a3 as $av3){
+                        $field3 = '';
+
+                        switch($av3[1]){
+                            case 'intake_cairan':
+                            case 'frekuensi_kencing':
+                            case 'nocturia':
+                            case 'porsi_miksi':
+                            case 'produksi_urin':
+                            case 'urgency':
+                            case 'inkontinensia_urine':
+                                $uom3 = (isset($UOM3[$av3[1]])) ? $UOM3[$av3[1]] : '';
+                                $uom3_2 = (isset($UOM3_2[$av3[1]])) ? $UOM3_2[$av3[1]] : '';
+                                $field3 = BS::number([
+                                        'name' => $ns.$av3[1].'_1',
+                                        'inline' => true,
+                                    ], false)
+                                    .' '.$uom3
+                                    .' s/d '
+                                    .BS::number([
+                                        'name' => $ns.$av3[1].'_2',
+                                        'inline' => true,
+                                    ], false).' '.$uom3
+                                    .$uom3_2;
+                                break;
+
+                            case 'poliuria_nocturnal':
+                                $field3 = BS::radio_ya_tidak([
+                                    'name' => $ns.$av3[1],
+                                ], false);
+                                break;
+                        }
+
+                        $temp_choice2 .= '<b>'.$av3[0].'</b><br>';
+                        $temp_choice2 .= '<div style="margin-bottom:1em;">';
+                        $temp_choice2 .= $field3;
+                        $temp_choice2 .= '</div>';
+                    }
+                    //=================[ Begin Follow Up : Form OAB_kuesioner_bladder_diary ]===
+                    break;
             }
 
             $choice2 .= '<b>'.$caption2.'</b><br>';
