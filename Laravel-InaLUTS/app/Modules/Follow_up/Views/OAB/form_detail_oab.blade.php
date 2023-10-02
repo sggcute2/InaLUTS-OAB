@@ -463,6 +463,7 @@
                     ob_end_clean();
                     */
                     break;
+
                 case 'pemeriksaan_penunjang_bladder_diary':
                     //=================[ Begin Follow Up : Form OAB_kuesioner_bladder_diary ]===
                     $ns = 'pemeriksaan_penunjang_bladder_diary_';
@@ -525,6 +526,47 @@
                         $temp_choice2 .= '</div>';
                     }
                     //=================[ Begin Follow Up : Form OAB_kuesioner_bladder_diary ]===
+                    break;
+
+                case 'pemeriksaan_penunjang_upp':
+                    //===========================[ Begin Follow Up : Form OAB_penunjang_upp ]===
+                    $ns = 'pemeriksaan_penunjang_upp_';
+                    $temp_choice2 .= '<b>UPP</b><br>';
+                    $temp_choice2 .= BS::radio_array([
+                        'name' => $ns.'upp',
+                        'data' => array(
+                            'Dikerjakan',
+                            'Tidak Dikerjakan',
+                        ),
+                        'vertical' => true,
+                        'toggle_div_by_value' => [
+                            'Dikerjakan' => [
+                                'id' => $ns.'upp_dikerjakan',
+                                'class' => 'indent1',
+                                'html' => ''
+                                    .'<div>'
+                                    .'<b>maximal urethral pressure :</b> '
+                                    .BS::number([
+                                        'name' => $ns.'maximal_urethral_pressure',
+                                        'inline' => true,
+                                    ], false)
+                                    .'</div>'
+                                    .'<div style="margin-top:1em">'
+                                    .'<b>functional urethral length :</b> '
+                                    .BS::number([
+                                        'name' => $ns.'functional_urethral_length',
+                                        'inline' => true,
+                                    ], false)
+                                    .'</div>'
+                            ],
+                        ],
+                        ], false
+                    );
+                    if (isset($default[$ns.'upp']) && $default[$ns.'upp'] == 'Dikerjakan') {
+                    } else {
+                        BS::jquery_ready("$('#{$ns}upp_dikerjakan').hide();");
+                    }
+                    //=============================[ End Follow Up : Form OAB_penunjang_upp ]===
                     break;
             }
 

@@ -27,10 +27,12 @@
         ], false)
     );
 
+    //===========================[ Begin Follow Up : Form OAB_penunjang_upp ]===
+    $ns = '';
     FORM::row(
         'UPP',
         BS::radio_array([
-            'name' => 'upp',
+            'name' => $ns.'upp',
             'data' => array(
                 'Dikerjakan',
                 'Tidak Dikerjakan',
@@ -38,20 +40,20 @@
             'vertical' => true,
             'toggle_div_by_value' => [
                 'Dikerjakan' => [
-                    'id' => 'upp_dikerjakan',
+                    'id' => $ns.'upp_dikerjakan',
                     'class' => 'indent1',
                     'html' => ''
                         .'<div>'
                         .'<b>maximal urethral pressure :</b> '
                         .BS::number([
-                            'name' => 'maximal_urethral_pressure',
+                            'name' => $ns.'maximal_urethral_pressure',
                             'inline' => true,
                         ], false)
                         .'</div>'
                         .'<div style="margin-top:1em">'
                         .'<b>functional urethral length :</b> '
                         .BS::number([
-                            'name' => 'functional_urethral_length',
+                            'name' => $ns.'functional_urethral_length',
                             'inline' => true,
                         ], false)
                         .'</div>'
@@ -60,10 +62,11 @@
             ], false
         )
     );
-    if (isset($default['upp']) && $default['upp'] == 'Dikerjakan') {
+    if (isset($default[$ns.'upp']) && $default[$ns.'upp'] == 'Dikerjakan') {
     } else {
-        BS::jquery_ready("$('#upp_dikerjakan').hide();");
+        BS::jquery_ready("$('#{$ns}upp_dikerjakan').hide();");
     }
+    //=============================[ End Follow Up : Form OAB_penunjang_upp ]===
 
     FORM::row(
         'Sistoskopi',
