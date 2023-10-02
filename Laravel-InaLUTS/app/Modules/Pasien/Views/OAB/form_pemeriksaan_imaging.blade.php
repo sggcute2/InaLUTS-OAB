@@ -12,10 +12,12 @@
     ]);
     FORM::set_var($default);
 
+    //====[ Begin Follow Up : Form OAB_kuesioner_pemeriksaan_penunjang__usg ]===
+    $ns = '';
     FORM::row(
         'USG (abdominal / transrektal)',
         BS::radio_array([
-            'name' => 'usg',
+            'name' => $ns.'usg',
             'data' => ['Dilakukan', 'Tidak Dilakukan'],
             'vertical' => true,
             'toggle_div_by_value' => [
@@ -24,23 +26,23 @@
                         'class' => 'indent1',
                         'html' => 'Tanggal : '
                             .BS::datepicker([
-                                'name' => 'usg_date',
+                                'name' => $ns.'usg_date',
                                 'required' => false,
                             ], false),
                     ],
             ],
         ], false)
     );
-    if (isset($default['usg']) && $default['usg'] == 'Dilakukan') {
+    if (isset($default[$ns.'usg']) && $default[$ns.'usg'] == 'Dilakukan') {
     } else {
-        BS::jquery_ready("$('#usg_dilakukan__date').hide();");
+        BS::jquery_ready("$('#".$ns."usg_dilakukan__date').hide();");
     }
 
     $field = 'ct_urografi';
     FORM::row(
         'CT Urografi',
         BS::radio_ya_tidak([
-            'name' => $field,
+            'name' => $ns.$field,
         ], false)
     );
 
@@ -50,7 +52,7 @@
         '<div class="indent1">Hidronefrosis</div>',
         '<div class="indent1">'
         .BS::radio_array([
-            'name' => 'ginjal__kanan__hidronefrosis',
+            'name' => $ns.'ginjal__kanan__hidronefrosis',
             'data' => ['Tidak', 'Ringan', 'Sedang', 'Berat'],
         ], false)
         .'</div>'
@@ -59,7 +61,7 @@
         '<div class="indent1">Batu</div>',
         '<div class="indent1">'
         .BS::radio_array([
-            'name' => 'ginjal__kanan__batu',
+            'name' => $ns.'ginjal__kanan__batu',
             'data' => ['Ada', 'Tidak'],
         ], false)
         .'</div>'
@@ -69,7 +71,7 @@
         '<div class="indent1">Hidronefrosis</div>',
         '<div class="indent1">'
         .BS::radio_array([
-            'name' => 'ginjal__kiri__hidronefrosis',
+            'name' => $ns.'ginjal__kiri__hidronefrosis',
             'data' => ['Tidak', 'Ringan', 'Sedang', 'Berat']
         ], false)
         .'</div>'
@@ -78,7 +80,7 @@
         '<div class="indent1">Batu</div>',
         '<div class="indent1">'
         .BS::radio_array([
-            'name' => 'ginjal__kiri__batu',
+            'name' => $ns.'ginjal__kiri__batu',
             'data' => ['Ada', 'Tidak']
         ], false)
         .'</div>'
@@ -96,11 +98,12 @@
         FORM::row(
             $caption,
             BS::radio_array([
-                'name' => 'buli__'.$field,
+                'name' => $ns.'buli__'.$field,
                 'data' => ['Ada', 'Tidak']
             ], false)
         );
     }
+    //======[ End Follow Up : Form OAB_kuesioner_pemeriksaan_penunjang__usg ]===
 
     FORM::show();
   @endphp

@@ -9,6 +9,7 @@ use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 use App\Modules\Follow_up\Models\Follow_up as ModuleModel;
 use App\Modules\Follow_up\Models\OAB\OAB_follow_up;
+use App\Modules\Follow_up\Models\OAB\OAB_follow_up_pemeriksaan_laboratorium;
 use App\Modules\Pasien\Models\Pasien;
 use App\Modules\Pasien\Models\OAB\OAB_diagnosis;
 use App\Modules\Pasien\Models\OAB\OAB_terapi_medikamentosa;
@@ -369,4 +370,115 @@ class Follow_upController extends Controller
                 break;
         }
     }
+
+    //===[ Begin : Pemeriksaan Laboratorium ]===================================
+    public function list_oab_pemeriksaan_laboratorium($pasien_id, $id): View
+    {
+    }
+
+    private function _form_oab_pemeriksaan_laboratorium(
+        $pasien_id = 0, $id = 0, $default = [], $mode = ''
+    ): View
+    {
+        $view = 'form_pemeriksaan_laboratorium';
+        $page_title  = ($mode == 'detail') ? '' : 'Add ';
+        $page_title .= 'Pemeriksaan Laboratorium';
+        if ($mode == 'detail') {
+            $form_action = route(
+                'follow_up.'.str_replace('form_', 'update_oab_', $view),
+                $pasien_id, $id
+            );
+        } else {
+            // $id = oab_follow_up.id
+            $form_action = route(
+                'follow_up.'.str_replace('form_', 'add_oab_', $view),
+                [
+                    'pasien_id' => $pasien_id,
+                    'id' => $id,
+                ]
+            );
+        }
+
+        return $this->moduleView(
+            'OAB/'.$view,
+            [
+                'default' => $default,
+                'page_title' => $page_title,
+                'form_action' => $form_action,
+            ]
+        );
+    }
+
+    public function add_oab_pemeriksaan_laboratorium($pasien_id, $id): View
+    {
+        // [TODO] set allow access
+        //$pasien = $this->_allow_access($id);
+
+        $default = [];
+
+        return $this->_form_oab_pemeriksaan_laboratorium($pasien_id, $id, $default, 'add');
+    }
+
+    public function add_oab_pemeriksaan_laboratorium_process(
+        Request $request, $pasien_id, $id
+    ): RedirectResponse
+    {
+        // [TODO] set allow access
+        //$pasien = $this->_allow_access($id);
+
+        $page_title = 'Pemeriksaan Laboratorium';
+
+        $data = $request->all();
+        $data['pasien_id'] = $pasien_id;
+        $data['follow_up_id'] = $id;
+
+        OAB_follow_up_pemeriksaan_laboratorium::base_insert($data);
+
+        $this->flash_success_add($page_title);
+
+        return redirect()->route(
+            'follow_up.detail', [
+                'pasien_id' => $pasien_id,
+                'follow_up_id' => $id,
+            ]
+        );
+    }
+
+    public function detail_oab_pemeriksaan_laboratorium($pasien_id, $id): View
+    {
+        $temp = OAB_follow_up_pemeriksaan_laboratorium::findOrFail($id);
+        $pasien = $this->_allow_access(
+            isset($temp->pasien_id) ? $temp->pasien_id : 0
+        );
+
+        $default = $temp;
+
+        return $this->_form_oab_pemeriksaan_laboratorium($id, $default, 'detail');
+    }
+
+    public function update_oab_pemeriksaan_laboratorium_process(
+        Request $request, $pasien_id, $id
+    ): RedirectResponse
+    {
+        $temp = OAB_follow_up_pemeriksaan_laboratorium::findOrFail($id);
+        $pasien = $this->_allow_access(
+            isset($temp->pasien_id) ? $temp->pasien_id : 0
+        );
+
+        $page_title = 'Pemeriksaan Laboratorium';
+
+        $data = $request->all();
+
+        OAB_follow_up_pemeriksaan_laboratorium::base_update_by_id(
+            $data, $id
+        );
+
+        $this->flash_success_update($page_title);
+
+        return redirect()->route(
+            MODULE.'.list_oab_pemeriksaan_laboratorium', $pasien->id
+        );
+    }
+    //===[ End : Pemeriksaan Laboratorium ]=====================================
+
 }

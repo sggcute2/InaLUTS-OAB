@@ -18,4 +18,15 @@ Route::name($m.'.')->prefix($m)->controller($use_controller)->group(function(){
 
     Route::post('/{pasien_id}/{id}/update_oab', 'update_oab_process')
         ->name('update_oab');
+
+    $v = 'pemeriksaan_laboratorium';
+    if ($v == 'pemeriksaan_laboratorium') {
+        Route::get('/{pasien_id}/{id}/list_oab_'.$v, 'list_oab_'.$v)
+            ->name('list_oab_'.$v);
+        Route::get('/{pasien_id}/{id}/add_oab_'.$v, 'add_oab_'.$v)
+            ->name('add_oab_'.$v);
+
+        Route::post('/{pasien_id}/{id}/add_oab_'.$v, 'add_oab_'.$v.'_process')
+            ->name('add_oab_'.$v);
+    }
 });

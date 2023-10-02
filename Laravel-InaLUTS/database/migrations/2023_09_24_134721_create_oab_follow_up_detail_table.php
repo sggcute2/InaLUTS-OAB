@@ -46,6 +46,10 @@ return new class extends Migration
             $table->text('pemeriksaan_penunjang_uroflowmetri_ya')->default('a:0:{}');
             $table->string('pemeriksaan_penunjang_pemeriksaan_laboratorium', 5)->default('');
             $table->text('pemeriksaan_penunjang_pemeriksaan_laboratorium_ya')->default('a:0:{}');
+            $table->string('pemeriksaan_penunjang_bladder_diary', 5)->default('');
+            $table->text('pemeriksaan_penunjang_bladder_diary_ya')->default('a:0:{}');
+            $table->string('pemeriksaan_penunjang_upp', 5)->default('');
+            $table->text('pemeriksaan_penunjang_upp_ya')->default('a:0:{}');
             $table->string('pemeriksaan_penunjang_urodinamik', 5)->default('');
             $table->text('pemeriksaan_penunjang_urodinamik_ya')->default('a:0:{}');
             $table->string('pemeriksaan_penunjang_sistoskopi', 5)->default('');

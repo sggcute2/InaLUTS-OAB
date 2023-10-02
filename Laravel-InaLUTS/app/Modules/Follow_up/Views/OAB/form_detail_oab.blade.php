@@ -7,6 +7,8 @@
 @section('content')
   {{ BS::box_begin($page_title ?? '') }}
   @php
+    $div_header = '<div style="text-align:center;background:darkblue;padding:5px;font-weight:bold;color:white">';
+
     FORM::setup([
       'action' => $form_action
     ]);
@@ -264,7 +266,6 @@
                 $caption,
                 BS::radio_ya_tidak([
                     'name' => $field,
-                    'with_blank' => true,
                     ], false)
             );
         }
@@ -289,10 +290,162 @@
                 $caption,
                 BS::radio_ya_tidak([
                     'name' => $field,
-                    'with_blank' => true,
                     ], false)
             );
         }
+    }
+
+    //==============================================[ Pemeriksaan Penunjang ]===
+    FORM::row(':header2', 'Pemeriksaan Penunjang');
+    $ns = 'pemeriksaan_penunjang_';
+    $field = 'pemeriksaan_penunjang';
+    $caption = 'Apakah ada tambahan pemeriksaan penunjang';
+    $choice2 = '';
+    $temp2 = '
+        USG
+        Uroflowmetri
+        Pemeriksaan Laboratorium
+        Bladder Diary
+        UPP
+        Urodinamik
+        Sistoskopi
+    ';
+    $x2 = explode("\n", $temp2);
+    foreach($x2 as $v2){
+        if (trim($v2) != '') {
+            $caption2 = trim($v2);
+            $field2 = 'pemeriksaan_penunjang_'.strtolower(str_replace(' ', '_', $caption2));
+
+            $temp_choice2 = '';
+            switch($field2){
+                case 'pemeriksaan_penunjang_usg':
+                    //====[ Begin Follow Up : Form OAB_kuesioner_pemeriksaan_penunjang__usg ]===
+                    $ns = 'pemeriksaan_penunjang_usg_';
+                    $temp_choice2 .= '<b>USG (abdominal / transrektal)</b><br>';
+                    $temp_choice2 .= BS::radio_array([
+                        'name' => $ns.'usg',
+                        'data' => ['Dilakukan', 'Tidak Dilakukan'],
+                        'vertical' => true,
+                        'toggle_div_by_value' => [
+                            'Dilakukan' => [
+                                    'id' => $ns.'usg_dilakukan__date',
+                                    'class' => 'indent1',
+                                    'html' => 'Tanggal : '
+                                        .BS::datepicker([
+                                            'name' => $ns.'usg_date',
+                                            'required' => false,
+                                        ], false),
+                                ],
+                        ],
+                    ], false);
+                    $temp_choice2 .= '<br><br>';
+                    if (isset($default[$ns.'usg']) && $default[$ns.'usg'] == 'Dilakukan') {
+                    } else {
+                        BS::jquery_ready("$('#".$ns."usg_dilakukan__date').hide();");
+                    }
+
+                    $field3 = $ns.'ct_urografi';
+                    $temp_choice2 .= '<b>CT Urografi</b><br>';
+                    $temp_choice2 .= BS::radio_ya_tidak([
+                        'name' => $ns.$field3,
+                    ], false);
+                    $temp_choice2 .= '<br><br>';
+
+                    $temp_choice2 .= $div_header.'Ginjal</div>';
+                    $temp_choice2 .= '<b>Kanan</b><br>';
+                    $temp_choice2 .= '<div class="indent1"><b>Hidronefrosis</b></div>';
+                    $temp_choice2 .= '<div class="indent1" style="margin-bottom:1em">';
+                    $temp_choice2 .= BS::radio_array([
+                        'name' => $ns.'ginjal__kanan__hidronefrosis',
+                        'data' => ['Tidak', 'Ringan', 'Sedang', 'Berat'],
+                    ], false);
+                    $temp_choice2 .= '</div>';
+                    $temp_choice2 .= '<div class="indent1"><b>Batu</b></div>';
+                    $temp_choice2 .= '<div class="indent1" style="margin-bottom:1em">';
+                    $temp_choice2 .= BS::radio_array([
+                        'name' => $ns.'ginjal__kanan__batu',
+                        'data' => ['Ada', 'Tidak'],
+                    ], false);
+                    $temp_choice2 .= '</div>';
+                    $temp_choice2 .= '<b>Kiri</b><br>';
+                    $temp_choice2 .= '<div class="indent1"><b>Hidronefrosis</b></div>';
+                    $temp_choice2 .= '<div class="indent1" style="margin-bottom:1em">';
+                    $temp_choice2 .= BS::radio_array([
+                        'name' => $ns.'ginjal__kiri__hidronefrosis',
+                        'data' => ['Tidak', 'Ringan', 'Sedang', 'Berat']
+                    ], false);
+                    $temp_choice2 .= '</div>';
+                    $temp_choice2 .= '<div class="indent1"><b>Batu</b></div>';
+                    $temp_choice2 .= '<div class="indent1">';
+                    $temp_choice2 .= BS::radio_array([
+                        'name' => $ns.'ginjal__kiri__batu',
+                        'data' => ['Ada', 'Tidak']
+                    ], false);
+                    $temp_choice2 .= '</div>';
+
+                    $temp_choice2 .= $div_header.'Buli</div>';
+                    $a3 = [
+                        'Batu',
+                        'Divertikel',
+                        'Massa intrabuli',
+                    ];
+                    foreach($a3 as $v3){
+                        $caption3 = trim($v3);
+                        $field3 = strtolower(str_replace(' ', '_', $caption3));
+                        $temp_choice2 .= '<b>'.$caption3.'</b><br>';
+                        $temp_choice2 .= BS::radio_array([
+                            'name' => $ns.'buli__'.$field3,
+                            'data' => ['Ada', 'Tidak']
+                        ], false);
+                        $temp_choice2 .= '<br><br>';
+                    }
+                    //====[ End Follow Up : Form OAB_kuesioner_pemeriksaan_penunjang__usg ]===
+                    break;
+
+                case 'pemeriksaan_laboratorium':
+                    /*
+                    ob_start();
+                    echo '<p class="pull-right">';
+                    echo BS::button('Add New', $pemeriksaan_penunjang__pemeriksaan_laboratorium__add_action);
+                    echo '</p><br><br>';
+                    DT::view('pemeriksaan_penunjang__pemeriksaan_laboratorium');
+                    $temp_choice2 = ob_get_contents();
+                    ob_end_clean();
+                    */
+                    break;
+            }
+
+            $choice2 .= '<b>'.$caption2.'</b><br>';
+            $choice2 .= BS::radio_ya_tidak([
+                'name' => $field2,
+                'toggle_div' => true,
+            ], false);
+            $choice2 .= '<div id="div_'.$field2.'_ya" class="indent2">';
+            $choice2 .= $temp_choice2;
+            $choice2 .= '</div>';
+            $choice2 .= '<br><br>';
+
+            if (isset($default[$field2]) && $default[$field2] == 'Ya') {
+            } else {
+                BS::jquery_ready("$('#div_{$field2}_ya').hide();");
+            }
+        }
+    }
+    FORM::row(
+        $caption,
+        BS::radio_ya_tidak([
+            'name' => $field,
+            'toggle_div' => true,
+        ], false)
+    );
+    FORM::row(':merge',
+        '<div id="div_'.$field.'_ya" class="indent1">'
+        .$choice2
+        .'</div>'
+    );
+    if (isset($default[$field]) && $default[$field] == 'Ya') {
+    } else {
+        BS::jquery_ready("$('#div_{$field}_ya').hide();");
     }
 
     FORM::show();

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Modules\Follow_up\Models\Follow_up;
 use App\Modules\Follow_up\Models\OAB\OAB_follow_up_detail;
+use App\Modules\Follow_up\Models\OAB\OAB_follow_up_pemeriksaan_laboratorium;
 /*
 use App\Modules\Follow_up\Controllers\Traits\OAB\{
     OAB_terapi_operatifTrait,
@@ -83,6 +84,53 @@ trait OABTrait {
         }
         //dd($default);
 
+        //===[ Begin Process : Pemeriksaan Penunjang ]==========================
+
+        //===[ Begin Process : Pemeriksaan Penunjang : USG ]====================
+        $ns = 'pemeriksaan_penunjang_usg_';$field = $ns.'ya';
+        try {
+            $data_arr = unserialize($default[$field]);
+        } catch (Exception $exception) {
+            $data_arr = [];
+        }
+        if (count($data_arr) > 0) {
+            foreach($data_arr as $f => $v)$default[$f] = $v;
+        }
+        //dd($default);
+        //===[ End Process : Pemeriksaan Penunjang : USG ]======================
+
+        $temp_view = 'list_oab_pemeriksaan_laboratorium';
+        $pemeriksaan_penunjang__pemeriksaan_laboratorium__add_action = route(
+            'follow_up.add_'.str_replace('list_', '', $temp_view),
+            [
+                'pasien_id' => $pasien_id,
+                'id' => $id,
+            ]
+        );
+
+        $data = OAB_follow_up_pemeriksaan_laboratorium::where('pasien_id', $pasien_id)
+            ->where('follow_up_id', $id)
+            ->orderBy('lab_date', 'desc')
+            ->get();
+
+        $column = array();
+        $column[] = array('Tanggal Pemeriksaan Laboratorium', function($row){
+            return FORMAT::date($row['lab_date']);
+        });
+        $column[] = array('Action', function($row) {
+            return
+                BS::button(
+                    'Detail',
+                    route(MODULE.'.detail_oab_pemeriksaan_laboratorium', [
+                        'pasien_id' => $row['pasien_id'],
+                        'id' => $row['id'],
+                    ]),
+                    false
+                );
+        });
+        DT::add('pemeriksaan_penunjang__pemeriksaan_laboratorium', $data, $column);
+        //===[ End Process : Pemeriksaan Penunjang ]============================
+
         return $this->moduleView(
             'OAB/form_'.str_replace('detail_oab_', '', $view),
             [
@@ -91,6 +139,8 @@ trait OABTrait {
                 'form_action' => $form_action,
                 'pasien_id' => $pasien_id,
                 'id' => $id,
+                'pemeriksaan_penunjang__pemeriksaan_laboratorium__add_action'
+                    => $pemeriksaan_penunjang__pemeriksaan_laboratorium__add_action,
             ]
         );
     }
@@ -154,6 +204,26 @@ trait OABTrait {
             //$data[$field.'_ya'] = serialize([]);
         //}
         // End Process : Bladder Diary
+
+        //===[ Begin Process : Pemeriksaan Penunjang ]==========================
+
+        //===[ Begin Process : Pemeriksaan Penunjang : USG ]====================
+        $field = 'pemeriksaan_penunjang_usg';
+        if (isset($data[$field]) && $data[$field] == 'Ya') {
+            $data_temp = [];
+            $ns = $field.'_';
+            foreach($data as $f => $v){
+                if (substr($f, 0, strlen($ns)) == $ns) {
+                    $data_temp[$f] = $v;
+                }
+            }
+            $data[$field.'_ya'] = serialize($data_temp);
+        } else {
+            $data[$field.'_ya'] = serialize([]);
+        }
+        //===[ End Process : Pemeriksaan Penunjang : USG ]======================
+
+        //===[ End Process : Pemeriksaan Penunjang ]============================
 
         //dd($data);
 

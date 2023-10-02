@@ -11,6 +11,7 @@ use DT;
 use FORMAT;
 
 trait OAB_pemeriksaan_laboratoriumTrait {
+
     public function list_oab_pemeriksaan_laboratorium($id): View
     {
         $pasien = $this->_allow_access($id);
@@ -143,4 +144,5 @@ trait OAB_pemeriksaan_laboratoriumTrait {
             MODULE.'.list_oab_pemeriksaan_laboratorium', $pasien->id
         );
     }
+
 }
