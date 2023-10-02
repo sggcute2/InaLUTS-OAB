@@ -929,6 +929,101 @@
                     break;
 
                 case 'terapi_non_operatif':
+                    //=====================[ Begin Follow Up : Form OAB_terapi_non_operatif ]===
+                    $ns = 'terapi_non_operatif_';
+                    $temp3 = '
+                    Tatalaksana non operatif;tatalaksana_non_operatif
+                    ';
+                    $x3 = explode("\n", $temp3);
+                    foreach($x3 as $v3){
+                        if (trim($v3) != '') {
+                            $x3_2 = explode(';', trim($v3));
+                            $caption3 = trim($x3_2[0]);
+                            $field3 = trim($x3_2[1]);
+
+                            $temp_choice2 .= '<b>'.$caption3.'</b><br>';
+                            $temp_choice2 .=
+                                BS::radio_ya_tidak([
+                                    'name' => $ns.$field3,
+                                    'toggle_div' => in_array($field3, [
+                                        'tatalaksana_non_operatif',
+                                    ]),
+                                ], false);
+
+                            if ($field3 == 'tatalaksana_non_operatif') {
+                                $a3 = [
+                                    'Kateter menetap',
+                                    'Kateter berkala',
+                                    'Penggunaan diapers',
+                                    'Penile clamp',
+                                    'Kondom kateter',
+                                ];
+                                $buffer = [];
+                                foreach($a3 as $va3){
+                                    $field_va3 = strtolower(
+                                        str_replace(array(' ', '-'), '_', $va3)
+                                    );
+
+                                    $buffer[] = '<div style="margin-bottom:1em">'
+                                        .$va3.' : '
+                                        .BS::radio_ya_tidak([
+                                            'name' => $ns.$field_va3,
+                                        ], false)
+                                        .'</div>';
+                                }
+
+                                $temp_choice2 .=
+                                    '<div id="div_'.$ns.$field3.'_ya" class="indent1">'
+                                    .implode('', $buffer)
+                                    .'</div>';
+
+                                if (isset($default[$ns.$field3]) && $default[$ns.$field3] == 'Ya') {
+                                } else {
+                                    BS::jquery_ready("$('#div_{$ns}{$field3}_ya').hide();");
+                                }
+                            } else if ($field3 == 'ptns') {
+                                $a3 = [
+                                    'Frekuensi;x/minggu',
+                                    'Durasi;x',
+                                ];
+                                $buffer = [];
+                                foreach($a3 as $va3){
+                                    $xa3 = explode(';', trim($va3));
+                                    $caption_va3 = trim($xa3[0]);
+                                    $ext_va3 = trim($xa3[1]);
+                                    $field_va3 = strtolower(
+                                        str_replace(array(' ', '-'), '_', $caption_va3)
+                                    );
+
+                                    $buffer[] = '<div style="margin-bottom:1em">'.$caption_va3.' : '.BS::number([
+                                        'name' => $ns.$field3.'_'.$field_va3,
+                                        'caption' => $caption_va3,
+                                        'inline' => true,
+                                    ], false).' '.$ext_va3.'</div>';
+                                }
+
+                                $temp_choice2 .=
+                                    '<div id="div_'.$ns.$field3.'_ya" class="indent1">'
+                                    .implode('', $buffer)
+                                    .'</div>';
+
+                                if (isset($default[$ns.$field3]) && $default[$ns.$field3] == 'Ya') {
+                                } else {
+                                    BS::jquery_ready("$('#div_{$ns}{$field3}_ya').hide();");
+                                }
+                            } else {
+                                $temp_choice2 .=
+                                    '<div id="div_'.$ns.$field3.'_ya" class="indent1">'
+                                    .'</div>';
+
+                                if (isset($default[$ns.$field3]) && $default[$ns.$field3] == 'Ya') {
+                                } else {
+                                    BS::jquery_ready("$('#div_{$ns}{$field3}_ya').hide();");
+                                }
+                            }
+                        }
+                    }
+                    //=======================[ End Follow Up : Form OAB_terapi_non_operatif ]===
                     break;
 
                 case 'terapi_medikamentosa':

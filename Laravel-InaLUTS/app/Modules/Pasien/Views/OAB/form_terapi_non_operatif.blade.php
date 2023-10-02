@@ -12,6 +12,8 @@
     ]);
     FORM::set_var($default);
 
+    //=====================[ Begin Follow Up : Form OAB_terapi_non_operatif ]===
+    $ns = '';
     $temp = '
     Tatalaksana non operatif;tatalaksana_non_operatif
     ';
@@ -25,7 +27,7 @@
             FORM::row(
                 $caption,
                 BS::radio_ya_tidak([
-                    'name' => $field,
+                    'name' => $ns.$field,
                     'toggle_div' => in_array($field, [
                         'tatalaksana_non_operatif',
                     ]),
@@ -49,19 +51,19 @@
                     $buffer[] = '<div style="margin-bottom:1em">'
                         .$va.' : '
                         .BS::radio_ya_tidak([
-                            'name' => $field_va,
+                            'name' => $ns.$field_va,
                         ], false)
                         .'</div>';
                 }
 
                 FORM::row(':merge',
-                    '<div id="div_'.$field.'_ya" class="indent1">'
+                    '<div id="div_'.$ns.$field.'_ya" class="indent1">'
                     .implode('', $buffer)
                     .'</div>'
                 );
-                if (isset($default[$field]) && $default[$field] == 'Ya') {
+                if (isset($default[$ns.$field]) && $default[$ns.$field] == 'Ya') {
                 } else {
-                    BS::jquery_ready("$('#div_{$field}_ya').hide();");
+                    BS::jquery_ready("$('#div_{$ns}{$field}_ya').hide();");
                 }
             } else if ($field == 'ptns') {
                 $a = [
@@ -78,33 +80,34 @@
                     );
 
                     $buffer[] = '<div style="margin-bottom:1em">'.$caption_va.' : '.BS::number([
-                        'name' => $field.'_'.$field_va,
+                        'name' => $ns.$field.'_'.$field_va,
                         'caption' => $caption_va,
                         'inline' => true,
                     ], false).' '.$ext_va.'</div>';
                 }
 
                 FORM::row(':merge',
-                    '<div id="div_'.$field.'_ya" class="indent1">'
+                    '<div id="div_'.$ns.$field.'_ya" class="indent1">'
                     .implode('', $buffer)
                     .'</div>'
                 );
-                if (isset($default[$field]) && $default[$field] == 'Ya') {
+                if (isset($default[$ns.$field]) && $default[$ns.$field] == 'Ya') {
                 } else {
-                    BS::jquery_ready("$('#div_{$field}_ya').hide();");
+                    BS::jquery_ready("$('#div_{$ns}{$field}_ya').hide();");
                 }
             } else {
                 FORM::row(':merge',
-                    '<div id="div_'.$field.'_ya" class="indent1">'
+                    '<div id="div_'.$ns.$field.'_ya" class="indent1">'
                     .'</div>'
                 );
-                if (isset($default[$field]) && $default[$field] == 'Ya') {
+                if (isset($default[$ns.$field]) && $default[$ns.$field] == 'Ya') {
                 } else {
-                    BS::jquery_ready("$('#div_{$field}_ya').hide();");
+                    BS::jquery_ready("$('#div_{$ns}{$field}_ya').hide();");
                 }
             }
         }
     }
+    //=======================[ End Follow Up : Form OAB_terapi_non_operatif ]===
 
     FORM::show();
   @endphp
