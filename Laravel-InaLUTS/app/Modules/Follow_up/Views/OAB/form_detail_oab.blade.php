@@ -453,16 +453,15 @@
                     break;
 
                 case 'pemeriksaan_penunjang_pemeriksaan_laboratorium':
-                    /*
                     ob_start();
                     echo '<p class="pull-right">';
-                    echo BS::button('Add New', $pemeriksaan_penunjang__pemeriksaan_laboratorium__add_action);
+                    //echo BS::button('Add New', $pemeriksaan_penunjang__pemeriksaan_laboratorium__add_action);
+                    echo '<button type="button" class="btn btn-primary" onclick="javascript:go_pemeriksaan_penunjang_pemeriksaan_laboratorium()">Add New</button>';
                     echo '</p><br><br>';
                     DT::view('pemeriksaan_penunjang__pemeriksaan_laboratorium');
                     $temp_choice2 = ob_get_contents();
                     ob_end_clean();
-                    */
-                    $temp_choice2 .= '<div style="padding:1em;background:lightgoldenrodyellow;font-weight:bold;">Under Construction</div>';
+                    //$temp_choice2 .= '<div style="padding:1em;background:lightgoldenrodyellow;font-weight:bold;">Under Construction</div>';
                     break;
 
                 case 'pemeriksaan_penunjang_bladder_diary':
@@ -1322,9 +1321,18 @@
         BS::jquery_ready("$('#div_{$field}_ya').hide();");
     }
 
+    FORM::hidden('forward_to');
+
     FORM::show();
   @endphp
   {{ BS::box_end() }}
+@endsection
+
+@section('js')
+function go_pemeriksaan_penunjang_pemeriksaan_laboratorium(){
+    $('#forward_to').val('pemeriksaan_penunjang_pemeriksaan_laboratorium');
+  $('form')[0].submit();
+}
 @endsection
 
 @section('jquery_ready')

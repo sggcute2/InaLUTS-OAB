@@ -383,10 +383,14 @@ class Follow_upController extends Controller
         $view = 'form_pemeriksaan_laboratorium';
         $page_title  = ($mode == 'detail') ? '' : 'Add ';
         $page_title .= 'Pemeriksaan Laboratorium';
+        //dd($mode);
         if ($mode == 'detail') {
             $form_action = route(
                 'follow_up.'.str_replace('form_', 'update_oab_', $view),
-                $pasien_id, $id
+                [
+                    'pasien_id' => $pasien_id,
+                    'id' => $id,
+                ]
             );
         } else {
             // $id = oab_follow_up.id
@@ -439,7 +443,7 @@ class Follow_upController extends Controller
         return redirect()->route(
             'follow_up.detail', [
                 'pasien_id' => $pasien_id,
-                'follow_up_id' => $id,
+                'id' => $id,
             ]
         );
     }
@@ -447,13 +451,16 @@ class Follow_upController extends Controller
     public function detail_oab_pemeriksaan_laboratorium($pasien_id, $id): View
     {
         $temp = OAB_follow_up_pemeriksaan_laboratorium::findOrFail($id);
-        $pasien = $this->_allow_access(
+        //dd($temp);
+        /*$pasien = $this->_allow_access(
             isset($temp->pasien_id) ? $temp->pasien_id : 0
         );
+        */
 
         $default = $temp;
+        //dd($default->toArray());
 
-        return $this->_form_oab_pemeriksaan_laboratorium($id, $default, 'detail');
+        return $this->_form_oab_pemeriksaan_laboratorium($pasien_id, $id, $default, 'detail');
     }
 
     public function update_oab_pemeriksaan_laboratorium_process(
@@ -461,9 +468,12 @@ class Follow_upController extends Controller
     ): RedirectResponse
     {
         $temp = OAB_follow_up_pemeriksaan_laboratorium::findOrFail($id);
+        //dd($temp->follow_up_id);
+        /*
         $pasien = $this->_allow_access(
             isset($temp->pasien_id) ? $temp->pasien_id : 0
         );
+        */
 
         $page_title = 'Pemeriksaan Laboratorium';
 
@@ -476,7 +486,10 @@ class Follow_upController extends Controller
         $this->flash_success_update($page_title);
 
         return redirect()->route(
-            MODULE.'.list_oab_pemeriksaan_laboratorium', $pasien->id
+            'follow_up.detail', [
+                'pasien_id' => $pasien_id,
+                'id' => $temp->follow_up_id,
+            ]
         );
     }
     //===[ End : Pemeriksaan Laboratorium ]=====================================

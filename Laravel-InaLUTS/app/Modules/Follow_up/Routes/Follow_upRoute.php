@@ -25,8 +25,12 @@ Route::name($m.'.')->prefix($m)->controller($use_controller)->group(function(){
             ->name('list_oab_'.$v);
         Route::get('/{pasien_id}/{id}/add_oab_'.$v, 'add_oab_'.$v)
             ->name('add_oab_'.$v);
+        Route::get('/{pasien_id}/{id}/detail_oab_'.$v, 'detail_oab_'.$v)
+            ->name('detail_oab_'.$v);
 
         Route::post('/{pasien_id}/{id}/add_oab_'.$v, 'add_oab_'.$v.'_process')
             ->name('add_oab_'.$v);
+        Route::post('/{pasien_id}/{id}/update_oab_'.$v, 'update_oab_'.$v.'_process')
+            ->name('update_oab_'.$v);
     }
 });

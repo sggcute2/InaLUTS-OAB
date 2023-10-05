@@ -529,11 +529,22 @@ trait OABTrait {
             pasien_id = $pasien_id AND follow_up_id = $id
         ");
 
-        $this->flash_success_update($page_title);
+        if (
+            request()->get('forward_to')
+                == 'pemeriksaan_penunjang_pemeriksaan_laboratorium'
+        ) {
+            return redirect()->route(
+                MODULE.'.add_oab_pemeriksaan_laboratorium', [
+                'pasien_id' => $pasien_id,
+                'id' => $id,
+            ]);
+        } else {
+            $this->flash_success_update($page_title);
 
-        return redirect()->route(MODULE.'.detail', [
-            'pasien_id' => $pasien_id,
-            'id' => $id,
-        ]);
+            return redirect()->route(MODULE.'.detail', [
+                'pasien_id' => $pasien_id,
+                'id' => $id,
+            ]);
+        }
     }
 }
