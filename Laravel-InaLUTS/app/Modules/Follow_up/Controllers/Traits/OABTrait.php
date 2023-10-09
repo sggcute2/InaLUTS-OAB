@@ -8,6 +8,7 @@ use Illuminate\View\View;
 use App\Modules\Follow_up\Models\Follow_up;
 use App\Modules\Follow_up\Models\OAB\OAB_follow_up_detail;
 use App\Modules\Follow_up\Models\OAB\OAB_follow_up_pemeriksaan_laboratorium;
+use App\Modules\Follow_up\Models\OAB\OAB_follow_up_terapi_operatif_injeksi_botox;
 /*
 use App\Modules\Follow_up\Controllers\Traits\OAB\{
     OAB_terapi_operatifTrait,
@@ -164,15 +165,6 @@ trait OABTrait {
         //dd($default);
         //===[ End Process : Pemeriksaan Penunjang : Sistoskopi ]===============
 
-        $temp_view = 'list_oab_pemeriksaan_laboratorium';
-        $pemeriksaan_penunjang__pemeriksaan_laboratorium__add_action = route(
-            'follow_up.add_'.str_replace('list_', '', $temp_view),
-            [
-                'pasien_id' => $pasien_id,
-                'id' => $id,
-            ]
-        );
-
         $data = OAB_follow_up_pemeriksaan_laboratorium::where('pasien_id', $pasien_id)
             ->where('follow_up_id', $id)
             ->orderBy('lab_date', 'desc')
@@ -261,6 +253,28 @@ trait OABTrait {
             foreach($data_arr as $f => $v)$default[$f] = $v;
         }
         //dd($default);
+
+        $data = OAB_follow_up_terapi_operatif_injeksi_botox::where('pasien_id', $pasien_id)
+            ->where('follow_up_id', $id)
+            ->orderBy('injeksi_botox_date', 'desc')
+            ->get();
+        $column = array();
+        $column[] = array('Tanggal', function($row){
+            return FORMAT::date($row['injeksi_botox_date']);
+        });
+        $column[] = array('Tindakan', 'injeksi_botox_tindakan');
+        $column[] = array('Action', function($row) {
+            return
+                BS::button(
+                    'Detail',
+                    route(MODULE.'.detail_oab_terapi_operatif_injeksi_botox', [
+                        'pasien_id' => $row['pasien_id'],
+                        'id' => $row['id'],
+                    ]),
+                    false
+                );
+        });
+        DT::add('terapi__operatif__injeksi_botox', $data, $column);
         //===[ End Process : Terapi Lanjutan : Operatif ]=======================
 
         //===[ End Process : Terapi Lanjutan ]==================================
@@ -273,8 +287,6 @@ trait OABTrait {
                 'form_action' => $form_action,
                 'pasien_id' => $pasien_id,
                 'id' => $id,
-                'pemeriksaan_penunjang__pemeriksaan_laboratorium__add_action'
-                    => $pemeriksaan_penunjang__pemeriksaan_laboratorium__add_action,
             ]
         );
     }
@@ -551,9 +563,20 @@ trait OABTrait {
         ) {
             return redirect()->route(
                 MODULE.'.add_oab_pemeriksaan_laboratorium', [
-                'pasien_id' => $pasien_id,
-                'id' => $id,
-            ]);
+                    'pasien_id' => $pasien_id,
+                    'id' => $id,
+                ]
+            );
+        } else if (
+            request()->get('forward_to')
+                == 'terapi_operatif_injeksi_botox'
+        ) {
+            return redirect()->route(
+                MODULE.'.add_oab_terapi_operatif_injeksi_botox', [
+                    'pasien_id' => $pasien_id,
+                    'id' => $id,
+                ]
+            );
         } else {
             $this->flash_success_update($page_title);
 

@@ -33,4 +33,19 @@ Route::name($m.'.')->prefix($m)->controller($use_controller)->group(function(){
         Route::post('/{pasien_id}/{id}/update_oab_'.$v, 'update_oab_'.$v.'_process')
             ->name('update_oab_'.$v);
     }
+
+    $v = 'terapi_operatif';
+    if ($v == 'terapi_operatif') {
+        Route::get('/{pasien_id}/{id}/list_oab_'.$v.'_injeksi_botox', 'list_oab_'.$v.'_injeksi_botox')
+            ->name('list_oab_'.$v.'_injeksi_botox');
+        Route::get('/{pasien_id}/{id}/add_oab_'.$v.'_injeksi_botox', 'add_oab_'.$v.'_injeksi_botox')
+            ->name('add_oab_'.$v.'_injeksi_botox');
+        Route::get('/{pasien_id}/{id}/detail_oab_'.$v.'_injeksi_botox', 'detail_oab_'.$v.'_injeksi_botox')
+            ->name('detail_oab_'.$v.'_injeksi_botox');
+
+        Route::post('/{pasien_id}/{id}/add_oab_'.$v.'_injeksi_botox', 'add_oab_'.$v.'_injeksi_botox_process')
+            ->name('add_oab_'.$v.'_injeksi_botox');
+        Route::post('/{pasien_id}/{id}/update_oab_'.$v.'_injeksi_botox', 'update_oab_'.$v.'_injeksi_botox_process')
+            ->name('update_oab_'.$v.'_injeksi_botox');
+    }
 });

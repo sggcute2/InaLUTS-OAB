@@ -1291,7 +1291,66 @@
                     break;
 
                 case 'terapi_operatif':
-                    $temp_choice2 .= '<div style="padding:1em;background:lightgoldenrodyellow;font-weight:bold;">Under Construction</div>';
+                    //=========[ Begin Follow Up : Form OAB_terapi_operatif ]===
+                    ob_start();
+                    echo '<p class="pull-right">';
+                    echo '<button type="button" class="btn btn-primary" onclick="javascript:go_terapi_operatif_injeksi_botox()">Add New</button>';
+                    echo '</p><br><br>';
+                    DT::view('terapi__operatif__injeksi_botox');
+                    $injeksi_botox = ob_get_contents();
+                    ob_end_clean();
+                    //$temp_choice2 .= '<div style="padding:1em;background:lightgoldenrodyellow;font-weight:bold;">Under Construction</div>';
+
+                    $ns = 'terapi_operatif_';
+                    $field3 = $ns.'injeksi_botox';
+                    $temp_choice2 .= '<b>Injeksi Botox</b><br>';
+                    $temp_choice2 .=
+                        BS::radio_ya_tidak([
+                            'name' => $field3,
+                            'toggle_div' => true,
+                        ], false);
+                    $temp_choice2 .=
+                        '<div id="div_'.$field3.'_ya" class="indent1">'
+                        .$injeksi_botox
+                        .'</div>';
+                    $temp_choice2 .= '<br><br>';
+                    if (isset($default[$field3]) && $default[$field3] == 'Ya') {
+                    } else {
+                        BS::jquery_ready("$('#div_{$field3}_ya').hide();");
+                    }
+
+                    $temp3 = '
+                        SNS
+                        Augmentasi/Cystoplasty
+                    ';
+                    $x3 = explode("\n", $temp3);
+                    foreach($x3 as $v3){
+                        if (trim($v3) != '') {
+                            $caption3 = trim($v3);
+                            $field3 = $ns.strtolower(str_replace(array(' ', '/'), '_', $caption3));
+
+                            $temp_choice2 .= '<b>'.$caption3.'</b><br>';
+                            $temp_choice2 .= BS::radio_ya_tidak([
+                                    'name' => $field3,
+                                    'toggle_div' => true,
+                                ], false);
+
+                            $temp_choice2 .=
+                                '<div id="div_'.$field3.'_ya" class="indent1">'
+                                .'Tanggal : '
+                                .BS::datepicker([
+                                    'name' => $field3.'_ya_date',
+                                    'required' => false,
+                                ], false)
+                                .'</div>';
+                            $temp_choice2 .= '<br><br>';
+                            if (isset($default[$field3]) && $default[$field3] == 'Ya') {
+                            } else {
+                                BS::jquery_ready("$('#div_{$field3}_ya').hide();");
+                            }
+                        }
+                    }
+                    //===========[ End Follow Up : Form OAB_terapi_operatif ]===
                     break;
             }
 
@@ -1338,6 +1397,11 @@
 @section('js')
 function go_pemeriksaan_penunjang_pemeriksaan_laboratorium(){
     $('#forward_to').val('pemeriksaan_penunjang_pemeriksaan_laboratorium');
+  $('form')[0].submit();
+}
+
+function go_terapi_operatif_injeksi_botox(){
+    $('#forward_to').val('terapi_operatif_injeksi_botox');
   $('form')[0].submit();
 }
 @endsection

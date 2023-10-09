@@ -11,6 +11,7 @@ use App\Modules\Follow_up\Models\Follow_up as ModuleModel;
 use App\Modules\Follow_up\Models\OAB\OAB_follow_up;
 use App\Modules\Follow_up\Models\OAB\OAB_follow_up_detail;
 use App\Modules\Follow_up\Models\OAB\OAB_follow_up_pemeriksaan_laboratorium;
+use App\Modules\Follow_up\Models\OAB\OAB_follow_up_terapi_operatif_injeksi_botox;
 use App\Modules\Pasien\Models\Pasien;
 use App\Modules\Pasien\Models\OAB\OAB_diagnosis;
 use App\Modules\Pasien\Models\OAB\OAB_terapi_medikamentosa;
@@ -507,5 +508,167 @@ class Follow_upController extends Controller
         );
     }
     //===[ End : Pemeriksaan Laboratorium ]=====================================
+
+    //===[ Begin : Terapi : Operatif : Injeksi Botox ]==========================
+    public function list_oab_terapi_operatif_injeksi_botox($pasien_id, $id): View
+    {
+    }
+
+    private function _form_oab_terapi_operatif_injeksi_botox(
+        $pasien_id = 0, $id = 0, $default = [], $mode = ''
+    ): View
+    {
+        $view = 'form_terapi_operatif_injeksi_botox';
+        $page_title  = ($mode == 'detail') ? '' : 'Add ';
+        $page_title .= 'Injeksi Botox';
+        //dd($mode);
+        if ($mode == 'detail') {
+            $form_action = route(
+                'follow_up.'.str_replace('form_', 'update_oab_', $view),
+                [
+                    'pasien_id' => $pasien_id,
+                    'id' => $id,
+                ]
+            );
+        } else {
+            // $id = oab_follow_up.id
+            $form_action = route(
+                'follow_up.'.str_replace('form_', 'add_oab_', $view),
+                [
+                    'pasien_id' => $pasien_id,
+                    'id' => $id,
+                ]
+            );
+        }
+
+        return $this->moduleView(
+            'OAB/'.$view,
+            [
+                'default' => $default,
+                'page_title' => $page_title,
+                'form_action' => $form_action,
+            ]
+        );
+    }
+
+    public function add_oab_terapi_operatif_injeksi_botox($pasien_id, $id): View
+    {
+        // [TODO] set allow access
+        //$pasien = $this->_allow_access($id);
+
+        $default = [];
+
+        return $this->_form_oab_terapi_operatif_injeksi_botox($pasien_id, $id, $default, 'add');
+    }
+
+    public function add_oab_terapi_operatif_injeksi_botox_process(
+        Request $request, $pasien_id, $id
+    ): RedirectResponse
+    {
+        // [TODO] set allow access
+        //$pasien = $this->_allow_access($id);
+
+        $follow_up = OAB_follow_up_detail::where('pasien_id', $pasien_id)
+            ->where('follow_up_id', $id)
+            ->first();
+        $data_follow_up__terapi_operatif_ya = [];
+        try {
+            $data_follow_up__terapi_operatif_ya = unserialize($follow_up['terapi_operatif_ya']);
+        } catch (Exception $exception) {
+            $data_follow_up__terapi_operatif_ya = [];
+        }
+        $data_follow_up__terapi_operatif_ya['terapi_operatif_injeksi_botox'] = 'Ya';
+        //dd($data_follow_up__terapi_operatif_ya);
+
+        $page_title = 'Injeksi Botox';
+
+        $data = $request->all();
+        $data['pasien_id'] = $pasien_id;
+        $data['follow_up_id'] = $id;
+
+        OAB_follow_up_terapi_operatif_injeksi_botox::base_insert($data);
+
+        $data2 = [];
+        $data2['terapi_operatif'] = 'Ya';
+        $data2['terapi_operatif_ya'] = serialize($data_follow_up__terapi_operatif_ya);
+        OAB_follow_up_detail::base_update($data2, "
+            pasien_id = $pasien_id AND follow_up_id = $id
+        ");
+
+        $this->flash_success_add($page_title);
+
+        return redirect()->route(
+            'follow_up.detail', [
+                'pasien_id' => $pasien_id,
+                'id' => $id,
+            ]
+        );
+    }
+
+    public function detail_oab_terapi_operatif_injeksi_botox($pasien_id, $id): View
+    {
+        $temp = OAB_follow_up_terapi_operatif_injeksi_botox::findOrFail($id);
+        //dd($temp);
+        /*$pasien = $this->_allow_access(
+            isset($temp->pasien_id) ? $temp->pasien_id : 0
+        );
+        */
+
+        $default = $temp;
+        //dd($default->toArray());
+
+        return $this->_form_oab_terapi_operatif_injeksi_botox($pasien_id, $id, $default, 'detail');
+    }
+
+    public function update_oab_terapi_operatif_injeksi_botox_process(
+        Request $request, $pasien_id, $id
+    ): RedirectResponse
+    {
+        $temp = OAB_follow_up_terapi_operatif_injeksi_botox::findOrFail($id);
+        //dd($temp->follow_up_id);
+        /*
+        $pasien = $this->_allow_access(
+            isset($temp->pasien_id) ? $temp->pasien_id : 0
+        );
+        */
+
+        $follow_up = OAB_follow_up_detail::where('pasien_id', $pasien_id)
+            ->where('follow_up_id', $temp->follow_up_id)
+            ->first();
+        $data_follow_up__terapi_operatif_ya = [];
+        try {
+            $data_follow_up__terapi_operatif_ya = unserialize($follow_up['terapi_operatif_ya']);
+        } catch (Exception $exception) {
+            $data_follow_up__terapi_operatif_ya = [];
+        }
+        $data_follow_up__terapi_operatif_ya['terapi_operatif_injeksi_botox'] = 'Ya';
+        //dd($data_follow_up__terapi_operatif_ya);
+
+        $page_title = 'Injeksi Botox';
+
+        $data = $request->all();
+
+        OAB_follow_up_terapi_operatif_injeksi_botox::base_update_by_id(
+            $data, $id
+        );
+
+        $data2 = [];
+        $data2['terapi_operatif'] = 'Ya';
+        $data2['terapi_operatif_ya'] = serialize($data_follow_up__terapi_operatif_ya);
+        //dd($data2);
+        OAB_follow_up_detail::base_update($data2, "
+            pasien_id = $pasien_id AND follow_up_id = {$temp->follow_up_id}
+        ");
+
+        $this->flash_success_update($page_title);
+
+        return redirect()->route(
+            'follow_up.detail', [
+                'pasien_id' => $pasien_id,
+                'id' => $temp->follow_up_id,
+            ]
+        );
+    }
+    //===[ End : Terapi : Operatif : Injeksi Botox ]============================
 
 }
