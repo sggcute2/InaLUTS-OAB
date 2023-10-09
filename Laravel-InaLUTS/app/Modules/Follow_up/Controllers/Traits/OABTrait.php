@@ -373,6 +373,22 @@ trait OABTrait {
         }
         //===[ End Process : Pemeriksaan Penunjang : Uroflowmetri ]=============
 
+        //=[ Begin Process : Pemeriksaan Penunjang : Pemeriksaan Laboratorium ]=
+        $field = 'pemeriksaan_penunjang_pemeriksaan_laboratorium';
+        if (isset($data[$field]) && $data[$field] == 'Ya') {
+            $data_temp = [];
+            $ns = $field.'_';
+            foreach($data as $f => $v){
+                if (substr($f, 0, strlen($ns)) == $ns) {
+                    $data_temp[$f] = $v;
+                }
+            }
+            $data[$field.'_ya'] = serialize($data_temp);
+        } else {
+            $data[$field.'_ya'] = serialize([]);
+        }
+        //===[ End Process : Pemeriksaan Penunjang : Pemeriksaan Laboratorium ]=
+
         //===[ Begin Process : Pemeriksaan Penunjang : Bladder Diary ]==========
         $field = 'pemeriksaan_penunjang_bladder_diary';
         if (isset($data[$field]) && $data[$field] == 'Ya') {

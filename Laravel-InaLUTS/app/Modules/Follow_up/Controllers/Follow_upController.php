@@ -9,6 +9,7 @@ use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 use App\Modules\Follow_up\Models\Follow_up as ModuleModel;
 use App\Modules\Follow_up\Models\OAB\OAB_follow_up;
+use App\Modules\Follow_up\Models\OAB\OAB_follow_up_detail;
 use App\Modules\Follow_up\Models\OAB\OAB_follow_up_pemeriksaan_laboratorium;
 use App\Modules\Pasien\Models\Pasien;
 use App\Modules\Pasien\Models\OAB\OAB_diagnosis;
@@ -438,6 +439,12 @@ class Follow_upController extends Controller
 
         OAB_follow_up_pemeriksaan_laboratorium::base_insert($data);
 
+        $data2 = [];
+        $data2['pemeriksaan_penunjang_pemeriksaan_laboratorium'] = 'Ya';
+        OAB_follow_up_detail::base_update($data2, "
+            pasien_id = $pasien_id AND follow_up_id = $id
+        ");
+
         $this->flash_success_add($page_title);
 
         return redirect()->route(
@@ -482,6 +489,13 @@ class Follow_upController extends Controller
         OAB_follow_up_pemeriksaan_laboratorium::base_update_by_id(
             $data, $id
         );
+
+        $data2 = [];
+        $data2['pemeriksaan_penunjang_pemeriksaan_laboratorium'] = 'Ya';
+        //dd($data2);
+        OAB_follow_up_detail::base_update($data2, "
+            pasien_id = $pasien_id AND follow_up_id = {$temp->follow_up_id}
+        ");
 
         $this->flash_success_update($page_title);
 
