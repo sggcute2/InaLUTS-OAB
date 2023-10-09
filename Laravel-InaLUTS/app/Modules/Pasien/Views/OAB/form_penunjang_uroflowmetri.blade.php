@@ -12,6 +12,13 @@
     ]);
     FORM::set_var($default);
 
+    FORM::row('Tanggal',
+        BS::datepicker([
+            'name' => 'tgl_date',
+            'required' => false,
+        ], false)
+    );
+
     //==================[ Begin Follow Up : Form OAB_penunjang_uroflowmetri ]===
     $ns = '';
     $temp = '
@@ -40,12 +47,14 @@
 
             FORM::row(':merge',
                 '<div id="div_'.$ns.$field.'_ya" class="indent1">'
+                /*
                 .'Tanggal : '
                 .BS::datepicker([
                     'name' => $ns.$field.'_ya_date',
                     'required' => false,
                 ], false)
                 .'<br>'
+                */
                 .BS::number([
                     'name' => $ns.$field.'_ya',
                     'inline' => true

@@ -112,6 +112,14 @@
         BS::jquery_ready("$('#div_{$field}_ya').hide();");
     }
 
+    $field = $ns.'flavoxate';
+    FORM::row(
+        'Flavoxate',
+        BS::radio_ya_tidak([
+            'name' => $field,
+        ], false)
+    );
+
     FORM::row(':header', 'B3 Agonis');
     $field = $ns.'mirabegron';
     FORM::row(
@@ -137,14 +145,6 @@
     } else {
         BS::jquery_ready("$('#div_{$field}_ya').hide();");
     }
-
-    $field = $ns.'flavoxate';
-    FORM::row(
-        'Flavoxate',
-        BS::radio_ya_tidak([
-            'name' => $field,
-        ], false)
-    );
     // End Follow Up : Form OAB_terapi_medikamentosa
     //======================[ End Follow Up : Form OAB_terapi_medikamentosa ]===
 

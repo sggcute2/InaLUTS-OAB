@@ -405,6 +405,12 @@
                 case 'pemeriksaan_penunjang_uroflowmetri':
                     //==================[ Begin Follow Up : Form OAB_penunjang_uroflowmetri ]===
                     $ns = 'pemeriksaan_penunjang_uroflowmetri_';
+                    $temp_choice2 .= 'Tanggal : ';
+                    $temp_choice2 .= BS::datepicker([
+                        'name' => $ns.'tgl_date',
+                        'required' => false,
+                        ], false);
+                    $temp_choice2 .= '<br>';
                     $temp3 = '
                         Voided volume;ml
                         Q max;ml / detik
@@ -429,12 +435,14 @@
                             $temp_choice2 .= '<br>';
 
                             $temp_choice2 .= '<div id="div_'.$ns.$field3.'_ya" class="indent1" style="margin-bottom:1em">';
+                            /*
                             $temp_choice2 .= 'Tanggal : ';
                             $temp_choice2 .= BS::datepicker([
                                 'name' => $ns.$field3.'_ya_date',
                                 'required' => false,
                             ], false);
                             $temp_choice2 .= '<br>';
+                            */
                             $temp_choice2 .= BS::number([
                                 'name' => $ns.$field3.'_ya',
                                 'inline' => true
@@ -1125,6 +1133,13 @@
                         BS::jquery_ready("$('#div_{$field3}_ya').hide();");
                     }
 
+                    $field3 = $ns.'flavoxate';
+                    $temp_choice2 .= '<b>Flavoxate</b><br>';
+                    $temp_choice2 .=
+                        BS::radio_ya_tidak([
+                            'name' => $field3,
+                        ], false);
+
                     $temp_choice2 .= $div_header.'B3 Agonis</div>';
                     $field3 = $ns.'mirabegron';
                     $temp_choice2 .= '<b>Mirabegron</b><br>';
@@ -1150,14 +1165,6 @@
                     } else {
                         BS::jquery_ready("$('#div_{$field3}_ya').hide();");
                     }
-
-                    $field3 = $ns.'flavoxate';
-                    $temp_choice2 .= '<b>Flavoxate</b><br>';
-                    $temp_choice2 .=
-                        BS::radio_ya_tidak([
-                            'name' => $field3,
-                        ], false);
-
                     // End Follow Up : Form OAB_terapi_medikamentosa
                     //======================[ End Follow Up : Form OAB_terapi_medikamentosa ]===
                     break;
