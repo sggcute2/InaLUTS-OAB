@@ -22,7 +22,9 @@
         Urodynamic stress urinary incontinence
         Obstruksi infravesical
         Detrusor underactivity
-        Disfunctional voiding
+        Disfunctional Voiding
+        DSD
+        Neurogenic Bladder
         PVR
     ';
     $x = explode("\n", $temp);

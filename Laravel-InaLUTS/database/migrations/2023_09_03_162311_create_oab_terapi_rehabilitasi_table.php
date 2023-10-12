@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('pasien_id')->default(0);
             $table->date('terapi_date')->nullable();
             $table->string('penilaian_otot_dasar_panggul', 5)->default('');
+            $table->string('penilaian_otot_dasar_panggul_ya', 5)->default('');
             $table->string('biofeedback', 5)->default('');
             $table->string('biofeedback_max_power', 10)->default('');
             $table->string('biofeedback_durasi', 10)->default('');
@@ -27,6 +28,7 @@ return new class extends Migration
             $table->string('ptns', 5)->default('');
             $table->string('ptns_frekuensi', 10)->default('');
             $table->string('ptns_durasi', 10)->default('');
+            $table->string('ttns', 5)->default('');
             //===[ /FIELDS ]====================================================
 
             $table->timestamp('created_at')->useCurrent();

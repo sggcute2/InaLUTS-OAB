@@ -25,6 +25,9 @@ return new class extends Migration
             $table->string('ureum', 10)->default('');
             $table->string('kreatinin', 10)->default('');
             $table->string('gds', 10)->default('');
+            $table->string('gdp', 10)->default('');
+            $table->string('gd2pp', 10)->default('');
+            $table->string('hba1c', 10)->default('');
             $table->string('ph', 10)->default('');
             $table->string('protein', 10)->default('');
             $table->string('glukosa', 10)->default('');

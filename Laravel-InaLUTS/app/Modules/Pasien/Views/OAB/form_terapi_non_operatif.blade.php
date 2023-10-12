@@ -65,36 +65,6 @@
                 } else {
                     BS::jquery_ready("$('#div_{$ns}{$field}_ya').hide();");
                 }
-            } else if ($field == 'ptns') {
-                $a = [
-                    'Frekuensi;x/minggu',
-                    'Durasi;x',
-                ];
-                $buffer = [];
-                foreach($a as $va){
-                    $xa = explode(';', trim($va));
-                    $caption_va = trim($xa[0]);
-                    $ext_va = trim($xa[1]);
-                    $field_va = strtolower(
-                        str_replace(array(' ', '-'), '_', $caption_va)
-                    );
-
-                    $buffer[] = '<div style="margin-bottom:1em">'.$caption_va.' : '.BS::number([
-                        'name' => $ns.$field.'_'.$field_va,
-                        'caption' => $caption_va,
-                        'inline' => true,
-                    ], false).' '.$ext_va.'</div>';
-                }
-
-                FORM::row(':merge',
-                    '<div id="div_'.$ns.$field.'_ya" class="indent1">'
-                    .implode('', $buffer)
-                    .'</div>'
-                );
-                if (isset($default[$ns.$field]) && $default[$ns.$field] == 'Ya') {
-                } else {
-                    BS::jquery_ready("$('#div_{$ns}{$field}_ya').hide();");
-                }
             } else {
                 FORM::row(':merge',
                     '<div id="div_'.$ns.$field.'_ya" class="indent1">'

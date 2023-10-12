@@ -26,7 +26,7 @@ return new class extends Migration
             $table->tinyInteger('c_bladder_training_prompt_voiding')->default(0);
             $table->tinyInteger('c_bladder_training_urge_suppression_strategies')->default(0);
             $table->string('stop_merokok', 5)->default('');
-            $table->string('management_stress', 5)->default('');
+            $table->string('manajemen_stress', 5)->default('');
             $table->string('manajemen_komorbid', 5)->default('');
             //===[ /FIELDS ]====================================================
 

@@ -22,8 +22,10 @@ return new class extends Migration
             $table->string('solifenacin_ya', 20)->default('');
             $table->string('imidafenacin', 5)->default('');
             $table->string('imidafenacin_ya', 20)->default('');
-            $table->string('tolterodinepropiverine', 5)->default('');
-            $table->string('tolterodinepropiverine_ya', 20)->default('');
+            $table->string('propiverine', 5)->default('');
+            $table->string('propiverine_ya', 20)->default('');
+            $table->string('tolterodine', 5)->default('');
+            $table->string('tolterodine_ya', 20)->default('');
             $table->string('mirabegron', 5)->default('');
             $table->string('mirabegron_ya', 20)->default('');
             $table->string('flavoxate', 5)->default('');

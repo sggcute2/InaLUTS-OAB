@@ -22,7 +22,8 @@ return new class extends Migration
             $table->text('oabss_ya')->default('a:0:{}');
             $table->string('qol', 5)->default('');
             $table->text('qol_ya')->default('a:0:{}');
-            $table->text('bladder_diary')->default('a:0:{}');
+            $table->string('bladder_diary', 5)->default('');
+            $table->text('bladder_diary_ya')->default('a:0:{}');
 
             $table->string('mulut_kering', 5)->default('');
             $table->string('mata_kering', 5)->default('');
@@ -32,6 +33,7 @@ return new class extends Migration
             $table->string('retensi_urine', 5)->default('');
             $table->string('hipertensi', 5)->default('');
             $table->string('gangguan_irama_jantung', 5)->default('');
+            $table->string('alergi_obat_obatan_yang_dikonsumsi', 5)->default('');
 
             $table->string('isk', 5)->default('');
             $table->string('hematuria', 5)->default('');

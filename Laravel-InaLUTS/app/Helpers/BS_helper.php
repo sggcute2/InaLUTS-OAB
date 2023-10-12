@@ -162,6 +162,9 @@ static function number($p = array(), $echo = true){
   if (!isset($p['style'])) $p['style'] = 'width:90px';
   $ret = self::textbox($p, false);
   $ret = str_replace('type="text"', 'type="number"', $ret);
+  if (isset($p['step'])) {
+    $ret = str_replace('type="number"', 'type="number" step="'.$p['step'].'"', $ret);
+  }
   if ($echo) {
     echo $ret;
   } else {

@@ -46,6 +46,12 @@ trait OAB_terapi_rehabilitasiTrait {
         $page_title = 'Terapi Rehabilitasi';
 
         $data = $request->all();
+        if (
+            isset($data['penilaian_otot_dasar_panggul'])
+            && $data['penilaian_otot_dasar_panggul'] != 'Ya'
+        ) {
+            $data['penilaian_otot_dasar_panggul_ya'] = '';
+        }
         if (isset($data['biofeedback']) && $data['biofeedback'] != 'Ya') {
             $b = [
                 'max_power',

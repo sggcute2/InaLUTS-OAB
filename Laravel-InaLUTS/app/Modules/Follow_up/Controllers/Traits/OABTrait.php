@@ -74,7 +74,7 @@ trait OABTrait {
         }
         //dd($default);
 
-        $ns = 'bladder_diary';$field = $ns;
+        $ns = 'bladder_diary_';$field = $ns.'ya';
         try {
             $data_arr = unserialize($default[$field]);
         } catch (Exception $exception) {
@@ -336,7 +336,7 @@ trait OABTrait {
 
         // Begin Process : Bladder Diary
         $field = 'bladder_diary';
-        //if (isset($data[$field]) && $data[$field] == 'Ya') {
+        if (isset($data[$field]) && $data[$field] == 'Ya') {
             $data_temp = [];
             $ns = $field.'_';
             foreach($data as $f => $v){
@@ -344,11 +344,11 @@ trait OABTrait {
                     $data_temp[$f] = $v;
                 }
             }
-            //$data[$field.'_ya'] = serialize($data_temp);
-            $data[$field] = serialize($data_temp);
-        //} else {
-            //$data[$field.'_ya'] = serialize([]);
-        //}
+            $data[$field.'_ya'] = serialize($data_temp);
+            //$data[$field] = serialize($data_temp);
+        } else {
+            $data[$field.'_ya'] = serialize([]);
+        }
         // End Process : Bladder Diary
 
         //===[ Begin Process : Pemeriksaan Penunjang ]==========================

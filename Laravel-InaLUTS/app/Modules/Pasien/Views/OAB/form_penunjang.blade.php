@@ -28,6 +28,7 @@
     );
 
     //===========================[ Begin Follow Up : Form OAB_penunjang_upp ]===
+/*
     $ns = '';
     FORM::row(
         'UPP',
@@ -66,6 +67,7 @@
     } else {
         BS::jquery_ready("$('#{$ns}upp_dikerjakan').hide();");
     }
+*/
     //=============================[ End Follow Up : Form OAB_penunjang_upp ]===
 
     //====================[ Begin Follow Up : Form OAB_penunjang_sistoskopi ]===

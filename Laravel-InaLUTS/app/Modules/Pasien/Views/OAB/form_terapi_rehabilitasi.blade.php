@@ -20,16 +20,30 @@
         ], false)
     );
 
-    $temp = '1,2,3,4,5';
+    $field = 'penilaian_otot_dasar_panggul';
     FORM::row(
-      'Penilaian otot dasar panggul',
-      'Oxford '.BS::select2([
-        'name' => $ns.'penilaian_otot_dasar_panggul',
-        'data' => explode(',', $temp),
-        'with_blank' => true,
-        'inline' => true,
+        'Penilaian otot dasar panggul',
+        BS::radio_ya_tidak([
+            'name' => $ns.$field,
+            'toggle_div' => true,
         ], false)
     );
+    $temp = '1,2,3,4,5';
+    FORM::row(':merge',
+        '<div id="div_'.$ns.$field.'_ya" class="indent1">'
+        .'Oxford'
+        .BS::select2([
+            'name' => $ns.$field.'_ya',
+            'data' => explode(',', $temp),
+            'with_blank' => true,
+            'inline' => true,
+        ], false)
+        .'</div>'
+    );
+    if (isset($default[$ns.$field]) && $default[$ns.$field] == 'Ya') {
+    } else {
+        BS::jquery_ready("$('#div_{$ns}{$field}_ya').hide();");
+    }
 
     $temp = '
     Biofeedback;biofeedback
@@ -37,6 +51,7 @@
     Latihan relaksasi otot dasar panggul;latihan_relaksasi_otot_dasar_panggul
     Kursi magnetic;kursi_magnetic
     PTNS;ptns
+    TTNS;ttns
     ';
     $x = explode("\n", $temp);
     foreach($x as $v){
@@ -89,7 +104,7 @@
             } else if ($field == 'ptns') {
                 $a = [
                     'Frekuensi;x/minggu',
-                    'Durasi;x',
+                    'Durasi;Menit',
                 ];
                 $buffer = [];
                 foreach($a as $va){

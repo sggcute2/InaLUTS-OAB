@@ -186,6 +186,16 @@
     //======================================================[ Bladder Diary ]===
     FORM::row(':header2', 'Bladder Diary');
     $ns = 'bladder_diary_';
+    $field = 'bladder_diary';
+    $caption = 'Bladder Diary';
+    FORM::row(
+        $caption,
+        BS::radio_ya_tidak([
+            'name' => $field,
+            'toggle_div' => true,
+        ], false)
+    );
+    $tbl = '';
     //=================[ Begin Follow Up : Form OAB_kuesioner_bladder_diary ]===
     $a = [
         ['Intake cairan / 24 jam', 'intake_cairan'],
@@ -240,7 +250,17 @@
                 break;
         }
 
-        FORM::row($av[0], $field);
+        //FORM::row($av[0], $field);
+        $tbl .= $div.$av[0].'<br>'.$field.'</div>';
+    }
+    FORM::row(':merge',
+        '<div id="div_bladder_diary_ya" class="indent1">'
+        .$tbl
+        .'</div>'
+    );
+    if (isset($default['bladder_diary']) && $default['bladder_diary'] == 'Ya') {
+    } else {
+        BS::jquery_ready("$('#div_bladder_diary_ya').hide();");
     }
     //=================[ Begin Follow Up : Form OAB_kuesioner_bladder_diary ]===
 
@@ -255,12 +275,13 @@
         Retensi Urine
         Hipertensi
         Gangguan Irama Jantung
+        Alergi Obat-obatan yang dikonsumsi
     ';
     $x = explode("\n", $temp);
     foreach($x as $v){
         if (trim($v) != '') {
             $caption = trim($v);
-            $field = strtolower(str_replace(' ', '_', $caption));
+            $field = strtolower(str_replace(array(' ', '-'), '_', $caption));
 
             FORM::row(
                 $caption,
@@ -312,7 +333,11 @@
     ';
     $x2 = explode("\n", $temp2);
     foreach($x2 as $v2){
-        if (trim($v2) != '') {
+        if (
+            trim($v2) != ''
+            && trim($v2) != 'UPP'
+            && trim($v2) != 'Bladder Diary'
+        ) {
             $caption2 = trim($v2);
             $field2 = 'pemeriksaan_penunjang_'.strtolower(str_replace(' ', '_', $caption2));
 
@@ -588,7 +613,9 @@
                         Urodynamic stress urinary incontinence
                         Obstruksi infravesical
                         Detrusor underactivity
-                        Disfunctional voiding
+                        Disfunctional Voiding
+                        DSD
+                        Neurogenic Bladder
                         PVR
                     ';
                     $x3 = explode("\n", $temp3);
@@ -655,7 +682,120 @@
                 case 'pemeriksaan_penunjang_sistoskopi';
                     //====================[ Begin Follow Up : Form OAB_penunjang_sistoskopi ]===
                     $ns = 'pemeriksaan_penunjang_sistoskopi_';
+/*
                     $temp_choice2 .= '<b>Sistoskopi</b><br>';
+*/
+                    $temp_html = ''
+                        .'<div>'
+                        .'<b>Mukosa buli :</b> '
+                        .BS::radio_array([
+                            'name' => $ns.'mukosa_buli',
+                            'data' => ['Hiperemis', 'Tidak'],
+                            'inline' => true,
+                        ], false)
+                        .'</div>'
+                        .'<div style="margin-top:1em">'
+                        .'<b>Trabekulasi :</b> '
+                        .BS::radio_array([
+                            'name' => $ns.'trabekulasi',
+                            'data' => ['Ringan', 'Sedang', 'Berat'],
+                            'inline' => true,
+                        ], false)
+                        .'</div>'
+                        .'<div style="margin-top:1em">'
+                        .'<b>Sakulasi Divertikel :</b> '
+                        .BS::radio_array([
+                            'name' => $ns.'sakulasi_divertikel',
+                            'data' => ['Ya', 'Tidak'],
+                            'inline' => true,
+                        ], false)
+                        .'</div>'
+                        .'<div style="margin-top:1em">'
+                        .'<b>Kapasitas Buli :</b> '
+                        .BS::number([
+                            'name' => $ns.'kapasitas_buli',
+                            'inline' => true,
+                        ], false)
+                        .'</div>'
+                        .'<div style="margin-top:1em">'
+                        .'<b>Batu :</b> '
+                        .BS::radio_array([
+                            'name' => $ns.'batu',
+                            'data' => ['Ya', 'Tidak'],
+                            'inline' => true,
+                        ], false)
+                        .'</div>'
+                        .'<div style="margin-top:1em">'
+                        .'<b>Tumor :</b> '
+                        .BS::radio_array([
+                            'name' => $ns.'tumor',
+                            'data' => ['Ya', 'Tidak'],
+                            'inline' => true,
+                        ], false)
+                        .'</div>'
+                        .'<div style="margin-top:1em">'
+                        .'<b>Lobus Medius :</b> '
+                        .BS::radio_array([
+                            'name' => $ns.'lobus_medius',
+                            'data' => ['Tinggi', 'Tidak Tinggi'],
+                            'inline' => true,
+                        ], false)
+                        .'</div>'
+                        .'<div style="margin-top:1em">'
+                        .'<b>Kissing Lobe :</b><br>'
+                        .BS::radio_array([
+                            'name' => $ns.'kissing_lobe',
+                            'data' => ['Ya', 'Tidak'],
+                            'vertical' => true,
+                            'toggle_div_by_value' => [
+                                'Ya' => [
+                                        'id' => $ns.'kissing_lobe_ya',
+                                        'class' => 'indent1',
+                                        'html' => ''
+                                            .BS::number([
+                                                'name' => $ns.'kissing_lobe_ya',
+                                                'required' => false,
+                                                'inline' => true,
+                                            ], false)
+                                            .' cm',
+                                    ],
+                            ],
+                        ], false)
+                        .'</div>'
+                        .'<div style="margin-top:1em">'
+                        .'<b>Muara Ureter :</b> '
+                        .BS::radio_array([
+                            'name' => $ns.'muara_ureter',
+                            'data' => ['Normal', 'Tidak Normal'],
+                            'inline' => true,
+                        ], false)
+                        .'</div>'
+                        .'<div style="margin-top:1em">'
+                        .'<b>Urethra :</b> '
+                        .BS::radio_array([
+                            'name' => $ns.'urethra',
+                            'data' => ['Ya', 'Tidak'],
+                            'inline' => true,
+                        ], false)
+                        .'</div>'
+                        .'<div style="margin-top:1em">'
+                        .'<b>MUE :</b> '
+                        .BS::radio_array([
+                            'name' => $ns.'mue',
+                            'data' => ['Stenosis', 'Tidak'],
+                            'inline' => true,
+                        ], false)
+                        .'</div>'
+                        .'<div style="margin-top:1em">'
+                        .'<b>Lichen Schlerosis :</b> '
+                        .BS::radio_array([
+                            'name' => $ns.'lichen_schlerosis',
+                            'data' => ['Ya', 'Tidak'],
+                            'inline' => true,
+                        ], false)
+                        .'</div>';
+                    $temp_choice2 .= $temp_html;
+/*
                     $temp_choice2 .=
                         BS::radio_array([
                             'name' => $ns.'sistoskopi',
@@ -668,123 +808,18 @@
                                 'Dikerjakan' => [
                                     'id' => $ns.'sistoskopi_dikerjakan',
                                     'class' => 'indent1',
-                                    'html' => ''
-                                        .'<div>'
-                                        .'<b>Mukosa buli :</b> '
-                                        .BS::radio_array([
-                                            'name' => $ns.'mukosa_buli',
-                                            'data' => ['Hiperemis', 'Tidak'],
-                                            'inline' => true,
-                                        ], false)
-                                        .'</div>'
-                                        .'<div style="margin-top:1em">'
-                                        .'<b>Trabekulasi :</b> '
-                                        .BS::radio_array([
-                                            'name' => $ns.'trabekulasi',
-                                            'data' => ['Ringan', 'Sedang', 'Berat'],
-                                            'inline' => true,
-                                        ], false)
-                                        .'</div>'
-                                        .'<div style="margin-top:1em">'
-                                        .'<b>Sakulasi Divertikel :</b> '
-                                        .BS::radio_array([
-                                            'name' => $ns.'sakulasi_divertikel',
-                                            'data' => ['Ya', 'Tidak'],
-                                            'inline' => true,
-                                        ], false)
-                                        .'</div>'
-                                        .'<div style="margin-top:1em">'
-                                        .'<b>Kapasitas Buli :</b> '
-                                        .BS::number([
-                                            'name' => $ns.'kapasitas_buli',
-                                            'inline' => true,
-                                        ], false)
-                                        .'</div>'
-                                        .'<div style="margin-top:1em">'
-                                        .'<b>Batu :</b> '
-                                        .BS::radio_array([
-                                            'name' => $ns.'batu',
-                                            'data' => ['Ya', 'Tidak'],
-                                            'inline' => true,
-                                        ], false)
-                                        .'</div>'
-                                        .'<div style="margin-top:1em">'
-                                        .'<b>Tumor :</b> '
-                                        .BS::radio_array([
-                                            'name' => $ns.'tumor',
-                                            'data' => ['Ya', 'Tidak'],
-                                            'inline' => true,
-                                        ], false)
-                                        .'</div>'
-                                        .'<div style="margin-top:1em">'
-                                        .'<b>Lobus Medius :</b> '
-                                        .BS::radio_array([
-                                            'name' => $ns.'lobus_medius',
-                                            'data' => ['Tinggi', 'Tidak Tinggi'],
-                                            'inline' => true,
-                                        ], false)
-                                        .'</div>'
-                                        .'<div style="margin-top:1em">'
-                                        .'<b>Kissing Lobe :</b><br>'
-                                        .BS::radio_array([
-                                            'name' => $ns.'kissing_lobe',
-                                            'data' => ['Ya', 'Tidak'],
-                                            'vertical' => true,
-                                            'toggle_div_by_value' => [
-                                                'Ya' => [
-                                                        'id' => $ns.'kissing_lobe_ya',
-                                                        'class' => 'indent1',
-                                                        'html' => ''
-                                                            .BS::number([
-                                                                'name' => $ns.'kissing_lobe_ya',
-                                                                'required' => false,
-                                                                'inline' => true,
-                                                            ], false)
-                                                            .' cm',
-                                                    ],
-                                            ],
-                                        ], false)
-                                        .'</div>'
-                                        .'<div style="margin-top:1em">'
-                                        .'<b>Muara Ureter :</b> '
-                                        .BS::radio_array([
-                                            'name' => $ns.'muara_ureter',
-                                            'data' => ['Normal', 'Tidak Normal'],
-                                            'inline' => true,
-                                        ], false)
-                                        .'</div>'
-                                        .'<div style="margin-top:1em">'
-                                        .'<b>Urethra :</b> '
-                                        .BS::radio_array([
-                                            'name' => $ns.'urethra',
-                                            'data' => ['Ya', 'Tidak'],
-                                            'inline' => true,
-                                        ], false)
-                                        .'</div>'
-                                        .'<div style="margin-top:1em">'
-                                        .'<b>MUE :</b> '
-                                        .BS::radio_array([
-                                            'name' => $ns.'mue',
-                                            'data' => ['Stenosis', 'Tidak'],
-                                            'inline' => true,
-                                        ], false)
-                                        .'</div>'
-                                        .'<div style="margin-top:1em">'
-                                        .'<b>Lichen Schlerosis :</b> '
-                                        .BS::radio_array([
-                                            'name' => $ns.'lichen_schlerosis',
-                                            'data' => ['Ya', 'Tidak'],
-                                            'inline' => true,
-                                        ], false)
-                                        .'</div>'
+                                    'html' => $temp_html
                                 ],
                             ],
                             ], false
                         );
+*/
+/*
                     if (isset($default[$ns.'sistoskopi']) && $default[$ns.'sistoskopi'] == 'Dikerjakan') {
                     } else {
                         BS::jquery_ready("$('#{$ns}sistoskopi_dikerjakan').hide();");
                     }
+*/
                     if (isset($default[$ns.'kissing_lobe']) && $default[$ns.'kissing_lobe'] == 'Ya') {
                     } else {
                         BS::jquery_ready("$('#{$ns}kissing_lobe_ya').hide();");
@@ -861,7 +896,7 @@
                     Penilaian jenis dan jumlah asupan cairan;penilaian_jenis
                     Bladder training;bladder_training
                     Stop merokok;stop_merokok
-                    Management stress;management_stress
+                    Manajemen stress;manajemen_stress
                     Manajemen komorbid (termasuk konstipasi, PPOK, asma, dll);manajemen_komorbid
                     ';
                     $x3 = explode("\n", $temp3);
@@ -947,7 +982,7 @@
                             $x3_2 = explode(';', trim($v3));
                             $caption3 = trim($x3_2[0]);
                             $field3 = trim($x3_2[1]);
-
+/*
                             $temp_choice2 .= '<b>'.$caption3.'</b><br>';
                             $temp_choice2 .=
                                 BS::radio_ya_tidak([
@@ -956,7 +991,7 @@
                                         'tatalaksana_non_operatif',
                                     ]),
                                 ], false);
-
+*/
                             if ($field3 == 'tatalaksana_non_operatif') {
                                 $a3 = [
                                     'Kateter menetap',
@@ -980,44 +1015,15 @@
                                 }
 
                                 $temp_choice2 .=
-                                    '<div id="div_'.$ns.$field3.'_ya" class="indent1">'
+                                    '<div id="div_'.$ns.$field3.'_ya">'
                                     .implode('', $buffer)
                                     .'</div>';
-
+/*
                                 if (isset($default[$ns.$field3]) && $default[$ns.$field3] == 'Ya') {
                                 } else {
                                     BS::jquery_ready("$('#div_{$ns}{$field3}_ya').hide();");
                                 }
-                            } else if ($field3 == 'ptns') {
-                                $a3 = [
-                                    'Frekuensi;x/minggu',
-                                    'Durasi;x',
-                                ];
-                                $buffer = [];
-                                foreach($a3 as $va3){
-                                    $xa3 = explode(';', trim($va3));
-                                    $caption_va3 = trim($xa3[0]);
-                                    $ext_va3 = trim($xa3[1]);
-                                    $field_va3 = strtolower(
-                                        str_replace(array(' ', '-'), '_', $caption_va3)
-                                    );
-
-                                    $buffer[] = '<div style="margin-bottom:1em">'.$caption_va3.' : '.BS::number([
-                                        'name' => $ns.$field3.'_'.$field_va3,
-                                        'caption' => $caption_va3,
-                                        'inline' => true,
-                                    ], false).' '.$ext_va3.'</div>';
-                                }
-
-                                $temp_choice2 .=
-                                    '<div id="div_'.$ns.$field3.'_ya" class="indent1">'
-                                    .implode('', $buffer)
-                                    .'</div>';
-
-                                if (isset($default[$ns.$field3]) && $default[$ns.$field3] == 'Ya') {
-                                } else {
-                                    BS::jquery_ready("$('#div_{$ns}{$field3}_ya').hide();");
-                                }
+*/
                             } else {
                                 $temp_choice2 .=
                                     '<div id="div_'.$ns.$field3.'_ya" class="indent1">'
@@ -1036,12 +1042,13 @@
                 case 'terapi_medikamentosa':
                     //====================[ Begin Follow Up : Form OAB_terapi_medikamentosa ]===
                     $ns = 'terapi_medikamentosa_';
+/*
                     $field3 = $ns.'medikamentosa';
                     $temp_choice2 .= '<b>Medikamentosa</b><br>';
                     $temp_choice2 .=
                         BS::radio_ya_tidak([
                             'name' => $field3,
-                            'toggle_div' => true,
+                            //'toggle_div' => true,
                         ], false);
 
                     $temp_choice2 .=
@@ -1060,7 +1067,7 @@
                     } else {
                         BS::jquery_ready("$('#div_{$field3}_ya').hide();");
                     }
-
+*/
                     $temp_choice2 .= $div_header.'Anti Muskarinik</div>';
                     $field3 = $ns.'solifenacin';
                     $temp_choice2 .= '<b>Solifenacin</b><br>';
@@ -1104,20 +1111,18 @@
                         )
                         .' dosis'
                         .'</div><br>';
-
                     if (isset($default[$field3]) && $default[$field3] == 'Ya') {
                     } else {
                         BS::jquery_ready("$('#div_{$field3}_ya').hide();");
                     }
 
-                    $field3 = $ns.'tolterodinepropiverine';
-                    $temp_choice2 .= '<b>Tolterodinepropiverine</b><br>';
+                    $field3 = $ns.'propiverine';
+                    $temp_choice2 .= '<b>Propiverine</b><br>';
                     $temp_choice2 .=
                         BS::radio_ya_tidak([
                             'name' => $field3,
                             'toggle_div' => true,
                         ], false);
-
                     $temp_choice2 .=
                         '<div id="div_'.$field3.'_ya" class="indent1">'
                         .BS::number([
@@ -1127,7 +1132,27 @@
                         )
                         .' dosis'
                         .'</div><br>';
+                    if (isset($default[$field3]) && $default[$field3] == 'Ya') {
+                    } else {
+                        BS::jquery_ready("$('#div_{$field3}_ya').hide();");
+                    }
 
+                    $field3 = $ns.'tolterodine';
+                    $temp_choice2 .= '<b>Tolterodine</b><br>';
+                    $temp_choice2 .=
+                        BS::radio_ya_tidak([
+                            'name' => $field3,
+                            'toggle_div' => true,
+                        ], false);
+                    $temp_choice2 .=
+                        '<div id="div_'.$field3.'_ya" class="indent1">'
+                        .BS::number([
+                            'name' => $field3.'_ya',
+                            'inline' => true,
+                            ], false
+                        )
+                        .' dosis'
+                        .'</div><br>';
                     if (isset($default[$field3]) && $default[$field3] == 'Ya') {
                     } else {
                         BS::jquery_ready("$('#div_{$field3}_ya').hide();");
@@ -1178,15 +1203,29 @@
                             'name' => $ns.'terapi_date',
                         ], false);
 
+                    $field3 = 'penilaian_otot_dasar_panggul';
+                    $temp_choice2 .= '<br><b>Penilaian otot dasar panggul</b><br>';
+                    $temp_choice2 .=
+                        BS::radio_ya_tidak([
+                            'name' => $ns.$field3,
+                            'toggle_div' => true,
+                        ], false);
                     $temp3 = '1,2,3,4,5';
-                    $temp_choice2 .= '<div style="padding:1em 0"><b>Penilaian otot dasar panggul</b></div>';
-                    $temp_choice2 .= 'Oxford '.BS::select2([
-                        'name' => $ns.'penilaian_otot_dasar_panggul',
+                    $temp_choice2 .=
+                        '<div id="div_'.$ns.$field3.'_ya" class="indent1">';
+                    $temp_choice2 .= '<div style="padding:1em 0"><b>Oxford</b></div>';
+                    $temp_choice2 .= BS::select2([
+                        'name' => $ns.$field3.'_ya',
                         'data' => explode(',', $temp3),
                         'with_blank' => true,
                         'inline' => true,
-                        ], false);
+                    ], false);
+                    $temp_choice2 .= '</div>';
                     $temp_choice2 .= '<br><br>';
+                    if (isset($default[$ns.$field3]) && $default[$ns.$field3] == 'Ya') {
+                    } else {
+                        BS::jquery_ready("$('#div_{$ns}{$field3}_ya').hide();");
+                    }
 
                     $temp3 = '
                     Biofeedback;biofeedback
@@ -1194,6 +1233,7 @@
                     Latihan relaksasi otot dasar panggul;latihan_relaksasi_otot_dasar_panggul
                     Kursi magnetic;kursi_magnetic
                     PTNS;ptns
+                    TTNS;ttns
                     ';
                     $x3 = explode("\n", $temp3);
                     foreach($x3 as $v3){
@@ -1245,7 +1285,7 @@
                             } else if ($field3 == 'ptns') {
                                 $a3 = [
                                     'Frekuensi;x/minggu',
-                                    'Durasi;x',
+                                    'Durasi;Menit',
                                 ];
                                 $buffer = [];
                                 foreach($a3 as $va3){
@@ -1370,6 +1410,7 @@
             }
         }
     }
+/*
     FORM::row(
         $caption,
         BS::radio_ya_tidak([
@@ -1377,15 +1418,18 @@
             'toggle_div' => true,
         ], false)
     );
+*/
     FORM::row(':merge',
         '<div id="div_'.$field.'_ya" class="indent1">'
         .$choice2
         .'</div>'
     );
+/*
     if (isset($default[$field]) && $default[$field] == 'Ya') {
     } else {
         BS::jquery_ready("$('#div_{$field}_ya').hide();");
     }
+*/
 
     FORM::hidden('forward_to');
 

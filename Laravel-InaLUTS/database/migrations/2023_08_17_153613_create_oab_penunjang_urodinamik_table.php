@@ -27,6 +27,8 @@ return new class extends Migration
             $table->string('obstruksi_infravesical', 5)->default('');
             $table->string('detrusor_underactivity', 5)->default('');
             $table->string('disfunctional_voiding', 20)->default('');
+            $table->string('dsd', 5)->default('');
+            $table->string('neurogenic_bladder', 5)->default('');
             $table->string('pvr_1', 10)->default('');
             $table->string('pvr_2', 10)->default('');
             //===[ /FIELDS ]====================================================

@@ -25,7 +25,7 @@
     Penilaian jenis dan jumlah asupan cairan;penilaian_jenis
     Bladder training;bladder_training
     Stop merokok;stop_merokok
-    Management stress;management_stress
+    Manajemen stress;manajemen_stress
     Manajemen komorbid (termasuk konstipasi, PPOK, asma, dll);manajemen_komorbid
     ';
     $x = explode("\n", $temp);

@@ -50,7 +50,8 @@ trait OAB_terapi_medikamentosaTrait {
             'medikamentosa',
             'solifenacin',
             'imidafenacin',
-            'tolterodinepropiverine',
+            'propiverine',
+            'tolterodine',
             'mirabegron',
         ];
         foreach($b as $vb){

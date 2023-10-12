@@ -103,9 +103,32 @@
         BS::jquery_ready("$('#div_{$field}_ya').hide();");
     }
 
-    $field = $ns.'tolterodinepropiverine';
+    $field = $ns.'propiverine';
     FORM::row(
-        'Tolterodinepropiverine',
+        'Propiverine',
+        BS::radio_ya_tidak([
+            'name' => $field,
+            'toggle_div' => true,
+        ], false)
+    );
+    FORM::row(':merge',
+        '<div id="div_'.$field.'_ya" class="indent1">'
+        .BS::number([
+            'name' => $field.'_ya',
+            'inline' => true,
+            ], false
+        )
+        .' dosis'
+        .'</div>'
+    );
+    if (isset($default[$field]) && $default[$field] == 'Ya') {
+    } else {
+        BS::jquery_ready("$('#div_{$field}_ya').hide();");
+    }
+
+    $field = $ns.'tolterodine';
+    FORM::row(
+        'Tolterodine',
         BS::radio_ya_tidak([
             'name' => $field,
             'toggle_div' => true,

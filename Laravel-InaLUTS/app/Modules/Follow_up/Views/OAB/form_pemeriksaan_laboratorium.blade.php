@@ -26,19 +26,23 @@
         Trombosit
         Ureum
         Kreatinin
-        GDS, GDP, GD2PP, HbA1c
+        GDS
+        GDP
+        GD2PP
+        HbA1c
     ';
     $x = explode("\n", $temp);
     foreach($x as $v){
         if (trim($v) != '') {
             $caption = trim($v);
             $field = strtolower(str_replace(array(' ', '-'), '_', $caption));
-            if ($field == 'gds,_gdp,_gd2pp,_hba1c') $field = 'gds';
+            //if ($field == 'gds,_gdp,_gd2pp,_hba1c') $field = 'gds';
 
             FORM::row(
                 $caption,
                 BS::number([
                     'name' => $field,
+                    'step' => 'any',
                 ], false)
             );
         }
@@ -68,6 +72,7 @@
                 $caption,
                 BS::number([
                     'name' => $field,
+                    'step' => 'any',
                 ], false)
             );
         }
