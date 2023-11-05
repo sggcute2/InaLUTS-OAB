@@ -14,6 +14,7 @@ use App\Modules\Pasien\Models\OAB\OAB_keluhan_tambahan;
 use App\Modules\Pasien\Models\OAB\OAB_faktor_resiko;
 use App\Modules\Pasien\Models\OAB\OAB_riwayat_pengobatan_1_bln;
 use App\Modules\Pasien\Models\OAB\OAB_riwayat_pengobatan_luts;
+use App\Modules\Pasien\Models\OAB\OAB_riwayat_operasi_urologi;
 use BS;
 use DT;
 use FORM;
@@ -24,7 +25,8 @@ use App\Modules\Laporan\Controllers\Traits\OAB\{
     OAB_keluhan_tambahanTrait,
     OAB_faktor_resikoTrait,
     OAB_riwayat_pengobatan_1_blnTrait,
-    OAB_riwayat_pengobatan_lutsTrait
+    OAB_riwayat_pengobatan_lutsTrait,
+    OAB_riwayat_operasi_urologiTrait
 };
 
 class LaporanController extends Controller
@@ -36,6 +38,7 @@ class LaporanController extends Controller
     use OAB_faktor_resikoTrait;
     use OAB_riwayat_pengobatan_1_blnTrait;
     use OAB_riwayat_pengobatan_lutsTrait;
+    use OAB_riwayat_operasi_urologiTrait;
 
     public function __construct(){
         parent::__construct([
@@ -145,6 +148,15 @@ class LaporanController extends Controller
             $riwayat_pengobatan_luts_by_pasien_id[$v->pasien_id] = $v;
         }
         //dd($riwayat_pengobatan_luts_by_pasien_id);
+
+        $temp = OAB_riwayat_operasi_urologi::whereRaw("
+            pasien_id IN (SELECT id FROM m_pasien WHERE $in_pasien)
+        ")->get();
+        $riwayat_operasi_urologi_by_pasien_id = [];
+        foreach($temp as $v){
+            $riwayat_operasi_urologi_by_pasien_id[$v->pasien_id] = $v;
+        }
+        //dd($riwayat_operasi_urologi_by_pasien_id);
         //===[ End : Data ]=====================================================
 
         $file_template = resource_path('templates/Report_OAB.xlsx');
@@ -183,12 +195,15 @@ class LaporanController extends Controller
             $c = $this->OAB_excel_column_riwayat_pengobatan_luts($sheet, $c+1, $y,
                 $riwayat_pengobatan_luts_by_pasien_id[$pasien->id], $pasien
             );
+            $c = $this->OAB_excel_column_riwayat_operasi_urologi($sheet, $c+1, $y,
+                $riwayat_operasi_urologi_by_pasien_id[$pasien->id], $pasien
+            );
 
             $y++;
             $no++;
         }
 
-        $sheet->setSelectedCell('BR8');
+        $sheet->setSelectedCell('CU8');
 
         $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
         $buffer_filename = [];
