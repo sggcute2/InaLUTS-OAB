@@ -9,16 +9,21 @@ use App\Http\Controllers\Controller;
 use App\Modules\Laporan\Models\Laporan as ModuleModel;
 use App\Modules\Jenis_kelamin\Models\Jenis_kelamin;
 use App\Modules\Pasien\Models\Pasien;
+use App\Modules\Pasien\Models\OAB\OAB_Anamnesis;
 use BS;
 use DT;
 use FORM;
 
-use App\Modules\Laporan\Controllers\Traits\PasienTraits;
+use App\Modules\Laporan\Controllers\Traits\OAB\{
+    OAB_PasienTraits,
+    OAB_AnamnesisTraits
+};
 
 class LaporanController extends Controller
 {
 
-    use PasienTraits;
+    use OAB_PasienTraits;
+    use OAB_AnamnesisTraits;
 
     public function __construct(){
         parent::__construct([
@@ -34,7 +39,6 @@ class LaporanController extends Controller
 
     public function Overactive_Bladder(): View
     {
-//for($c=1;$c<=60;$c++)echo $c.' = '.FORMAT::excel_column($c).'<br>';
         //dd(file_exists(resource_path('templates/Report_OAB.xlsx')));
         $page_title = 'Laporan Overactive Bladder';
         $form_action = route(MODULE.'.Overactive_Bladder');
@@ -52,6 +56,14 @@ class LaporanController extends Controller
         $now = time();
         $req = request()->all();
         $buffer_criteria = [];
+
+        if (USER_IS_REG_COO || USER_IS_LOC_COO || USER_IS_SUB) {
+            $raw_rumah_sakit = 'rumah_sakit_id = '
+                .intval(USER_RUMAH_SAKIT_ID);
+        } else {
+            $raw_rumah_sakit = 'rumah_sakit_id > 0';
+        }
+
         if (isset($req['jenis_kelamin_id'])) {
             $temp = Jenis_kelamin::find($req['jenis_kelamin_id'])->name ?? '';
             $buffer_criteria[] = 'Jenis Kelamin : '.$temp;
@@ -66,14 +78,24 @@ class LaporanController extends Controller
             $criteria = 'Kriteria = Semua Data';
         }
 
-        if (USER_IS_REG_COO || USER_IS_LOC_COO || USER_IS_SUB) {
-            $pasiens = Pasien::where('rumah_sakit_id', USER_RUMAH_SAKIT_ID)
-                ->where('registry_id', 1) // OAB
-                ->whereRaw($raw_jenis_kelamin)
-                ->get();
-        } else {
-            $pasiens = Pasien::all();
+        $pasiens = Pasien::where('registry_id', 1) // OAB
+            ->whereRaw($raw_rumah_sakit)
+            ->whereRaw($raw_jenis_kelamin)
+            ->get();
+        $in_pasien = "
+            registry_id = 1
+            AND $raw_rumah_sakit
+            AND $raw_jenis_kelamin
+        ";
+
+        $temp = OAB_Anamnesis::whereRaw("
+            pasien_id IN (SELECT id FROM m_pasien WHERE $in_pasien)
+        ")->get();
+        $anamnesis_by_pasien_id = [];
+        foreach($temp as $v){
+            $anamnesis_by_pasien_id[$v->pasien_id] = $v;
         }
+        //dd($anamnesis_by_pasien_id);
 
         $file_template = resource_path('templates/Report_OAB.xlsx');
         //dd($file_template);
@@ -93,7 +115,11 @@ class LaporanController extends Controller
         foreach($pasiens as $pasien){
             $sheet->setCellValue('A'.$y, $no);
 
-            $this->excel_column_pasien($sheet, 2, $y, $pasien);
+            $c = $this->OAB_excel_column_pasien($sheet, 2, $y, $pasien);
+            $c = $this->OAB_excel_column_anamnesis($sheet, $c+1, $y,
+                $anamnesis_by_pasien_id[$pasien->id], $pasien
+            );
+
             $y++;
             $no++;
         }

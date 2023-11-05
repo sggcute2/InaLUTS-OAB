@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Modules\Laporan\Controllers\Traits;
+namespace App\Modules\Laporan\Controllers\Traits\OAB;
 
-use App\Modules\Jenis_kelamin\Models\Jenis_kelamin;
-use App\Modules\Propinsi\Models\Propinsi;
-use App\Modules\Kabupaten\Models\Kabupaten;
-use App\Modules\Rumah_sakit\Models\Rumah_sakit;
-use App\Modules\Unit_pelayanan\Models\Unit_pelayanan;
-use App\Modules\Pendidikan\Models\Pendidikan;
-use App\Modules\Pekerjaan\Models\Pekerjaan;
-use App\Modules\Status_pernikahan\Models\Status_pernikahan;
 use App\Modules\Aktivitas_seksual\Models\Aktivitas_seksual;
-use App\Modules\Suku\Models\Suku;
 use App\Modules\Datang\Models\Datang;
 use App\Modules\Jaminan_kesehatan\Models\Jaminan_kesehatan;
+use App\Modules\Jenis_kelamin\Models\Jenis_kelamin;
+use App\Modules\Kabupaten\Models\Kabupaten;
+use App\Modules\Pendidikan\Models\Pendidikan;
+use App\Modules\Pekerjaan\Models\Pekerjaan;
+use App\Modules\Propinsi\Models\Propinsi;
+use App\Modules\Rumah_sakit\Models\Rumah_sakit;
+use App\Modules\Status_pernikahan\Models\Status_pernikahan;
+use App\Modules\Suku\Models\Suku;
+use App\Modules\Unit_pelayanan\Models\Unit_pelayanan;
 use FORMAT;
 use SS;
 
-trait PasienTraits {
+trait OAB_PasienTraits {
 
-    public function excel_column_pasien(&$sheet, $c = 0, $y, $pasien)
+    public function OAB_excel_column_pasien(&$sheet, $c = 0, $y, $pasien)
     {
         $c--;
 
@@ -33,7 +33,8 @@ trait PasienTraits {
             $rumah_sakit = $temp;
         }
 
-        $temp = SS::get('m_unit_pelayanan__'.$pasien->unit_pelayanan_id);
+        $the_id = $pasien->unit_pelayanan_id;
+        $temp = SS::get('m_unit_pelayanan__'.$the_id);
         if ($temp) {
             $unit_pelayanan = $temp;
         } else {
@@ -42,7 +43,8 @@ trait PasienTraits {
             $unit_pelayanan = $temp;
         }
 
-        $temp = SS::get('m_jenis_kelamin__'.$pasien->jenis_kelamin_id);
+        $the_id = $pasien->jenis_kelamin_id;
+        $temp = SS::get('m_jenis_kelamin__'.$the_id);
         if ($temp) {
             $jenis_kelamin = $temp;
         } else {
@@ -51,7 +53,8 @@ trait PasienTraits {
             $jenis_kelamin = $temp;
         }
 
-        $temp = SS::get('m_propinsi__'.$pasien->propinsi_id);
+        $the_id = $pasien->propinsi_id;
+        $temp = SS::get('m_propinsi__'.$the_id);
         if ($temp) {
             $propinsi = $temp;
         } else {
@@ -60,7 +63,8 @@ trait PasienTraits {
             $propinsi = $temp;
         }
 
-        $temp = SS::get('m_kabupaten__'.$pasien->kabupaten_id);
+        $the_id = $pasien->kabupaten_id;
+        $temp = SS::get('m_kabupaten__'.$the_id);
         if ($temp) {
             $kabupaten = $temp;
         } else {
@@ -69,7 +73,8 @@ trait PasienTraits {
             $kabupaten = $temp;
         }
 
-        $temp = SS::get('m_pendidikan__'.$pasien->pendidikan_id);
+        $the_id = $pasien->pendidikan_id;
+        $temp = SS::get('m_pendidikan__'.$the_id);
         if ($temp) {
             $pendidikan = $temp;
         } else {
@@ -77,8 +82,9 @@ trait PasienTraits {
             SS::set('m_pendidikan__'.$the_id, $temp);
             $pendidikan = $temp;
         }
-        
-        $temp = SS::get('m_pekerjaan__'.$pasien->pekerjaan_id);
+
+        $the_id = $pasien->pekerjaan_id;
+        $temp = SS::get('m_pekerjaan__'.$the_id);
         if ($temp) {
             $pekerjaan = $temp;
         } else {
@@ -86,8 +92,9 @@ trait PasienTraits {
             SS::set('m_pekerjaan__'.$the_id, $temp);
             $pekerjaan = $temp;
         }
-        
-        $temp = SS::get('m_status_pernikahan__'.$pasien->status_pernikahan_id);
+
+        $the_id = $pasien->status_pernikahan_id;
+        $temp = SS::get('m_status_pernikahan__'.$the_id);
         if ($temp) {
             $status_pernikahan = $temp;
         } else {
@@ -95,8 +102,9 @@ trait PasienTraits {
             SS::set('m_status_pernikahan__'.$the_id, $temp);
             $status_pernikahan = $temp;
         }
-        
-        $temp = SS::get('m_aktivitas_seksual__'.$pasien->aktivitas_seksual_id);
+
+        $the_id = $pasien->aktivitas_seksual_id;
+        $temp = SS::get('m_aktivitas_seksual__'.$the_id);
         if ($temp) {
             $aktivitas_seksual = $temp;
         } else {
@@ -104,8 +112,9 @@ trait PasienTraits {
             SS::set('m_aktivitas_seksual__'.$the_id, $temp);
             $aktivitas_seksual = $temp;
         }
-        
-        $temp = SS::get('m_suku__'.$pasien->suku_id);
+
+        $the_id = $pasien->suku_id;
+        $temp = SS::get('m_suku__'.$the_id);
         if ($temp) {
             $suku = $temp;
         } else {
@@ -113,8 +122,9 @@ trait PasienTraits {
             SS::set('m_suku__'.$the_id, $temp);
             $suku = $temp;
         }
-        
-        $temp = SS::get('m_datang__'.$pasien->datang_id);
+
+        $the_id = $pasien->datang_id;
+        $temp = SS::get('m_datang__'.$the_id);
         if ($temp) {
             $datang = $temp;
         } else {
@@ -122,8 +132,9 @@ trait PasienTraits {
             SS::set('m_datang__'.$the_id, $temp);
             $datang = $temp;
         }
-        
-        $temp = SS::get('m_jaminan_kesehatan__'.$pasien->jaminan_kesehatan_id);
+
+        $the_id = $pasien->jaminan_kesehatan_id;
+        $temp = SS::get('m_jaminan_kesehatan__'.$the_id);
         if ($temp) {
             $jaminan_kesehatan = $temp;
         } else {
