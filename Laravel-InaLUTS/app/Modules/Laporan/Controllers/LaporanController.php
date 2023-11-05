@@ -13,6 +13,7 @@ use App\Modules\Pasien\Models\OAB\OAB_anamnesis;
 use App\Modules\Pasien\Models\OAB\OAB_keluhan_tambahan;
 use App\Modules\Pasien\Models\OAB\OAB_faktor_resiko;
 use App\Modules\Pasien\Models\OAB\OAB_riwayat_pengobatan_1_bln;
+use App\Modules\Pasien\Models\OAB\OAB_riwayat_pengobatan_luts;
 use BS;
 use DT;
 use FORM;
@@ -22,7 +23,8 @@ use App\Modules\Laporan\Controllers\Traits\OAB\{
     OAB_anamnesisTrait,
     OAB_keluhan_tambahanTrait,
     OAB_faktor_resikoTrait,
-    OAB_riwayat_pengobatan_1_blnTrait
+    OAB_riwayat_pengobatan_1_blnTrait,
+    OAB_riwayat_pengobatan_lutsTrait
 };
 
 class LaporanController extends Controller
@@ -33,6 +35,7 @@ class LaporanController extends Controller
     use OAB_keluhan_tambahanTrait;
     use OAB_faktor_resikoTrait;
     use OAB_riwayat_pengobatan_1_blnTrait;
+    use OAB_riwayat_pengobatan_lutsTrait;
 
     public function __construct(){
         parent::__construct([
@@ -133,6 +136,15 @@ class LaporanController extends Controller
             $riwayat_pengobatan_1_bln_by_pasien_id[$v->pasien_id] = $v;
         }
         //dd($riwayat_pengobatan_1_bln_by_pasien_id);
+
+        $temp = OAB_riwayat_pengobatan_luts::whereRaw("
+            pasien_id IN (SELECT id FROM m_pasien WHERE $in_pasien)
+        ")->get();
+        $riwayat_pengobatan_luts_by_pasien_id = [];
+        foreach($temp as $v){
+            $riwayat_pengobatan_luts_by_pasien_id[$v->pasien_id] = $v;
+        }
+        //dd($riwayat_pengobatan_luts_by_pasien_id);
         //===[ End : Data ]=====================================================
 
         $file_template = resource_path('templates/Report_OAB.xlsx');
@@ -148,7 +160,7 @@ class LaporanController extends Controller
             .date('D, d M Y - H:i:s', $now)
         );
 
-        $y = 7; // Start Y
+        $y = 8; // Start Y
         $no = 1;
         foreach($pasiens as $pasien){
             $sheet->setCellValue('A'.$y, $no);
@@ -168,12 +180,15 @@ class LaporanController extends Controller
             $c = $this->OAB_excel_column_riwayat_pengobatan_1_bln($sheet, $c+1, $y,
                 $riwayat_pengobatan_1_bln_by_pasien_id[$pasien->id], $pasien
             );
+            $c = $this->OAB_excel_column_riwayat_pengobatan_luts($sheet, $c+1, $y,
+                $riwayat_pengobatan_luts_by_pasien_id[$pasien->id], $pasien
+            );
 
             $y++;
             $no++;
         }
 
-        $sheet->setSelectedCell('BK7');
+        $sheet->setSelectedCell('BR8');
 
         $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
         $buffer_filename = [];
