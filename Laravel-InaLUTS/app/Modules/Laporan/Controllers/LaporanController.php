@@ -12,6 +12,7 @@ use App\Modules\Pasien\Models\Pasien;
 use App\Modules\Pasien\Models\OAB\OAB_anamnesis;
 use App\Modules\Pasien\Models\OAB\OAB_keluhan_tambahan;
 use App\Modules\Pasien\Models\OAB\OAB_faktor_resiko;
+use App\Modules\Pasien\Models\OAB\OAB_riwayat_pengobatan_1_bln;
 use BS;
 use DT;
 use FORM;
@@ -20,7 +21,8 @@ use App\Modules\Laporan\Controllers\Traits\OAB\{
     OAB_pasienTrait,
     OAB_anamnesisTrait,
     OAB_keluhan_tambahanTrait,
-    OAB_faktor_resikoTrait
+    OAB_faktor_resikoTrait,
+    OAB_riwayat_pengobatan_1_blnTrait
 };
 
 class LaporanController extends Controller
@@ -30,6 +32,7 @@ class LaporanController extends Controller
     use OAB_anamnesisTrait;
     use OAB_keluhan_tambahanTrait;
     use OAB_faktor_resikoTrait;
+    use OAB_riwayat_pengobatan_1_blnTrait;
 
     public function __construct(){
         parent::__construct([
@@ -63,6 +66,7 @@ class LaporanController extends Controller
         $req = request()->all();
         $buffer_criteria = [];
 
+        //===[ Begin : Data ]===================================================
         if (USER_IS_REG_COO || USER_IS_LOC_COO || USER_IS_SUB) {
             $raw_rumah_sakit = 'rumah_sakit_id = '
                 .intval(USER_RUMAH_SAKIT_ID);
@@ -121,6 +125,16 @@ class LaporanController extends Controller
         }
         //dd($faktor_resiko_by_pasien_id);
 
+        $temp = OAB_riwayat_pengobatan_1_bln::whereRaw("
+            pasien_id IN (SELECT id FROM m_pasien WHERE $in_pasien)
+        ")->get();
+        $riwayat_pengobatan_1_bln_by_pasien_id = [];
+        foreach($temp as $v){
+            $riwayat_pengobatan_1_bln_by_pasien_id[$v->pasien_id] = $v;
+        }
+        //dd($riwayat_pengobatan_1_bln_by_pasien_id);
+        //===[ End : Data ]=====================================================
+
         $file_template = resource_path('templates/Report_OAB.xlsx');
         //dd($file_template);
 
@@ -139,7 +153,9 @@ class LaporanController extends Controller
         foreach($pasiens as $pasien){
             $sheet->setCellValue('A'.$y, $no);
 
-            $c = $this->OAB_excel_column_pasien($sheet, 2, $y, $pasien);
+            $c = $this->OAB_excel_column_pasien($sheet, 2, $y,
+                $pasien
+            );
             $c = $this->OAB_excel_column_anamnesis($sheet, $c+1, $y,
                 $anamnesis_by_pasien_id[$pasien->id], $pasien
             );
@@ -149,12 +165,15 @@ class LaporanController extends Controller
             $c = $this->OAB_excel_column_faktor_resiko($sheet, $c+1, $y,
                 $faktor_resiko_by_pasien_id[$pasien->id], $pasien
             );
+            $c = $this->OAB_excel_column_riwayat_pengobatan_1_bln($sheet, $c+1, $y,
+                $riwayat_pengobatan_1_bln_by_pasien_id[$pasien->id], $pasien
+            );
 
             $y++;
             $no++;
         }
 
-        $sheet->setSelectedCell('BF7');
+        $sheet->setSelectedCell('BK7');
 
         $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
         $buffer_filename = [];
