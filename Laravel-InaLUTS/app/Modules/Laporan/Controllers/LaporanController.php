@@ -11,6 +11,7 @@ use App\Modules\Jenis_kelamin\Models\Jenis_kelamin;
 use App\Modules\Pasien\Models\Pasien;
 use App\Modules\Pasien\Models\OAB\OAB_anamnesis;
 use App\Modules\Pasien\Models\OAB\OAB_keluhan_tambahan;
+use App\Modules\Pasien\Models\OAB\OAB_faktor_resiko;
 use BS;
 use DT;
 use FORM;
@@ -18,7 +19,8 @@ use FORM;
 use App\Modules\Laporan\Controllers\Traits\OAB\{
     OAB_pasienTrait,
     OAB_anamnesisTrait,
-    OAB_keluhan_tambahanTrait
+    OAB_keluhan_tambahanTrait,
+    OAB_faktor_resikoTrait
 };
 
 class LaporanController extends Controller
@@ -27,6 +29,7 @@ class LaporanController extends Controller
     use OAB_pasienTrait;
     use OAB_anamnesisTrait;
     use OAB_keluhan_tambahanTrait;
+    use OAB_faktor_resikoTrait;
 
     public function __construct(){
         parent::__construct([
@@ -109,6 +112,15 @@ class LaporanController extends Controller
         }
         //dd($keluhan_tambahan_by_pasien_id);
 
+        $temp = OAB_faktor_resiko::whereRaw("
+            pasien_id IN (SELECT id FROM m_pasien WHERE $in_pasien)
+        ")->get();
+        $faktor_resiko_by_pasien_id = [];
+        foreach($temp as $v){
+            $faktor_resiko_by_pasien_id[$v->pasien_id] = $v;
+        }
+        //dd($faktor_resiko_by_pasien_id);
+
         $file_template = resource_path('templates/Report_OAB.xlsx');
         //dd($file_template);
 
@@ -134,10 +146,15 @@ class LaporanController extends Controller
             $c = $this->OAB_excel_column_keluhan_tambahan($sheet, $c+1, $y,
                 $keluhan_tambahan_by_pasien_id[$pasien->id], $pasien
             );
+            $c = $this->OAB_excel_column_faktor_resiko($sheet, $c+1, $y,
+                $faktor_resiko_by_pasien_id[$pasien->id], $pasien
+            );
 
             $y++;
             $no++;
         }
+
+        $sheet->setSelectedCell('BF7');
 
         $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
         $buffer_filename = [];
