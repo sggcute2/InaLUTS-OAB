@@ -341,12 +341,22 @@ static function show($echo = true) {
       }
     }
 
+    $after_checkValidation = '';
+    if (isset(self::$config['after_checkValidation'])) {
+      $after_checkValidation .= PHP_EOL
+        .'/* Begin : after_checkValidation */'.PHP_EOL
+        .self::$config['after_checkValidation']
+        .PHP_EOL
+        .'/* End : after_checkValidation */'.PHP_EOL;
+    }
+
     $str .= "
       <script language=\"javascript\">
       function {$NS}checkValidation(){
         $all_rules
+        const NS = '{$NS}';
         jQuery('#{$NS}the_buttons').hide();
-        jQuery('#{$NS}waiting').show();
+        jQuery('#{$NS}waiting').show();{$after_checkValidation}
       }
       </script>
     ";
