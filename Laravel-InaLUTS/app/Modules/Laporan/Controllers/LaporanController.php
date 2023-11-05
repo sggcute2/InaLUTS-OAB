@@ -9,21 +9,24 @@ use App\Http\Controllers\Controller;
 use App\Modules\Laporan\Models\Laporan as ModuleModel;
 use App\Modules\Jenis_kelamin\Models\Jenis_kelamin;
 use App\Modules\Pasien\Models\Pasien;
-use App\Modules\Pasien\Models\OAB\OAB_Anamnesis;
+use App\Modules\Pasien\Models\OAB\OAB_anamnesis;
+use App\Modules\Pasien\Models\OAB\OAB_keluhan_tambahan;
 use BS;
 use DT;
 use FORM;
 
 use App\Modules\Laporan\Controllers\Traits\OAB\{
-    OAB_PasienTraits,
-    OAB_AnamnesisTraits
+    OAB_pasienTrait,
+    OAB_anamnesisTrait,
+    OAB_keluhan_tambahanTrait
 };
 
 class LaporanController extends Controller
 {
 
-    use OAB_PasienTraits;
-    use OAB_AnamnesisTraits;
+    use OAB_pasienTrait;
+    use OAB_anamnesisTrait;
+    use OAB_keluhan_tambahanTrait;
 
     public function __construct(){
         parent::__construct([
@@ -88,7 +91,7 @@ class LaporanController extends Controller
             AND $raw_jenis_kelamin
         ";
 
-        $temp = OAB_Anamnesis::whereRaw("
+        $temp = OAB_anamnesis::whereRaw("
             pasien_id IN (SELECT id FROM m_pasien WHERE $in_pasien)
         ")->get();
         $anamnesis_by_pasien_id = [];
@@ -96,6 +99,15 @@ class LaporanController extends Controller
             $anamnesis_by_pasien_id[$v->pasien_id] = $v;
         }
         //dd($anamnesis_by_pasien_id);
+
+        $temp = OAB_keluhan_tambahan::whereRaw("
+            pasien_id IN (SELECT id FROM m_pasien WHERE $in_pasien)
+        ")->get();
+        $keluhan_tambahan_by_pasien_id = [];
+        foreach($temp as $v){
+            $keluhan_tambahan_by_pasien_id[$v->pasien_id] = $v;
+        }
+        //dd($keluhan_tambahan_by_pasien_id);
 
         $file_template = resource_path('templates/Report_OAB.xlsx');
         //dd($file_template);
@@ -118,6 +130,9 @@ class LaporanController extends Controller
             $c = $this->OAB_excel_column_pasien($sheet, 2, $y, $pasien);
             $c = $this->OAB_excel_column_anamnesis($sheet, $c+1, $y,
                 $anamnesis_by_pasien_id[$pasien->id], $pasien
+            );
+            $c = $this->OAB_excel_column_keluhan_tambahan($sheet, $c+1, $y,
+                $keluhan_tambahan_by_pasien_id[$pasien->id], $pasien
             );
 
             $y++;

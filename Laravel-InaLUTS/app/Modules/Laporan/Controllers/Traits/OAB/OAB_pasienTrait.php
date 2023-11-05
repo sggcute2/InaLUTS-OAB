@@ -17,7 +17,7 @@ use App\Modules\Unit_pelayanan\Models\Unit_pelayanan;
 use FORMAT;
 use SS;
 
-trait OAB_PasienTraits {
+trait OAB_PasienTrait {
 
     public function OAB_excel_column_pasien(&$sheet, $c = 0, $y, $pasien)
     {

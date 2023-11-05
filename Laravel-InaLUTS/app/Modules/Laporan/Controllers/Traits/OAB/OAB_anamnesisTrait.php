@@ -5,7 +5,7 @@ namespace App\Modules\Laporan\Controllers\Traits\OAB;
 use FORMAT;
 use SS;
 
-trait OAB_AnamnesisTraits {
+trait OAB_AnamnesisTrait {
 
     public function OAB_excel_column_anamnesis(&$sheet, $c = 0, $y, $data, $pasien)
     {
