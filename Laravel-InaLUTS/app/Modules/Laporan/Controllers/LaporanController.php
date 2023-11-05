@@ -17,6 +17,7 @@ use App\Modules\Pasien\Models\OAB\OAB_riwayat_pengobatan_luts;
 use App\Modules\Pasien\Models\OAB\OAB_riwayat_operasi_urologi;
 use App\Modules\Pasien\Models\OAB\OAB_riwayat_operasi_non_urologi;
 use App\Modules\Pasien\Models\OAB\OAB_riwayat_radiasi;
+use App\Modules\Pasien\Models\OAB\OAB_sistem_skor;
 use BS;
 use DT;
 use FORM;
@@ -30,7 +31,8 @@ use App\Modules\Laporan\Controllers\Traits\OAB\{
     OAB_riwayat_pengobatan_lutsTrait,
     OAB_riwayat_operasi_urologiTrait,
     OAB_riwayat_operasi_non_urologiTrait,
-    OAB_riwayat_radiasiTrait
+    OAB_riwayat_radiasiTrait,
+    OAB_sistem_skorTrait
 };
 
 class LaporanController extends Controller
@@ -45,6 +47,7 @@ class LaporanController extends Controller
     use OAB_riwayat_operasi_urologiTrait;
     use OAB_riwayat_operasi_non_urologiTrait;
     use OAB_riwayat_radiasiTrait;
+    use OAB_sistem_skorTrait;
 
     public function __construct(){
         parent::__construct([
@@ -181,6 +184,15 @@ class LaporanController extends Controller
             $riwayat_radiasi_by_pasien_id[$v->pasien_id] = $v;
         }
         //dd($riwayat_radiasi_by_pasien_id);
+
+        $temp = OAB_sistem_skor::whereRaw("
+            pasien_id IN (SELECT id FROM m_pasien WHERE $in_pasien)
+        ")->get();
+        $sistem_skor_by_pasien_id = [];
+        foreach($temp as $v){
+            $sistem_skor_by_pasien_id[$v->pasien_id] = $v;
+        }
+        //dd($sistem_skor_by_pasien_id);
         //===[ End : Data ]=====================================================
 
         $file_template = resource_path('templates/Report_OAB.xlsx');
@@ -227,6 +239,9 @@ class LaporanController extends Controller
             );
             $c = $this->OAB_excel_column_riwayat_radiasi($sheet, $c+1, $y,
                 $riwayat_radiasi_by_pasien_id[$pasien->id], $pasien
+            );
+            $c = $this->OAB_excel_column_sistem_skor($sheet, $c+1, $y,
+                $sistem_skor_by_pasien_id[$pasien->id], $pasien
             );
 
             $y++;
