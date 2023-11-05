@@ -60,13 +60,13 @@ if (isset($terapi)) {
   @if($sidebar_detail[1]=='_pemeriksaan_laboratorium')
   <a
     data-active-module-action_pasien___list_oab{{ $sidebar_detail[1] }}="1"
-    href="{{ route('pasien.list_oab'.$sidebar_detail[1], ID) }}"
+    href="{{ route('pasien.list_oab'.$sidebar_detail[1], $data_pasien->id) }}"
     title="{{ $sidebar_detail[0] }}"
 >{{ $sidebar_detail[0] }}</a>
   @else
 <a
     data-active-module-action_pasien___detail_oab{{ $sidebar_detail[1] }}="1"
-    href="{{ route('pasien.detail_oab'.$sidebar_detail[1], ID) }}"
+    href="{{ route('pasien.detail_oab'.$sidebar_detail[1], $data_pasien->id) }}"
     title="{{ $sidebar_detail[0] }}"
 >{{ $sidebar_detail[0] }}</a>
   @endif
