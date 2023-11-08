@@ -23,6 +23,7 @@ use App\Modules\Pasien\Models\OAB\OAB_riwayat_operasi_urologi;
 use App\Modules\Pasien\Models\OAB\OAB_riwayat_operasi_non_urologi;
 use App\Modules\Pasien\Models\OAB\OAB_riwayat_radiasi;
 use App\Modules\Pasien\Models\OAB\OAB_sistem_skor;
+use App\Modules\Pasien\Models\OAB\OAB_pemeriksaan_fisik;
 use BS;
 use DT;
 use FORM;
@@ -37,7 +38,8 @@ use App\Modules\Laporan\Controllers\Traits\OAB\{
     OAB_riwayat_operasi_urologiTrait,
     OAB_riwayat_operasi_non_urologiTrait,
     OAB_riwayat_radiasiTrait,
-    OAB_sistem_skorTrait
+    OAB_sistem_skorTrait,
+    OAB_pemeriksaan_fisikTrait
 };
 
 class LaporanController extends Controller
@@ -53,6 +55,7 @@ class LaporanController extends Controller
     use OAB_riwayat_operasi_non_urologiTrait;
     use OAB_riwayat_radiasiTrait;
     use OAB_sistem_skorTrait;
+    use OAB_pemeriksaan_fisikTrait;
 
     public function __construct(){
         parent::__construct([
@@ -243,6 +246,15 @@ class LaporanController extends Controller
             $kuesioner_bladder_diary_by_pasien_id[$v->pasien_id] = $v;
         }
         //dd($kuesioner_bladder_diary_by_pasien_id);
+
+        $temp = OAB_pemeriksaan_fisik::whereRaw("
+            pasien_id IN (SELECT id FROM m_pasien WHERE $in_pasien)
+        ")->get();
+        $pemeriksaan_fisik_by_pasien_id = [];
+        foreach($temp as $v){
+            $pemeriksaan_fisik_by_pasien_id[$v->pasien_id] = $v;
+        }
+        //dd($pemeriksaan_fisik_by_pasien_id);
         //===[ End : Data ]=====================================================
 
         $file_template = resource_path('templates/Report_OAB.xlsx');
@@ -298,6 +310,9 @@ class LaporanController extends Controller
                 $kuesioner_ehs_by_pasien_id[$pasien->id],
                 $kuesioner_bladder_diary_by_pasien_id[$pasien->id],
                 $pasien
+            );
+            $c = $this->OAB_excel_column_pemeriksaan_fisik($sheet, $c+1, $y,
+                $pemeriksaan_fisik_by_pasien_id[$pasien->id], $pasien
             );
 
             $y++;
