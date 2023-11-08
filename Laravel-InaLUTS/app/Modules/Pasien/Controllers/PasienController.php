@@ -195,6 +195,17 @@ class PasienController extends Controller
         $default = $request->all();
         $default['rumah_sakit_id'] = USER_RUMAH_SAKIT_ID;
         $default['code'] = $this->_get_code();
+        $default['propinsi_id'] = (int) $default['propinsi_id'];
+        $default['kabupaten_id'] = (int) $default['kabupaten_id'];
+        $default['pendidikan_id'] = (int) $default['pendidikan_id'];
+        $default['pekerjaan_id'] = (int) $default['pekerjaan_id'];
+        $default['status_pernikahan_id'] = (int) $default['status_pernikahan_id'];
+        $default['aktivitas_seksual_id'] = (int) $default['aktivitas_seksual_id'];
+        $default['suku_id'] = (int) $default['suku_id'];
+        $default['datang_id'] = (int) $default['datang_id'];
+        $default['jaminan_kesehatan_id'] = (int) $default['jaminan_kesehatan_id'];
+        $default['unit_pelayanan_id'] = (int) $default['unit_pelayanan_id'];
+        //dd($default);
 
         ModuleModel::base_insert($default);
 

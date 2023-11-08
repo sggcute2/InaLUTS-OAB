@@ -11,6 +11,8 @@ trait OAB_riwayat_pengobatan_lutsTrait {
     {
         $c--;
 
+        if (!$data) return $c + 29;
+
         $fields = [
             'tamsulosin',
             'alfuzosin',

@@ -11,6 +11,8 @@ trait OAB_riwayat_pengobatan_1_blnTrait {
     {
         $c--;
 
+        if (!$data) return $c + 7;
+
         $fields = [
             'antihipertensi',
             'obat_diabetik',

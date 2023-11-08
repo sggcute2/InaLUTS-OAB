@@ -11,6 +11,8 @@ trait OAB_riwayat_operasi_urologiTrait {
     {
         $c--;
 
+        if (!$data) return $c + 15;
+
         $fields = [
             'tur_prostat',
             'radikal_prostat',

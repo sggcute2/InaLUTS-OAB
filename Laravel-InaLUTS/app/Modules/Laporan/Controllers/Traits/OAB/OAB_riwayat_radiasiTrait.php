@@ -11,6 +11,8 @@ trait OAB_riwayat_radiasiTrait {
     {
         $c--;
 
+        if (!$data) return $c + 2;
+
         $fields = [
             'riwayat_radiasi_pelvis',
             'riwayat_kemoterapi',

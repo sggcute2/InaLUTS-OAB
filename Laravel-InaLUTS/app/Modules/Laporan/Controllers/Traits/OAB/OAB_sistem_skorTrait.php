@@ -19,6 +19,8 @@ trait OAB_sistem_skorTrait {
     {
         $c--;
 
+        if (!$data) return $c + 13;
+
         $fields = [
             'oabss' => 'OABSS',
             'qol' => 'QOL',

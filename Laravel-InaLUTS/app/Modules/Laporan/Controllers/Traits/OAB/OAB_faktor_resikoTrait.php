@@ -11,6 +11,8 @@ trait OAB_faktor_resikoTrait {
     {
         $c--;
 
+        if (!$data) return $c + 25;
+
         $sheet->setCellValue(FORMAT::excel_column(++$c).$y, $data->alergi);
         $sheet->setCellValue(FORMAT::excel_column(++$c).$y, $data->penyakit_paru);
 

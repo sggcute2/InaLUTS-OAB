@@ -27,6 +27,7 @@ use App\Modules\Pasien\Models\OAB\OAB_pemeriksaan_fisik;
 use BS;
 use DT;
 use FORM;
+use FORMAT;
 
 use App\Modules\Laporan\Controllers\Traits\OAB\{
     OAB_pasienTrait,
@@ -111,10 +112,13 @@ class LaporanController extends Controller
             $criteria = 'Kriteria = Semua Data';
         }
 
+        //dd($raw_rumah_sakit);
+        //dd($raw_jenis_kelamin);
         $pasiens = Pasien::where('registry_id', 1) // OAB
             ->whereRaw($raw_rumah_sakit)
             ->whereRaw($raw_jenis_kelamin)
             ->get();
+        //dd($pasiens);
         $in_pasien = "
             registry_id = 1
             AND $raw_rumah_sakit
@@ -279,41 +283,43 @@ class LaporanController extends Controller
                 $pasien
             );
             $c = $this->OAB_excel_column_anamnesis($sheet, $c+1, $y,
-                $anamnesis_by_pasien_id[$pasien->id], $pasien
+                $anamnesis_by_pasien_id[$pasien->id] ?? null, $pasien
             );
             $c = $this->OAB_excel_column_keluhan_tambahan($sheet, $c+1, $y,
-                $keluhan_tambahan_by_pasien_id[$pasien->id], $pasien
+                $keluhan_tambahan_by_pasien_id[$pasien->id] ?? null, $pasien
             );
             $c = $this->OAB_excel_column_faktor_resiko($sheet, $c+1, $y,
-                $faktor_resiko_by_pasien_id[$pasien->id], $pasien
+                $faktor_resiko_by_pasien_id[$pasien->id] ?? null, $pasien
             );
             $c = $this->OAB_excel_column_riwayat_pengobatan_1_bln($sheet, $c+1, $y,
-                $riwayat_pengobatan_1_bln_by_pasien_id[$pasien->id], $pasien
+                $riwayat_pengobatan_1_bln_by_pasien_id[$pasien->id] ?? null, $pasien
             );
             $c = $this->OAB_excel_column_riwayat_pengobatan_luts($sheet, $c+1, $y,
-                $riwayat_pengobatan_luts_by_pasien_id[$pasien->id], $pasien
+                $riwayat_pengobatan_luts_by_pasien_id[$pasien->id] ?? null, $pasien
             );
             $c = $this->OAB_excel_column_riwayat_operasi_urologi($sheet, $c+1, $y,
-                $riwayat_operasi_urologi_by_pasien_id[$pasien->id], $pasien
+                $riwayat_operasi_urologi_by_pasien_id[$pasien->id] ?? null, $pasien
             );
             $c = $this->OAB_excel_column_riwayat_operasi_non_urologi($sheet, $c+1, $y,
-                $riwayat_operasi_non_urologi_by_pasien_id[$pasien->id], $pasien
+                $riwayat_operasi_non_urologi_by_pasien_id[$pasien->id] ?? null, $pasien
             );
             $c = $this->OAB_excel_column_riwayat_radiasi($sheet, $c+1, $y,
-                $riwayat_radiasi_by_pasien_id[$pasien->id], $pasien
+                $riwayat_radiasi_by_pasien_id[$pasien->id] ?? null, $pasien
             );
             $c = $this->OAB_excel_column_sistem_skor($sheet, $c+1, $y,
-                $sistem_skor_by_pasien_id[$pasien->id],
-                $kuesioner_oabss_by_pasien_id[$pasien->id],
-                $kuesioner_qol_by_pasien_id[$pasien->id],
-                $kuesioner_iief_by_pasien_id[$pasien->id],
-                $kuesioner_ehs_by_pasien_id[$pasien->id],
-                $kuesioner_bladder_diary_by_pasien_id[$pasien->id],
+                $sistem_skor_by_pasien_id[$pasien->id] ?? null,
+                $kuesioner_oabss_by_pasien_id[$pasien->id] ?? null,
+                $kuesioner_qol_by_pasien_id[$pasien->id] ?? null,
+                $kuesioner_iief_by_pasien_id[$pasien->id] ?? null,
+                $kuesioner_ehs_by_pasien_id[$pasien->id] ?? null,
+                $kuesioner_bladder_diary_by_pasien_id[$pasien->id] ?? null,
                 $pasien
             );
             $c = $this->OAB_excel_column_pemeriksaan_fisik($sheet, $c+1, $y,
-                $pemeriksaan_fisik_by_pasien_id[$pasien->id], $pasien
+                $pemeriksaan_fisik_by_pasien_id[$pasien->id] ?? null, $pasien
             );
+
+            //$sheet->setCellValue(FORMAT::excel_column(++$c).$y, 'SGG');
 
             $y++;
             $no++;

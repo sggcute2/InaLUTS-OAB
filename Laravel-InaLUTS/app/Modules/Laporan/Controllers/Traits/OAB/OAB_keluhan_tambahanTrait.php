@@ -11,6 +11,8 @@ trait OAB_keluhan_tambahanTrait {
     {
         $c--;
 
+        if (!$data) return $c + 12;
+
         $sheet->setCellValue(FORMAT::excel_column(++$c).$y, $data->straining);
         $sheet->setCellValue(FORMAT::excel_column(++$c).$y, $data->intermittency);
         $sheet->setCellValue(FORMAT::excel_column(++$c).$y, $data->pancaran_lemah);

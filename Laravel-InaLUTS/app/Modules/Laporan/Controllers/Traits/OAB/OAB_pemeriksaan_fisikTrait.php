@@ -13,6 +13,8 @@ trait OAB_pemeriksaan_fisikTrait {
     {
         $c--;
 
+        if (!$data) return $c + 12;
+
         if ($data->gangguan_neurologi == 'Ya') {
             $a = [
                 'c_gangguan_neurologi_tremor',

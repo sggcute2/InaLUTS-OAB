@@ -11,6 +11,8 @@ trait OAB_anamnesisTrait {
     {
         $c--;
 
+        if (!$data) return $c + 1;
+
         $sheet->setCellValue(FORMAT::excel_column(++$c).$y, $data->keluhan_utama);
 
         return $c;

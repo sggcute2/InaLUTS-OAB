@@ -11,6 +11,8 @@ trait OAB_riwayat_operasi_non_urologiTrait {
     {
         $c--;
 
+        if (!$data) return $c + 4;
+
         $fields = [
             'operasi_tulang_belakang',
             'operasi_area_pelvik',
