@@ -11,6 +11,11 @@ use App\Modules\Jenis_kelamin\Models\Jenis_kelamin;
 use App\Modules\Pasien\Models\Pasien;
 use App\Modules\Pasien\Models\OAB\OAB_anamnesis;
 use App\Modules\Pasien\Models\OAB\OAB_keluhan_tambahan;
+use App\Modules\Pasien\Models\OAB\OAB_kuesioner_oabss;
+use App\Modules\Pasien\Models\OAB\OAB_kuesioner_qol;
+use App\Modules\Pasien\Models\OAB\OAB_kuesioner_iief;
+use App\Modules\Pasien\Models\OAB\OAB_kuesioner_ehs;
+use App\Modules\Pasien\Models\OAB\OAB_kuesioner_bladder_diary;
 use App\Modules\Pasien\Models\OAB\OAB_faktor_resiko;
 use App\Modules\Pasien\Models\OAB\OAB_riwayat_pengobatan_1_bln;
 use App\Modules\Pasien\Models\OAB\OAB_riwayat_pengobatan_luts;
@@ -193,6 +198,51 @@ class LaporanController extends Controller
             $sistem_skor_by_pasien_id[$v->pasien_id] = $v;
         }
         //dd($sistem_skor_by_pasien_id);
+
+        $temp = OAB_kuesioner_oabss::whereRaw("
+            pasien_id IN (SELECT id FROM m_pasien WHERE $in_pasien)
+        ")->get();
+        $kuesioner_oabss_by_pasien_id = [];
+        foreach($temp as $v){
+            $kuesioner_oabss_by_pasien_id[$v->pasien_id] = $v;
+        }
+        //dd($kuesioner_oabss_by_pasien_id);
+
+        $temp = OAB_kuesioner_qol::whereRaw("
+            pasien_id IN (SELECT id FROM m_pasien WHERE $in_pasien)
+        ")->get();
+        $kuesioner_qol_by_pasien_id = [];
+        foreach($temp as $v){
+            $kuesioner_qol_by_pasien_id[$v->pasien_id] = $v;
+        }
+        //dd($kuesioner_qol_by_pasien_id);
+
+        $temp = OAB_kuesioner_iief::whereRaw("
+            pasien_id IN (SELECT id FROM m_pasien WHERE $in_pasien)
+        ")->get();
+        $kuesioner_iief_by_pasien_id = [];
+        foreach($temp as $v){
+            $kuesioner_iief_by_pasien_id[$v->pasien_id] = $v;
+        }
+        //dd($kuesioner_iief_by_pasien_id);
+
+        $temp = OAB_kuesioner_ehs::whereRaw("
+            pasien_id IN (SELECT id FROM m_pasien WHERE $in_pasien)
+        ")->get();
+        $kuesioner_ehs_by_pasien_id = [];
+        foreach($temp as $v){
+            $kuesioner_ehs_by_pasien_id[$v->pasien_id] = $v;
+        }
+        //dd($kuesioner_ehs_by_pasien_id);
+
+        $temp = OAB_kuesioner_bladder_diary::whereRaw("
+            pasien_id IN (SELECT id FROM m_pasien WHERE $in_pasien)
+        ")->get();
+        $kuesioner_bladder_diary_by_pasien_id = [];
+        foreach($temp as $v){
+            $kuesioner_bladder_diary_by_pasien_id[$v->pasien_id] = $v;
+        }
+        //dd($kuesioner_bladder_diary_by_pasien_id);
         //===[ End : Data ]=====================================================
 
         $file_template = resource_path('templates/Report_OAB.xlsx');
@@ -241,14 +291,20 @@ class LaporanController extends Controller
                 $riwayat_radiasi_by_pasien_id[$pasien->id], $pasien
             );
             $c = $this->OAB_excel_column_sistem_skor($sheet, $c+1, $y,
-                $sistem_skor_by_pasien_id[$pasien->id], $pasien
+                $sistem_skor_by_pasien_id[$pasien->id],
+                $kuesioner_oabss_by_pasien_id[$pasien->id],
+                $kuesioner_qol_by_pasien_id[$pasien->id],
+                $kuesioner_iief_by_pasien_id[$pasien->id],
+                $kuesioner_ehs_by_pasien_id[$pasien->id],
+                $kuesioner_bladder_diary_by_pasien_id[$pasien->id],
+                $pasien
             );
 
             $y++;
             $no++;
         }
 
-        $sheet->setSelectedCell('DQ8');
+        $sheet->setSelectedCell('EN8');
 
         $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
         $buffer_filename = [];
