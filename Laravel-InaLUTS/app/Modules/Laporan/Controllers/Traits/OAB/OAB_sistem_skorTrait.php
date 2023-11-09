@@ -42,7 +42,7 @@ trait OAB_sistem_skorTrait {
 
         if ($data->c_oabss != '0') {
             $sheet->setCellValue(FORMAT::excel_column(++$c).$y,
-                $oabss->total_score
+                $oabss->total_score ?? ''
             );
         } else {
             $sheet->setCellValue(FORMAT::excel_column(++$c).$y, '');
@@ -50,7 +50,7 @@ trait OAB_sistem_skorTrait {
 
         if ($data->c_qol != '0') {
             $sheet->setCellValue(FORMAT::excel_column(++$c).$y,
-                $qol->total_score
+                $qol->total_score ?? ''
             );
         } else {
             $sheet->setCellValue(FORMAT::excel_column(++$c).$y, '');
@@ -58,7 +58,7 @@ trait OAB_sistem_skorTrait {
 
         if ($data->c_iief != '0') {
             $sheet->setCellValue(FORMAT::excel_column(++$c).$y,
-                $iief->total_score
+                $iief->total_score ?? ''
             );
         } else {
             $sheet->setCellValue(FORMAT::excel_column(++$c).$y, '');
