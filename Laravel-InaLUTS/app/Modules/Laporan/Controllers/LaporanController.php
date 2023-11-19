@@ -29,6 +29,7 @@ use App\Modules\Pasien\Models\OAB\OAB_penunjang_urodinamik;
 use App\Modules\Pasien\Models\OAB\OAB_pemeriksaan_imaging;
 use App\Modules\Pasien\Models\OAB\OAB_diagnosis;
 use App\Modules\Pasien\Models\OAB\OAB_penunjang;
+use App\Modules\Pasien\Models\OAB\OAB_terapi;
 use BS;
 use DT;
 use FORM;
@@ -50,7 +51,8 @@ use App\Modules\Laporan\Controllers\Traits\OAB\{
     OAB_penunjang_urodinamikTrait,
     OAB_pemeriksaan_imagingTrait,
     OAB_diagnosisTrait,
-    OAB_penunjangTrait
+    OAB_penunjangTrait,
+    OAB_terapiTrait,
 };
 
 class LaporanController extends Controller
@@ -72,6 +74,7 @@ class LaporanController extends Controller
     use OAB_pemeriksaan_imagingTrait;
     use OAB_diagnosisTrait;
     use OAB_penunjangTrait;
+    use OAB_terapiTrait;
 
     public function __construct(){
         parent::__construct([
@@ -319,6 +322,15 @@ class LaporanController extends Controller
             $penunjang_by_pasien_id[$v->pasien_id] = $v;
         }
         //dd($penunjang_by_pasien_id);
+
+        $temp = OAB_terapi::whereRaw("
+            pasien_id IN (SELECT id FROM m_pasien WHERE $in_pasien)
+        ")->get();
+        $terapi_by_pasien_id = [];
+        foreach($temp as $v){
+            $terapi_by_pasien_id[$v->pasien_id] = $v;
+        }
+        //dd($terapi_by_pasien_id);
         //===[ End : Data ]=====================================================
 
         $file_template = resource_path('templates/Report_OAB.xlsx');
@@ -393,6 +405,9 @@ class LaporanController extends Controller
             $c = $this->OAB_excel_column_penunjang($sheet, $c+1, $y,
                 $penunjang_by_pasien_id[$pasien->id] ?? null, $pasien
             );
+            $c = $this->OAB_excel_column_terapi($sheet, $c+1, $y,
+                $terapi_by_pasien_id[$pasien->id] ?? null, $pasien
+            );
 
             //$sheet->setCellValue(FORMAT::excel_column(++$c).$y, 'SGG');
 
@@ -400,7 +415,7 @@ class LaporanController extends Controller
             $no++;
         }
 
-        $sheet->setSelectedCell('FP8');
+        $sheet->setSelectedCell('GG8');
 
         $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
         $buffer_filename = [];
