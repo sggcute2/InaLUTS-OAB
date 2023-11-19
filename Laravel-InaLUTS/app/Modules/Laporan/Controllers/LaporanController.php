@@ -24,6 +24,9 @@ use App\Modules\Pasien\Models\OAB\OAB_riwayat_operasi_non_urologi;
 use App\Modules\Pasien\Models\OAB\OAB_riwayat_radiasi;
 use App\Modules\Pasien\Models\OAB\OAB_sistem_skor;
 use App\Modules\Pasien\Models\OAB\OAB_pemeriksaan_fisik;
+use App\Modules\Pasien\Models\OAB\OAB_penunjang_uroflowmetri;
+use App\Modules\Pasien\Models\OAB\OAB_penunjang_urodinamik;
+use App\Modules\Pasien\Models\OAB\OAB_diagnosis;
 use BS;
 use DT;
 use FORM;
@@ -40,7 +43,10 @@ use App\Modules\Laporan\Controllers\Traits\OAB\{
     OAB_riwayat_operasi_non_urologiTrait,
     OAB_riwayat_radiasiTrait,
     OAB_sistem_skorTrait,
-    OAB_pemeriksaan_fisikTrait
+    OAB_pemeriksaan_fisikTrait,
+    OAB_penunjang_uroflowmetriTrait,
+    OAB_penunjang_urodinamikTrait,
+    OAB_diagnosisTrait
 };
 
 class LaporanController extends Controller
@@ -57,6 +63,9 @@ class LaporanController extends Controller
     use OAB_riwayat_radiasiTrait;
     use OAB_sistem_skorTrait;
     use OAB_pemeriksaan_fisikTrait;
+    use OAB_penunjang_uroflowmetriTrait;
+    use OAB_penunjang_urodinamikTrait;
+    use OAB_diagnosisTrait;
 
     public function __construct(){
         parent::__construct([
@@ -259,6 +268,33 @@ class LaporanController extends Controller
             $pemeriksaan_fisik_by_pasien_id[$v->pasien_id] = $v;
         }
         //dd($pemeriksaan_fisik_by_pasien_id);
+
+        $temp = OAB_penunjang_uroflowmetri::whereRaw("
+            pasien_id IN (SELECT id FROM m_pasien WHERE $in_pasien)
+        ")->get();
+        $penunjang_uroflowmetri_by_pasien_id = [];
+        foreach($temp as $v){
+            $penunjang_uroflowmetri_by_pasien_id[$v->pasien_id] = $v;
+        }
+        //dd($penunjang_uroflowmetri_by_pasien_id);
+
+        $temp = OAB_penunjang_urodinamik::whereRaw("
+            pasien_id IN (SELECT id FROM m_pasien WHERE $in_pasien)
+        ")->get();
+        $penunjang_urodinamik_by_pasien_id = [];
+        foreach($temp as $v){
+            $penunjang_urodinamik_by_pasien_id[$v->pasien_id] = $v;
+        }
+        //dd($penunjang_urodinamik_by_pasien_id);
+
+        $temp = OAB_diagnosis::whereRaw("
+            pasien_id IN (SELECT id FROM m_pasien WHERE $in_pasien)
+        ")->get();
+        $diagnosis_by_pasien_id = [];
+        foreach($temp as $v){
+            $diagnosis_by_pasien_id[$v->pasien_id] = $v;
+        }
+        //dd($diagnosis_by_pasien_id);
         //===[ End : Data ]=====================================================
 
         $file_template = resource_path('templates/Report_OAB.xlsx');
@@ -317,6 +353,15 @@ class LaporanController extends Controller
             );
             $c = $this->OAB_excel_column_pemeriksaan_fisik($sheet, $c+1, $y,
                 $pemeriksaan_fisik_by_pasien_id[$pasien->id] ?? null, $pasien
+            );
+            $c = $this->OAB_excel_column_penunjang_uroflowmetri($sheet, $c+1, $y,
+                $penunjang_uroflowmetri_by_pasien_id[$pasien->id] ?? null, $pasien
+            );
+            $c = $this->OAB_excel_column_penunjang_urodinamik($sheet, $c+1, $y,
+                $penunjang_urodinamik_by_pasien_id[$pasien->id] ?? null, $pasien
+            );
+            $c = $this->OAB_excel_column_diagnosis($sheet, $c+1, $y,
+                $diagnosis_by_pasien_id[$pasien->id] ?? null, $pasien
             );
 
             //$sheet->setCellValue(FORMAT::excel_column(++$c).$y, 'SGG');
