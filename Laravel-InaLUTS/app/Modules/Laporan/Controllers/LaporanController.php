@@ -26,6 +26,7 @@ use App\Modules\Pasien\Models\OAB\OAB_sistem_skor;
 use App\Modules\Pasien\Models\OAB\OAB_pemeriksaan_fisik;
 use App\Modules\Pasien\Models\OAB\OAB_penunjang_uroflowmetri;
 use App\Modules\Pasien\Models\OAB\OAB_penunjang_urodinamik;
+use App\Modules\Pasien\Models\OAB\OAB_pemeriksaan_imaging;
 use App\Modules\Pasien\Models\OAB\OAB_diagnosis;
 use BS;
 use DT;
@@ -46,6 +47,7 @@ use App\Modules\Laporan\Controllers\Traits\OAB\{
     OAB_pemeriksaan_fisikTrait,
     OAB_penunjang_uroflowmetriTrait,
     OAB_penunjang_urodinamikTrait,
+    OAB_pemeriksaan_imagingTrait,
     OAB_diagnosisTrait
 };
 
@@ -65,6 +67,7 @@ class LaporanController extends Controller
     use OAB_pemeriksaan_fisikTrait;
     use OAB_penunjang_uroflowmetriTrait;
     use OAB_penunjang_urodinamikTrait;
+    use OAB_pemeriksaan_imagingTrait;
     use OAB_diagnosisTrait;
 
     public function __construct(){
@@ -287,6 +290,15 @@ class LaporanController extends Controller
         }
         //dd($penunjang_urodinamik_by_pasien_id);
 
+        $temp = OAB_pemeriksaan_imaging::whereRaw("
+            pasien_id IN (SELECT id FROM m_pasien WHERE $in_pasien)
+        ")->get();
+        $pemeriksaan_imaging_by_pasien_id = [];
+        foreach($temp as $v){
+            $pemeriksaan_imaging_by_pasien_id[$v->pasien_id] = $v;
+        }
+        //dd($pemeriksaan_imaging_by_pasien_id);
+
         $temp = OAB_diagnosis::whereRaw("
             pasien_id IN (SELECT id FROM m_pasien WHERE $in_pasien)
         ")->get();
@@ -360,6 +372,9 @@ class LaporanController extends Controller
             $c = $this->OAB_excel_column_penunjang_urodinamik($sheet, $c+1, $y,
                 $penunjang_urodinamik_by_pasien_id[$pasien->id] ?? null, $pasien
             );
+            $c = $this->OAB_excel_column_pemeriksaan_imaging($sheet, $c+1, $y,
+                $pemeriksaan_imaging_by_pasien_id[$pasien->id] ?? null, $pasien
+            );
             $c = $this->OAB_excel_column_diagnosis($sheet, $c+1, $y,
                 $diagnosis_by_pasien_id[$pasien->id] ?? null, $pasien
             );
@@ -370,7 +385,7 @@ class LaporanController extends Controller
             $no++;
         }
 
-        $sheet->setSelectedCell('EN8');
+        $sheet->setSelectedCell('FP8');
 
         $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
         $buffer_filename = [];
