@@ -35,6 +35,8 @@ use App\Modules\Pasien\Models\OAB\OAB_terapi_modifikasi_gaya_hidup;
 use App\Modules\Pasien\Models\OAB\OAB_terapi_rehabilitasi;
 use App\Modules\Pasien\Models\OAB\OAB_terapi_non_operatif;
 use App\Modules\Pasien\Models\OAB\OAB_terapi_medikamentosa;
+use App\Modules\Pasien\Models\OAB\OAB_terapi_operatif;
+use App\Modules\Pasien\Models\OAB\OAB_terapi_operatif_injeksi_botox;
 use BS;
 use DT;
 use FORM;
@@ -62,7 +64,8 @@ use App\Modules\Laporan\Controllers\Traits\OAB\{
     OAB_terapi_modifikasi_gaya_hidupTrait,
     OAB_terapi_rehabilitasiTrait,
     OAB_terapi_non_operatifTrait,
-    OAB_terapi_medikamentosaTrait
+    OAB_terapi_medikamentosaTrait,
+    OAB_terapi_operatifTrait
 };
 
 class LaporanController extends Controller
@@ -90,6 +93,7 @@ class LaporanController extends Controller
     use OAB_terapi_rehabilitasiTrait;
     use OAB_terapi_non_operatifTrait;
     use OAB_terapi_medikamentosaTrait;
+    use OAB_terapi_operatifTrait;
 
     public function __construct(){
         parent::__construct([
@@ -391,6 +395,24 @@ class LaporanController extends Controller
             $terapi_medikamentosa_by_pasien_id[$v->pasien_id] = $v;
         }
         //dd($terapi_medikamentosa_by_pasien_id);
+
+        $temp = OAB_terapi_operatif::whereRaw("
+            pasien_id IN (SELECT id FROM m_pasien WHERE $in_pasien)
+        ")->get();
+        $terapi_operatif_by_pasien_id = [];
+        foreach($temp as $v){
+            $terapi_operatif_by_pasien_id[$v->pasien_id] = $v;
+        }
+        //dd($terapi_operatif_by_pasien_id);
+
+        $temp = OAB_terapi_operatif_injeksi_botox::whereRaw("
+            pasien_id IN (SELECT id FROM m_pasien WHERE $in_pasien)
+        ")->orderBy('injeksi_botox_date', 'asc')->get();
+        $terapi_operatif_injeksi_botox_by_pasien_id = [];
+        foreach($temp as $v){
+            $terapi_operatif_injeksi_botox_by_pasien_id[$v->pasien_id][] = $v;
+        }
+        //dd($terapi_operatif_injeksi_botox_by_pasien_id);
         //===[ End : Data ]=====================================================
 
         $file_template = resource_path('templates/Report_OAB.xlsx');
@@ -451,12 +473,14 @@ class LaporanController extends Controller
             $c = $this->OAB_excel_column_pemeriksaan_fisik($sheet, $c+1, $y,
                 $pemeriksaan_fisik_by_pasien_id[$pasien->id] ?? null, $pasien
             );
+
             $zc = $this->OAB_excel_column_pemeriksaan_laboratorium($sheet, $c+1, $y,
                 $pemeriksaan_laboratorium_by_pasien_id[$pasien->id] ?? null, $pasien
             );
             //dd($zc);
             $c = $zc['c'];
             if ($zc['y'] > $y_max) $y_max = (int) $zc['y'];
+
             $c = $this->OAB_excel_column_penunjang_uroflowmetri($sheet, $c+1, $y,
                 $penunjang_uroflowmetri_by_pasien_id[$pasien->id] ?? null, $pasien
             );
@@ -496,13 +520,22 @@ class LaporanController extends Controller
                 $pasien
             );
 
+            $zc = $this->OAB_excel_column_terapi_operatif($sheet, $c+1, $y,
+                $terapi_operatif_by_pasien_id[$pasien->id] ?? null,
+                $terapi_operatif_injeksi_botox_by_pasien_id[$pasien->id] ?? null,
+                $pasien
+            );
+            //dd($zc);
+            $c = $zc['c'];
+            if ($zc['y'] > $y_max) $y_max = (int) $zc['y'];
+
             //$sheet->setCellValue(FORMAT::excel_column(++$c).$y, 'SGG');
 
             $y += $y_max;
             $no++;
         }
 
-        $sheet->setSelectedCell('HO8');
+        $sheet->setSelectedCell('IL8');
 
         $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
         $buffer_filename = [];
