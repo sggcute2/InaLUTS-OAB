@@ -42,7 +42,7 @@ trait OAB_penunjang_urodinamikTrait {
                 .' ml'
             );
         } else {
-            $sheet->setCellValue(FORMAT::excel_column(++$c).$y, 'Tidak');
+            $sheet->setCellValue(FORMAT::excel_column(++$c).$y, $data->pemeriksaan_urodinamik);
             $sheet->setCellValue(FORMAT::excel_column(++$c).$y, '');
             $sheet->setCellValue(FORMAT::excel_column(++$c).$y, '');
             $sheet->setCellValue(FORMAT::excel_column(++$c).$y, '');

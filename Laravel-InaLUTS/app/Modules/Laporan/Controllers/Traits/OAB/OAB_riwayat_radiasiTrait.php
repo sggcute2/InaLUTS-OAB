@@ -37,7 +37,7 @@ trait OAB_riwayat_radiasiTrait {
                     $sheet->setCellValue(FORMAT::excel_column(++$c).$y, '');
                 }
             } else {
-                $sheet->setCellValue(FORMAT::excel_column(++$c).$y, 'Tidak');
+                $sheet->setCellValue(FORMAT::excel_column(++$c).$y, $data->{$field});
             }
         }
 

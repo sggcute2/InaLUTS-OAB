@@ -24,6 +24,7 @@ use App\Modules\Pasien\Models\OAB\OAB_riwayat_operasi_non_urologi;
 use App\Modules\Pasien\Models\OAB\OAB_riwayat_radiasi;
 use App\Modules\Pasien\Models\OAB\OAB_sistem_skor;
 use App\Modules\Pasien\Models\OAB\OAB_pemeriksaan_fisik;
+use App\Modules\Pasien\Models\OAB\OAB_pemeriksaan_laboratorium;
 use App\Modules\Pasien\Models\OAB\OAB_penunjang_uroflowmetri;
 use App\Modules\Pasien\Models\OAB\OAB_penunjang_urodinamik;
 use App\Modules\Pasien\Models\OAB\OAB_pemeriksaan_imaging;
@@ -51,6 +52,7 @@ use App\Modules\Laporan\Controllers\Traits\OAB\{
     OAB_riwayat_radiasiTrait,
     OAB_sistem_skorTrait,
     OAB_pemeriksaan_fisikTrait,
+    OAB_pemeriksaan_laboratoriumTrait,
     OAB_penunjang_uroflowmetriTrait,
     OAB_penunjang_urodinamikTrait,
     OAB_pemeriksaan_imagingTrait,
@@ -77,6 +79,7 @@ class LaporanController extends Controller
     use OAB_riwayat_radiasiTrait;
     use OAB_sistem_skorTrait;
     use OAB_pemeriksaan_fisikTrait;
+    use OAB_pemeriksaan_laboratoriumTrait;
     use OAB_penunjang_uroflowmetriTrait;
     use OAB_penunjang_urodinamikTrait;
     use OAB_pemeriksaan_imagingTrait;
@@ -290,6 +293,15 @@ class LaporanController extends Controller
         }
         //dd($pemeriksaan_fisik_by_pasien_id);
 
+        $temp = OAB_pemeriksaan_laboratorium::whereRaw("
+            pasien_id IN (SELECT id FROM m_pasien WHERE $in_pasien)
+        ")->get();
+        $pemeriksaan_laboratorium_by_pasien_id = [];
+        foreach($temp as $v){
+            $pemeriksaan_laboratorium_by_pasien_id[$v->pasien_id][] = $v;
+        }
+        //dd($pemeriksaan_laboratorium_by_pasien_id);
+
         $temp = OAB_penunjang_uroflowmetri::whereRaw("
             pasien_id IN (SELECT id FROM m_pasien WHERE $in_pasien)
         ")->get();
@@ -397,6 +409,7 @@ class LaporanController extends Controller
         $y = 8; // Start Y
         $no = 1;
         foreach($pasiens as $pasien){
+            $y_max = 1;
             $sheet->setCellValue('A'.$y, $no);
 
             $c = $this->OAB_excel_column_pasien($sheet, 2, $y,
@@ -438,6 +451,12 @@ class LaporanController extends Controller
             $c = $this->OAB_excel_column_pemeriksaan_fisik($sheet, $c+1, $y,
                 $pemeriksaan_fisik_by_pasien_id[$pasien->id] ?? null, $pasien
             );
+            $zc = $this->OAB_excel_column_pemeriksaan_laboratorium($sheet, $c+1, $y,
+                $pemeriksaan_laboratorium_by_pasien_id[$pasien->id] ?? null, $pasien
+            );
+            //dd($zc);
+            $c = $zc['c'];
+            if ($zc['y'] > $y_max) $y_max = (int) $zc['y'];
             $c = $this->OAB_excel_column_penunjang_uroflowmetri($sheet, $c+1, $y,
                 $penunjang_uroflowmetri_by_pasien_id[$pasien->id] ?? null, $pasien
             );
@@ -453,6 +472,7 @@ class LaporanController extends Controller
             $c = $this->OAB_excel_column_penunjang($sheet, $c+1, $y,
                 $penunjang_by_pasien_id[$pasien->id] ?? null, $pasien
             );
+            /*===
             $c = $this->OAB_excel_column_terapi($sheet, $c+1, $y,
                 $terapi_by_pasien_id[$pasien->id] ?? null, $pasien
             );
@@ -476,10 +496,11 @@ class LaporanController extends Controller
                 $terapi_medikamentosa_by_pasien_id[$pasien->id] ?? null,
                 $pasien
             );
+            ===*/
 
             //$sheet->setCellValue(FORMAT::excel_column(++$c).$y, 'SGG');
 
-            $y++;
+            $y += $y_max;
             $no++;
         }
 

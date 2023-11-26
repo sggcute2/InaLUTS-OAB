@@ -13,8 +13,7 @@ trait OAB_penunjangTrait {
 
         if (!$data) return $c + 15;
 
-        //$sheet->setCellValue(FORMAT::excel_column(++$c).$y, $data->diagnosis);
-        $sheet->setCellValue(FORMAT::excel_column(++$c).$y, $data->pvr.' ml');
+        $sheet->setCellValue(FORMAT::excel_column(++$c).$y, $data->pvr.(trim($data->pvr)!=''?' ml':''));
         $sheet->setCellValue(FORMAT::excel_column(++$c).$y, $data->cara_mengukur_pvr);
         $sheet->setCellValue(FORMAT::excel_column(++$c).$y, $data->sistoskopi);
         If ($data->sistoskopi == 'Dikerjakan') {

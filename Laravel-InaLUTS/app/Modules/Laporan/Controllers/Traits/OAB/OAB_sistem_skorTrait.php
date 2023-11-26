@@ -28,6 +28,7 @@ trait OAB_sistem_skorTrait {
             'ehs' => 'EHS',
             'bladder_diary' => 'Bladder Diary',
         ];
+        $buffer = [];
         foreach($fields as $field => $caption){
             if ($data->{'c_'.$field} != '0') $buffer[] = $caption;
         }

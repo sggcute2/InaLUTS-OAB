@@ -44,7 +44,7 @@ trait OAB_riwayat_operasi_non_urologiTrait {
                 $sheet->setCellValue(FORMAT::excel_column(++$c).$y, '');
             }
         } else {
-            $sheet->setCellValue(FORMAT::excel_column(++$c).$y, 'Tidak');
+            $sheet->setCellValue(FORMAT::excel_column(++$c).$y, $data->operasi_di_daerah_pelvis);
         }
 
         $fields = [

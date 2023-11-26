@@ -37,7 +37,7 @@ trait OAB_penunjang_uroflowmetriTrait {
                         $data->{$field}.' : '.$data->{$field.'_ya'}.' '.$uom[$idx]
                 );
             } else {
-                $sheet->setCellValue(FORMAT::excel_column(++$c).$y, 'Tidak');
+                $sheet->setCellValue(FORMAT::excel_column(++$c).$y, $data->{$field});
             }
         }
 

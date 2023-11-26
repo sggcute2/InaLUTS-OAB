@@ -53,7 +53,7 @@ trait OAB_riwayat_operasi_urologiTrait {
                 $sheet->setCellValue(FORMAT::excel_column(++$c).$y, '');
             }
         } else {
-            $sheet->setCellValue(FORMAT::excel_column(++$c).$y, 'Tidak');
+            $sheet->setCellValue(FORMAT::excel_column(++$c).$y, $data->operasi_anti_inkontinensia_urine);
         }
 
         $fields = [
