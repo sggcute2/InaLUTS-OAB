@@ -20,7 +20,7 @@
     <div class="login-box">
       <div class="login-box-body">
         <div class="login-logo">
-          <img src="{{ asset('img/logo-01.png') }}" alt="{{ \Config::get('app.name') }}" title="{{ \Config::get('app.name') }}" />
+          <img src="{{ asset('img/logo-perkina-00.png') }}" alt="{{ \Config::get('app.name') }}" title="{{ \Config::get('app.name') }}" />
         </div><!-- /.login-logo -->
         <p class="login-box-msg">Sign in to enter administration page</p>
         @if(Session::has('error'))
