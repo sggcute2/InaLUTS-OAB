@@ -22,6 +22,7 @@ trait OAB_terapiTrait {
             'medikamentosa' => 'Medikamentosa',
             'operatif' => 'Operatif',
         ];
+        $buffer = [];
         foreach($fields as $field => $caption){
             if ($data->{'c_'.$field} != '0') $buffer[] = $caption;
         }

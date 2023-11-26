@@ -472,7 +472,6 @@ class LaporanController extends Controller
             $c = $this->OAB_excel_column_penunjang($sheet, $c+1, $y,
                 $penunjang_by_pasien_id[$pasien->id] ?? null, $pasien
             );
-            /*===
             $c = $this->OAB_excel_column_terapi($sheet, $c+1, $y,
                 $terapi_by_pasien_id[$pasien->id] ?? null, $pasien
             );
@@ -496,7 +495,6 @@ class LaporanController extends Controller
                 $terapi_medikamentosa_by_pasien_id[$pasien->id] ?? null,
                 $pasien
             );
-            ===*/
 
             //$sheet->setCellValue(FORMAT::excel_column(++$c).$y, 'SGG');
 
