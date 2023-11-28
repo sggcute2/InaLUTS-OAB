@@ -36,10 +36,10 @@ class CheckLogin
         define('USER_IS_SUB', $user->type == UserType::Submitter);
 
         $user_role = '';
-        if (USER_IS_ADM) $user_role = 'Administrator';
-        if (USER_IS_NAT_COO) $user_role = 'National Coordinator';
-        if (USER_IS_REG_COO) $user_role = 'Regional Coordinator';
-        if (USER_IS_LOC_COO) $user_role = 'Local Coordinator';
+        if (USER_IS_ADM) $user_role = 'Admin';
+        if (USER_IS_NAT_COO) $user_role = 'Koordinator Nasional';
+        if (USER_IS_REG_COO) $user_role = 'Koordinator Regional';
+        if (USER_IS_LOC_COO) $user_role = 'Koordinator Lokal';
         if (USER_IS_SUB) $user_role = 'Submitter';
         define('USER_ROLE', $user_role);
 
