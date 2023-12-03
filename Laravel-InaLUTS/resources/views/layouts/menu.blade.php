@@ -80,6 +80,25 @@
         </ul>
       </li>
 
+      @if(in_array( \App::environment() , ['local']))
+      <li class="treeview"
+        data-active-module_laporan_follow_up="1"
+      >
+        <a href="#">
+          <i class="fa fa-file"></i>
+          <span>Laporan Follow Up</span>
+          <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right" style="padding-right:1em"></i>
+          </span>
+        </a>
+        <ul class="treeview-menu">
+          <li data-active-module_laporan_follow_up="1">
+            <a href="{{ route('laporan_follow_up.Overactive_Bladder') }}"><i class="fa fa-circle-o"></i> Overactive Bladder</a>
+          </li>
+        </ul>
+      </li>
+      @endif
+
       @if (IS_DETAIL_PASIEN)
       <li style="color:white"><a href="{{ route('pasien.index') }}">{{ $data_pasien->rumah_sakit->name }}</a></li>
       <li class="header"><b style="color:cyan;font-size:125%">Detail Pasien</b></li>

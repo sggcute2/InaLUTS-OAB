@@ -35,6 +35,7 @@ $modules = [
   'pasien',
   'follow_up',
   'laporan',
+  'laporan_follow_up',
 ];
 Route::group(['middleware' => ['auth', 'check_login', 'modify_input']], function () use ($modules) {
     foreach($modules as $module)
