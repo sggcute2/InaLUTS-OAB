@@ -15,12 +15,14 @@ use FORM;
 use FORMAT;
 
 use App\Modules\Laporan_follow_up\Controllers\Traits\OAB\{
+    OAB_follow_upTrait,
     OAB_pasienTrait
 };
 
 class Laporan_follow_upController extends Controller
 {
 
+    use OAB_follow_upTrait;
     use OAB_pasienTrait;
 
     public function __construct(){
@@ -79,16 +81,48 @@ class Laporan_follow_upController extends Controller
 
         //dd($raw_rumah_sakit);
         //dd($raw_jenis_kelamin);
+
+        $laporan_follow_ups = ModuleModel::whereRaw("
+                pasien_id IN (
+                    SELECT id FROM m_pasien WHERE
+                    deleted_at IS NULL
+                    AND registry_id = 1
+                    AND $raw_rumah_sakit
+                    AND $raw_jenis_kelamin
+                )
+                OR $raw_rumah_sakit
+            ") // OAB
+            ->get();
+        //dd($laporan_follow_ups);
+
+        $in_follow_up = "
+            SELECT DISTINCT(pasien_id) FROM m_follow_up WHERE
+            (
+                pasien_id IN (
+                    SELECT id FROM m_pasien WHERE
+                        deleted_at IS NULL
+                        AND registry_id = 1
+                        AND $raw_rumah_sakit
+                        AND $raw_jenis_kelamin
+                )
+                OR $raw_rumah_sakit
+            )
+        ";
+
         $pasiens = Pasien::where('registry_id', 1) // OAB
-            ->whereRaw($raw_rumah_sakit)
-            ->whereRaw($raw_jenis_kelamin)
+            ->whereRaw("
+                id IN (
+                    $in_follow_up
+                )
+            ")
             ->get();
         //dd($pasiens);
-        $in_pasien = "
-            registry_id = 1
-            AND $raw_rumah_sakit
-            AND $raw_jenis_kelamin
-        ";
+
+        $pasien_by_pasien_id = [];
+        foreach($pasiens as $v){
+            $pasien_by_pasien_id[$v->id] = $v;
+        }
+        //dd($pasien_by_pasien_id);
 
         /*
         $temp = OAB_anamnesis::whereRaw("
@@ -345,7 +379,7 @@ class Laporan_follow_upController extends Controller
         */
         //===[ End : Data ]=====================================================
 
-        $file_template = resource_path('templates/Report_Follow|_Up_OAB.xlsx');
+        $file_template = resource_path('templates/Report_Follow_Up_OAB.xlsx');
         //dd($file_template);
 
         $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');
@@ -360,12 +394,15 @@ class Laporan_follow_upController extends Controller
 
         $y = 8; // Start Y
         $no = 1;
-        foreach($pasiens as $pasien){
+        foreach($laporan_follow_ups as $laporan_follow_up){
             $y_max = 1;
             $sheet->setCellValue('A'.$y, $no);
 
-            $c = $this->OAB_excel_column_pasien($sheet, 2, $y,
-                $pasien
+            $c = $this->OAB_excel_column_follow_up($sheet, 2, $y,
+                $laporan_follow_up
+            );
+            $c = $this->OAB_excel_column_pasien($sheet, 4, $y,
+                $pasien_by_pasien_id[$laporan_follow_up->pasien_id]
             );
             /*
             $c = $this->OAB_excel_column_anamnesis($sheet, $c+1, $y,
