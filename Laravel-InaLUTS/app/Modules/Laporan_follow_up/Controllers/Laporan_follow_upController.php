@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 use App\Modules\Laporan_follow_up\Models\Laporan_follow_up as ModuleModel;
+use App\Modules\Follow_up\Models\OAB\OAB_follow_up_detail;
 use App\Modules\Jenis_kelamin\Models\Jenis_kelamin;
 use App\Modules\Pasien\Models\Pasien;
 use BS;
@@ -16,7 +17,8 @@ use FORMAT;
 
 use App\Modules\Laporan_follow_up\Controllers\Traits\OAB\{
     OAB_follow_upTrait,
-    OAB_pasienTrait
+    OAB_pasienTrait,
+    OAB_sistem_skorTrait
 };
 
 class Laporan_follow_upController extends Controller
@@ -24,6 +26,7 @@ class Laporan_follow_upController extends Controller
 
     use OAB_follow_upTrait;
     use OAB_pasienTrait;
+    use OAB_sistem_skorTrait;
 
     public function __construct(){
         parent::__construct([
@@ -82,19 +85,6 @@ class Laporan_follow_upController extends Controller
         //dd($raw_rumah_sakit);
         //dd($raw_jenis_kelamin);
 
-        $laporan_follow_ups = ModuleModel::whereRaw("
-                pasien_id IN (
-                    SELECT id FROM m_pasien WHERE
-                    deleted_at IS NULL
-                    AND registry_id = 1
-                    AND $raw_rumah_sakit
-                    AND $raw_jenis_kelamin
-                )
-                OR $raw_rumah_sakit
-            ") // OAB
-            ->get();
-        //dd($laporan_follow_ups);
-
         $in_follow_up = "
             SELECT DISTINCT(pasien_id) FROM m_follow_up WHERE
             (
@@ -109,6 +99,29 @@ class Laporan_follow_upController extends Controller
             )
         ";
 
+        $laporan_follow_ups = ModuleModel::whereRaw("
+                pasien_id IN (
+                    SELECT id FROM m_pasien WHERE
+                    deleted_at IS NULL
+                    AND registry_id = 1
+                    AND $raw_rumah_sakit
+                    AND $raw_jenis_kelamin
+                )
+                OR $raw_rumah_sakit
+            ") // OAB
+            ->get();
+        //dd($laporan_follow_ups);
+
+        $follow_up_detail = OAB_follow_up_detail::whereRaw("
+            pasien_id IN ($in_follow_up)
+        ")->get();
+        //dd($follow_up_detail);
+        $follow_up_detail_by_id = [];
+        foreach($follow_up_detail as $v){
+            $follow_up_detail_by_id[$v->follow_up_id] = $v;
+        }
+        //dd($pasien_by_pasien_id);
+
         $pasiens = Pasien::where('registry_id', 1) // OAB
             ->whereRaw("
                 id IN (
@@ -117,7 +130,6 @@ class Laporan_follow_upController extends Controller
             ")
             ->get();
         //dd($pasiens);
-
         $pasien_by_pasien_id = [];
         foreach($pasiens as $v){
             $pasien_by_pasien_id[$v->id] = $v;
@@ -404,6 +416,9 @@ class Laporan_follow_upController extends Controller
             $c = $this->OAB_excel_column_pasien($sheet, 4, $y,
                 $pasien_by_pasien_id[$laporan_follow_up->pasien_id]
             );
+            $c = $this->OAB_excel_column_sistem_skor($sheet, $c+1, $y,
+                $follow_up_detail_by_id[$laporan_follow_up->id] ?? null
+            );
             /*
             $c = $this->OAB_excel_column_anamnesis($sheet, $c+1, $y,
                 $anamnesis_by_pasien_id[$pasien->id] ?? null, $pasien
@@ -429,19 +444,9 @@ class Laporan_follow_upController extends Controller
             $c = $this->OAB_excel_column_riwayat_radiasi($sheet, $c+1, $y,
                 $riwayat_radiasi_by_pasien_id[$pasien->id] ?? null, $pasien
             );
-            $c = $this->OAB_excel_column_sistem_skor($sheet, $c+1, $y,
-                $sistem_skor_by_pasien_id[$pasien->id] ?? null,
-                $kuesioner_oabss_by_pasien_id[$pasien->id] ?? null,
-                $kuesioner_qol_by_pasien_id[$pasien->id] ?? null,
-                $kuesioner_iief_by_pasien_id[$pasien->id] ?? null,
-                $kuesioner_ehs_by_pasien_id[$pasien->id] ?? null,
-                $kuesioner_bladder_diary_by_pasien_id[$pasien->id] ?? null,
-                $pasien
-            );
             $c = $this->OAB_excel_column_pemeriksaan_fisik($sheet, $c+1, $y,
                 $pemeriksaan_fisik_by_pasien_id[$pasien->id] ?? null, $pasien
             );
-
             $zc = $this->OAB_excel_column_pemeriksaan_laboratorium($sheet, $c+1, $y,
                 $pemeriksaan_laboratorium_by_pasien_id[$pasien->id] ?? null, $pasien
             );
