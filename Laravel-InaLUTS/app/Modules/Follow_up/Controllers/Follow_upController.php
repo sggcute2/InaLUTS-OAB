@@ -57,11 +57,21 @@ class Follow_upController extends Controller
                 return FORMAT::date($row['pemeriksaan_date']);
             });
             $column[] = array('Action', function($row) {
-                if ($this->moduleAllow('edit', false)) {
+                //if ($this->moduleAllow('edit', false)) {
+                if ($row['rumah_sakit_id'] == USER_RUMAH_SAKIT_ID) {
                     return
                         BS::button(
                             'Edit',
                             route(MODULE.'.edit', [
+                                'pasien_id' => $row['pasien_id'],
+                                'id' => $row['id']
+                            ]),
+                            false
+                        ).
+                        '&nbsp;'
+                        .BS::button(
+                            'Detail',
+                            route(MODULE.'.detail', [
                                 'pasien_id' => $row['pasien_id'],
                                 'id' => $row['id']
                             ]),
