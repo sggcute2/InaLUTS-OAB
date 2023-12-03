@@ -18,7 +18,8 @@ use FORMAT;
 use App\Modules\Laporan_follow_up\Controllers\Traits\OAB\{
     OAB_follow_upTrait,
     OAB_pasienTrait,
-    OAB_sistem_skorTrait
+    OAB_sistem_skorTrait,
+    OAB_efek_samping_obatTrait
 };
 
 class Laporan_follow_upController extends Controller
@@ -27,6 +28,7 @@ class Laporan_follow_upController extends Controller
     use OAB_follow_upTrait;
     use OAB_pasienTrait;
     use OAB_sistem_skorTrait;
+    use OAB_efek_samping_obatTrait;
 
     public function __construct(){
         parent::__construct([
@@ -417,6 +419,9 @@ class Laporan_follow_upController extends Controller
                 $pasien_by_pasien_id[$laporan_follow_up->pasien_id]
             );
             $c = $this->OAB_excel_column_sistem_skor($sheet, $c+1, $y,
+                $follow_up_detail_by_id[$laporan_follow_up->id] ?? null
+            );
+            $c = $this->OAB_excel_column_efek_samping_obat($sheet, $c+1, $y,
                 $follow_up_detail_by_id[$laporan_follow_up->id] ?? null
             );
             /*
