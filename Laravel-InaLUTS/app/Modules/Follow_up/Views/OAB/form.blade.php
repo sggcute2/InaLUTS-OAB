@@ -253,9 +253,11 @@
             'required' => true,
         ], false)
     );
-    FORM::row('Tempat Pemeriksaan', '<span style="color:green">'.USER_RUMAH_SAKIT_NAME.'</span>');
     if ($mode == 'add') {
+        FORM::row('Tempat Pemeriksaan', '<span style="color:green">'.USER_RUMAH_SAKIT_NAME.'</span>');
         FORM::hidden('rumah_sakit_id', USER_RUMAH_SAKIT_ID);
+    } else if ($mode == 'edit') {
+        FORM::row('Tempat Pemeriksaan', '<span style="color:green">'.($rumah_sakit->name ?? '').'</span>');
     }
 
     FORM::show();

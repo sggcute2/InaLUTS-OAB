@@ -17,6 +17,7 @@ use App\Modules\Pasien\Models\OAB\OAB_diagnosis;
 use App\Modules\Pasien\Models\OAB\OAB_terapi_medikamentosa;
 use App\Modules\Pasien\Models\OAB\OAB_terapi_operatif;
 use App\Modules\Pasien\Models\OAB\OAB_terapi_operatif_injeksi_botox;
+use App\Modules\Rumah_sakit\Models\Rumah_sakit;
 use BS;
 use DT;
 use FORM;
@@ -48,7 +49,33 @@ class Follow_upController extends Controller
 
         $pasien = null;
         if (request()->get('pasien_id')) {
-            $pasien = Pasien::findOrFail(request()->get('pasien_id'));
+            $pasien_id = (int) request()->get('pasien_id');
+            $pasien = Pasien::findOrFail($pasien_id);
+
+            $column = array();
+            $column[] = array('Tanggal Pemeriksaan', function($row) {
+                return FORMAT::date($row['pemeriksaan_date']);
+            });
+            $column[] = array('Action', function($row) {
+                if ($this->moduleAllow('edit', false)) {
+                    return
+                        BS::button(
+                            'Edit',
+                            route(MODULE.'.edit', [
+                                'pasien_id' => $row['pasien_id'],
+                                'id' => $row['id']
+                            ]),
+                            false
+                        );
+                } else {
+                    return '';
+                }    
+            });
+            DT::add(false, ModuleModel::where('pasien_id', $pasien_id)
+                ->orderBy('pemeriksaan_date', 'desc')
+                ->get(),
+                $column
+            );
         }
 
         return $this->moduleView('index', [
@@ -136,12 +163,17 @@ class Follow_upController extends Controller
         */
         if ($mode == 'add') {
             $form_action = route(MODULE.'.add', ['pasien_id' => $pasien_id]);
+        } else if ($mode == 'edit') {
+            $form_action = route(MODULE.'.edit', [
+                'pasien_id' => $pasien_id,
+                'id' => $id
+            ]);
         }
         //dd($form_action);
 
         $OAB_diagnosis = $OAB_terapi_medikamentosa = $OAB_terapi_operatif
             = null;
-        if ($mode == 'add') {
+        //if ($mode == 'add') {
             $OAB_diagnosis =
                 OAB_diagnosis::where('pasien_id', $pasien_id)
                     ->first();
@@ -188,7 +220,7 @@ class Follow_upController extends Controller
             });
             $column[] = array('Tindakan', 'injeksi_botox_tindakan');
             DT::add('injeksi_botox', $data, $column);
-        }
+        //}
 
         $view = '';
         switch($pasien->registry_id) {
@@ -198,9 +230,15 @@ class Follow_upController extends Controller
         }
         if ($view == '') abort(403, 'Registry not found ('.__LINE__.')');
 
+        $rumah_sakit = null;
+        if ($mode == 'edit') {
+            $rumah_sakit = Rumah_sakit::find($default['rumah_sakit_id']);
+        }
+
         return $this->moduleView($view, [
             'mode' => $mode,
             'pasien_id' => $pasien_id,
+            'rumah_sakit' => $rumah_sakit,
             'default' => $default,
             'page_title' => 'Tambah '.MODULE_TITLE,
             //FORM::title($pasien_id, MODULE_TITLE),
@@ -316,27 +354,31 @@ class Follow_upController extends Controller
     }
 
     //
-    public function edit($id): View
+    public function edit($pasien_id, $id): View
     {
         $this->moduleAllow('edit');
 
         $default = ModuleModel::findOrFail($id);
 
-        return $this->_form($id, $default);
+        return $this->_form($pasien_id, $id, $default, 'edit');
     }
 
     //
-    public function edit_process(Request $request, $id): RedirectResponse
+    public function edit_process(
+        Request $request, $pasien_id, $id
+    ): RedirectResponse
     {
         $this->moduleAllow('edit');
 
         $default = ModuleModel::findOrFail($id);
 
         $rules = [
-            'name' => 'required|unique:m_dokter_pemeriksa,name,'.$id,
+            //'name' => 'required|unique:m_dokter_pemeriksa,name,'.$id,
+            'pemeriksaan_date' => 'required',
         ];
         $attributes = [
-            'name' => 'Nama '.MODULE_TITLE,
+            //'name' => 'Nama '.MODULE_TITLE,
+            'pemeriksaan_date' => 'Tanggal Pemeriksaan',
         ];
         $validator = Validator::make(
             $request->all(),
@@ -350,11 +392,16 @@ class Follow_upController extends Controller
                 ->withInput();
         }
 
+        $pasien = Pasien::findOrFail($pasien_id);
+
         ModuleModel::base_update_by_id($request->all(), $id);
 
         $this->flash_success_edit();
 
-        return redirect()->route(MODULE.'.index');
+        return redirect()->route(MODULE.'.index', [
+            'existing' => 1,
+            'pasien_id' => $pasien->id,
+        ]);
     }
 
     public function detail($pasien_id, $id): View

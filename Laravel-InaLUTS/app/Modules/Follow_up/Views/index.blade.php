@@ -21,6 +21,7 @@
       .'<a href="'.route(MODULE.'.add', ['pasien_id' => $pasien->id]).'">Klik disini untuk tambah Follow Up</a>.'
     )
   }}
+  {{ DT::view() }}
   <hr>
   @endif
   @php

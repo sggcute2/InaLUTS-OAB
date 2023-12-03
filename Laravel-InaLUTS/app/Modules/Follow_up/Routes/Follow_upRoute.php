@@ -11,11 +11,14 @@ Route::name($m.'.')->prefix($m)->controller($use_controller)->group(function(){
     //Route::get('/{id}/edit', 'edit')->name('edit');
     Route::get('/{pasien_id}/add', 'add')->name('add');
     Route::get('/{pasien_id}/{id}/detail', 'detail')->name('detail');
+    Route::get('/{pasien_id}/{id}/edit', 'edit')->name('edit');
 
     Route::post('/{pasien_id}/add', 'add_process')->name('add');
     //Route::post('/{id}/edit', 'edit_process')->name('edit');
     Route::post('/search', 'search_process')->name('search');
 
+    Route::post('/{pasien_id}/{id}/edit', 'edit_process')
+        ->name('edit');
     Route::post('/{pasien_id}/{id}/update_oab', 'update_oab_process')
         ->name('update_oab');
 
