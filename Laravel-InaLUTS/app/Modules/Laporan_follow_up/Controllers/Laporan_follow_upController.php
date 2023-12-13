@@ -8,6 +8,7 @@ use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 use App\Modules\Laporan_follow_up\Models\Laporan_follow_up as ModuleModel;
 use App\Modules\Follow_up\Models\OAB\OAB_follow_up_detail;
+use App\Modules\Follow_up\Models\OAB\OAB_follow_up_pemeriksaan_laboratorium;
 use App\Modules\Jenis_kelamin\Models\Jenis_kelamin;
 use App\Modules\Pasien\Models\Pasien;
 use BS;
@@ -128,6 +129,17 @@ class Laporan_follow_upController extends Controller
         }
         //dd($pasien_by_pasien_id);
 
+        $follow_up_pemeriksaan_laboratorium =
+            OAB_follow_up_pemeriksaan_laboratorium::whereRaw("
+                pasien_id IN ($in_follow_up)
+            ")->get();
+        //dd($follow_up_pemeriksaan_laboratorium);
+        $follow_up_pemeriksaan_laboratorium_by_id = [];
+        foreach($follow_up_pemeriksaan_laboratorium as $v){
+            $follow_up_pemeriksaan_laboratorium_by_id[$v->follow_up_id][] = $v;
+        }
+        //dd($follow_up_pemeriksaan_laboratorium_by_id);
+
         $pasiens = Pasien::where('registry_id', 1) // OAB
             ->whereRaw("
                 id IN (
@@ -178,9 +190,14 @@ class Laporan_follow_upController extends Controller
             $c = $this->OAB_excel_column_komplikasi_tindakan_invasive_operasi($sheet, $c+1, $y,
                 $follow_up_detail_by_id[$laporan_follow_up->id] ?? null
             );
-            $c = $this->OAB_excel_column_penunjang($sheet, $c+1, $y,
-                $follow_up_detail_by_id[$laporan_follow_up->id] ?? null
+            $z = $this->OAB_excel_column_penunjang($sheet, $c+1, $y,
+                $follow_up_detail_by_id[$laporan_follow_up->id] ?? null,
+                $follow_up_pemeriksaan_laboratorium_by_id[
+                    $laporan_follow_up->id
+                ] ?? null
             );
+            $c = $z['c'];
+            if ($z['y'] > $y_max) $y_max = $z['y'];
 
             $y += $y_max;
             $no++;
