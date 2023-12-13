@@ -186,6 +186,66 @@ trait OAB_penunjangTrait {
                     $sheet->setCellValue(FORMAT::excel_column(++$c).$y, '');
                 }
             }
+
+            $c = $first_c + 19 + 21;
+            $y = $first_y;
+            $sheet->setCellValue(
+                FORMAT::excel_column(++$c).$y,
+                $data->pemeriksaan_penunjang_urodinamik
+            );
+            if ($data->pemeriksaan_penunjang_urodinamik == 'Ya') {
+                $temp_ns = 'pemeriksaan_penunjang_urodinamik_';
+                $temp = [];
+                try {
+                    $temp = unserialize(
+                        $data->pemeriksaan_penunjang_urodinamik_ya
+                    );
+                } catch (Exception $exception) {
+                    $temp = [];
+                }
+                $temp_date = '';
+                if (
+                    isset($temp['pemeriksaan_penunjang_urodinamik_pemeriksaan_urodinamik_ya_date'])
+                    && $temp['pemeriksaan_penunjang_urodinamik_pemeriksaan_urodinamik_ya_date']
+                ) {
+                    $temp_date = FORMAT::date(
+                        $temp['pemeriksaan_penunjang_urodinamik_pemeriksaan_urodinamik_ya_date']
+                    );
+                }
+                $sheet->setCellValue(FORMAT::excel_column(++$c).$y, $temp_date);
+                $sheet->setCellValue(FORMAT::excel_column(++$c).$y,
+                    ($temp[$temp_ns.'kapasitas_kandung_kemih_1'] ?? '')
+                    .' - '
+                    .($temp[$temp_ns.'kapasitas_kandung_kemih_2'] ?? '')
+                    .' ml'
+                );
+                $fields = [
+                    'compliance',
+                    'detrusor_overactivity',
+                    'detrusor_overactivity_incontinence',
+                    'urodynamic_stress_urinary_incontinence',
+                    'obstruksi_infravesical',
+                    'detrusor_underactivity',
+                    'disfunctional_voiding',
+                    'dsd',
+                    'neurogenic_bladder',
+                ];
+                foreach($fields as $field){
+                    $sheet->setCellValue(FORMAT::excel_column(++$c).$y,
+                        ($temp[$temp_ns.$field] ?? '')
+                    );
+                }
+                $sheet->setCellValue(FORMAT::excel_column(++$c).$y,
+                    ($temp[$temp_ns.'pvr_1'] ?? '')
+                    .' - '
+                    .($temp[$temp_ns.'pvr_2'] ?? '')
+                    .' ml'
+                );
+             } else {
+                for($i=1;$i<=12;$i++){//Urodinamik
+                    $sheet->setCellValue(FORMAT::excel_column(++$c).$y, '');
+                }
+            }
         } else {
             for($i=1;$i<=10;$i++){//USG
                 $sheet->setCellValue(FORMAT::excel_column(++$c).$y, '');
