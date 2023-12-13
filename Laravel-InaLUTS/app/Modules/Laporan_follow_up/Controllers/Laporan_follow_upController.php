@@ -20,7 +20,8 @@ use App\Modules\Laporan_follow_up\Controllers\Traits\OAB\{
     OAB_pasienTrait,
     OAB_sistem_skorTrait,
     OAB_efek_samping_obatTrait,
-    OAB_komplikasi_tindakan_invasive_operasiTrait
+    OAB_komplikasi_tindakan_invasive_operasiTrait,
+    OAB_penunjangTrait
 };
 
 class Laporan_follow_upController extends Controller
@@ -31,6 +32,7 @@ class Laporan_follow_upController extends Controller
     use OAB_sistem_skorTrait;
     use OAB_efek_samping_obatTrait;
     use OAB_komplikasi_tindakan_invasive_operasiTrait;
+    use OAB_penunjangTrait;
 
     public function __construct(){
         parent::__construct([
@@ -427,6 +429,9 @@ class Laporan_follow_upController extends Controller
                 $follow_up_detail_by_id[$laporan_follow_up->id] ?? null
             );
             $c = $this->OAB_excel_column_komplikasi_tindakan_invasive_operasi($sheet, $c+1, $y,
+                $follow_up_detail_by_id[$laporan_follow_up->id] ?? null
+            );
+            $c = $this->OAB_excel_column_penunjang($sheet, $c+1, $y,
                 $follow_up_detail_by_id[$laporan_follow_up->id] ?? null
             );
             /*
