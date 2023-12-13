@@ -241,8 +241,69 @@ trait OAB_penunjangTrait {
                     .($temp[$temp_ns.'pvr_2'] ?? '')
                     .' ml'
                 );
-             } else {
+            } else {
                 for($i=1;$i<=12;$i++){//Urodinamik
+                    $sheet->setCellValue(FORMAT::excel_column(++$c).$y, '');
+                }
+            }
+
+            $sheet->setCellValue(
+                FORMAT::excel_column(++$c).$y,
+                $data->pemeriksaan_penunjang_sistoskopi
+            );
+            if ($data->pemeriksaan_penunjang_sistoskopi == 'Ya') {
+                $temp_ns = 'pemeriksaan_penunjang_sistoskopi_';
+                $temp = [];
+                try {
+                    $temp = unserialize(
+                        $data->pemeriksaan_penunjang_sistoskopi_ya
+                    );
+                } catch (Exception $exception) {
+                    $temp = [];
+                }
+                $fields = [
+                    'mukosa_buli',
+                    'trabekulasi',
+                    'sakulasi_divertikel',
+                    'kapasitas_buli',
+                    'batu',
+                    'tumor',
+                    'lobus_medius',
+                ];
+                foreach($fields as $field){
+                    $sheet->setCellValue(
+                        FORMAT::excel_column(++$c).$y, $temp[$temp_ns.$field] ?? ''
+                    );
+                }
+                if (
+                    isset($temp[$temp_ns.'kissing_lobe'])
+                    && $temp[$temp_ns.'kissing_lobe'] == 'Ya'
+                ) {
+                    $sheet->setCellValue(FORMAT::excel_column(++$c).$y,
+                        $temp[$temp_ns.'kissing_lobe']
+                        .' : '
+                        .($temp[$temp_ns.'kissing_lobe_ya'] ?? '')
+                        .' cm'
+                    );
+                } else {
+                    $sheet->setCellValue(
+                        FORMAT::excel_column(++$c).$y,
+                        $temp[$temp_ns.'kissing_lobe'] ?? ''
+                    );
+                }
+                $fields = [
+                    'muara_ureter',
+                    'urethra',
+                    'mue',
+                    'lichen_schlerosis',
+                ];
+                foreach($fields as $field){
+                    $sheet->setCellValue(
+                        FORMAT::excel_column(++$c).$y, $temp[$temp_ns.$field]
+                    );
+                }
+            } else {
+                for($i=1;$i<=12;$i++){//Sistoskopi
                     $sheet->setCellValue(FORMAT::excel_column(++$c).$y, '');
                 }
             }
