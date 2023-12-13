@@ -16,7 +16,7 @@ trait OAB_penunjangTrait {
         $sheet->setCellValue(FORMAT::excel_column(++$c).$y, $data->pvr.(trim($data->pvr)!=''?' ml':''));
         $sheet->setCellValue(FORMAT::excel_column(++$c).$y, $data->cara_mengukur_pvr);
         $sheet->setCellValue(FORMAT::excel_column(++$c).$y, $data->sistoskopi);
-        If ($data->sistoskopi == 'Dikerjakan') {
+        if ($data->sistoskopi == 'Dikerjakan') {
             $sheet->setCellValue(FORMAT::excel_column(++$c).$y, $data->mukosa_buli);
             $sheet->setCellValue(FORMAT::excel_column(++$c).$y, $data->trabekulasi);
             $sheet->setCellValue(FORMAT::excel_column(++$c).$y, $data->sakulasi_divertikel);
@@ -25,7 +25,7 @@ trait OAB_penunjangTrait {
             $sheet->setCellValue(FORMAT::excel_column(++$c).$y, $data->tumor);
             $sheet->setCellValue(FORMAT::excel_column(++$c).$y, $data->lobus_medius);
 
-            If ($data->kissing_lobe == 'Ya') {
+            if ($data->kissing_lobe == 'Ya') {
                 $sheet->setCellValue(FORMAT::excel_column(++$c).$y, $data->kissing_lobe . ' : ' . $data->kissing_lobe_ya . ' cm');
             } else {
                 $sheet->setCellValue(FORMAT::excel_column(++$c).$y, $data->kissing_lobe);

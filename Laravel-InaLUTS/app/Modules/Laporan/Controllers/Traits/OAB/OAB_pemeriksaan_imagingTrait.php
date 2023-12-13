@@ -13,7 +13,7 @@ trait OAB_pemeriksaan_imagingTrait {
 
         if (!$data) return $c + 9;
 
-        If($data->usg == 'Dilakukan') {
+        if($data->usg == 'Dilakukan') {
             $sheet->setCellValue(FORMAT::excel_column(++$c).$y, $data->usg.' : '.FORMAT::date($data->usg_date));
         } else {
             $sheet->setCellValue(FORMAT::excel_column(++$c).$y, $data->usg);
