@@ -535,7 +535,7 @@ class LaporanController extends Controller
             $no++;
         }
 
-        $sheet->setSelectedCell('IL8');
+        //$sheet->setSelectedCell('IL8');
 
         $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
         $buffer_filename = [];
