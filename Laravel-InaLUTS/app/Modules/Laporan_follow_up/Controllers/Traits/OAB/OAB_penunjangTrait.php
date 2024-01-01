@@ -128,8 +128,8 @@ trait OAB_penunjangTrait {
                     'detik',
                 ];
                 foreach($fields as $idx => $field){
+                    $temp_idx = 'pemeriksaan_penunjang_uroflowmetri_'.$field;
                     if (isset($temp[$temp_idx])) {
-                        $temp_idx = 'pemeriksaan_penunjang_uroflowmetri_'.$field;
                         if ($temp[$temp_idx] == 'Ya') {
                             $sheet->setCellValue(FORMAT::excel_column(++$c).$y,
                                 $temp[$temp_idx]
