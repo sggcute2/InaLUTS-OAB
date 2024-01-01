@@ -22,7 +22,8 @@ use App\Modules\Laporan_follow_up\Controllers\Traits\OAB\{
     OAB_sistem_skorTrait,
     OAB_efek_samping_obatTrait,
     OAB_komplikasi_tindakan_invasive_operasiTrait,
-    OAB_penunjangTrait
+    OAB_penunjangTrait,
+    OAB_terapi_modifikasi_gaya_hidupTrait
 };
 
 class Laporan_follow_upController extends Controller
@@ -34,6 +35,7 @@ class Laporan_follow_upController extends Controller
     use OAB_efek_samping_obatTrait;
     use OAB_komplikasi_tindakan_invasive_operasiTrait;
     use OAB_penunjangTrait;
+    use OAB_terapi_modifikasi_gaya_hidupTrait;
 
     public function __construct(){
         parent::__construct([
@@ -198,6 +200,9 @@ class Laporan_follow_upController extends Controller
             );
             $c = $z['c'];
             if ($z['y'] > $y_max) $y_max = $z['y'];
+            $c = $this->OAB_excel_column_terapi_modifikasi_gaya_hidup($sheet, $c+1, $y,
+                $follow_up_detail_by_id[$laporan_follow_up->id] ?? null
+            );
 
             $y += $y_max;
             $no++;
