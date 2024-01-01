@@ -146,7 +146,7 @@ trait OAB_pasienTrait {
         $sheet->setCellValue(FORMAT::excel_column(++$c).$y, $pasien->code);
         $sheet->setCellValue(FORMAT::excel_column(++$c).$y, $rumah_sakit);
         $sheet->setCellValue(FORMAT::excel_column(++$c).$y, $unit_pelayanan);
-        $sheet->setCellValue(FORMAT::excel_column(++$c).$y, $pasien->nik,
+        $sheet->setCellValueExplicit(FORMAT::excel_column(++$c).$y, $pasien->nik,
             \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING
         );
         $sheet->setCellValue(FORMAT::excel_column(++$c).$y, $pasien->name);
