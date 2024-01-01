@@ -80,7 +80,6 @@
         </ul>
       </li>
 
-      @if(in_array( \App::environment() , ['local']))
       <li class="treeview"
         data-active-module_laporan_follow_up="1"
       >
@@ -97,7 +96,6 @@
           </li>
         </ul>
       </li>
-      @endif
 
       @if (IS_DETAIL_PASIEN)
       <li style="color:white"><a href="{{ route('pasien.index') }}">{{ $data_pasien->rumah_sakit->name }}</a></li>
