@@ -243,7 +243,7 @@ class Laporan_follow_upController extends Controller
             $no++;
         }
 
-        $sheet->setSelectedCell('DL8');
+        //$sheet->setSelectedCell('DL8');
 
         $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
         $buffer_filename = [];
