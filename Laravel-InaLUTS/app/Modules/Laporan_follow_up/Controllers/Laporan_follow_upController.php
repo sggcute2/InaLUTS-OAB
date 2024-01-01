@@ -24,7 +24,8 @@ use App\Modules\Laporan_follow_up\Controllers\Traits\OAB\{
     OAB_komplikasi_tindakan_invasive_operasiTrait,
     OAB_penunjangTrait,
     OAB_terapi_modifikasi_gaya_hidupTrait,
-    OAB_terapi_non_operatifTrait
+    OAB_terapi_non_operatifTrait,
+    OAB_terapi_medikamentosaTrait
 };
 
 class Laporan_follow_upController extends Controller
@@ -38,6 +39,7 @@ class Laporan_follow_upController extends Controller
     use OAB_penunjangTrait;
     use OAB_terapi_modifikasi_gaya_hidupTrait;
     use OAB_terapi_non_operatifTrait;
+    use OAB_terapi_medikamentosaTrait;
 
     public function __construct(){
         parent::__construct([
@@ -206,6 +208,9 @@ class Laporan_follow_upController extends Controller
                 $follow_up_detail_by_id[$laporan_follow_up->id] ?? null
             );
             $c = $this->OAB_excel_column_terapi_non_operatif($sheet, $c+1, $y,
+                $follow_up_detail_by_id[$laporan_follow_up->id] ?? null
+            );
+            $c = $this->OAB_excel_column_terapi_medikamentosa($sheet, $c+1, $y,
                 $follow_up_detail_by_id[$laporan_follow_up->id] ?? null
             );
 
