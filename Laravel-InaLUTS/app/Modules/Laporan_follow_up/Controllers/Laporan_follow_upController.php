@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Modules\Laporan_follow_up\Models\Laporan_follow_up as ModuleModel;
 use App\Modules\Follow_up\Models\OAB\OAB_follow_up_detail;
 use App\Modules\Follow_up\Models\OAB\OAB_follow_up_pemeriksaan_laboratorium;
+use App\Modules\Follow_up\Models\OAB\OAB_follow_up_terapi_operatif_injeksi_botox;
 use App\Modules\Jenis_kelamin\Models\Jenis_kelamin;
 use App\Modules\Pasien\Models\Pasien;
 use BS;
@@ -26,7 +27,8 @@ use App\Modules\Laporan_follow_up\Controllers\Traits\OAB\{
     OAB_terapi_modifikasi_gaya_hidupTrait,
     OAB_terapi_non_operatifTrait,
     OAB_terapi_medikamentosaTrait,
-    OAB_terapi_rehabilitasiTrait
+    OAB_terapi_rehabilitasiTrait,
+    OAB_terapi_operatifTrait
 };
 
 class Laporan_follow_upController extends Controller
@@ -42,6 +44,7 @@ class Laporan_follow_upController extends Controller
     use OAB_terapi_non_operatifTrait;
     use OAB_terapi_medikamentosaTrait;
     use OAB_terapi_rehabilitasiTrait;
+    use OAB_terapi_operatifTrait;
 
     public function __construct(){
         parent::__construct([
@@ -148,6 +151,17 @@ class Laporan_follow_upController extends Controller
         }
         //dd($follow_up_pemeriksaan_laboratorium_by_id);
 
+        $follow_up_terapi_operatif_injeksi_botox =
+            OAB_follow_up_terapi_operatif_injeksi_botox::whereRaw("
+                pasien_id IN ($in_follow_up)
+            ")->get();
+        //dd($follow_up_terapi_operatif_injeksi_botox);
+        $follow_up_terapi_operatif_injeksi_botox_by_id = [];
+        foreach($follow_up_terapi_operatif_injeksi_botox as $v){
+            $follow_up_terapi_operatif_injeksi_botox_by_id[$v->follow_up_id][] = $v;
+        }
+        //dd($follow_up_terapi_operatif_injeksi_botox_by_id);
+
         $pasiens = Pasien::where('registry_id', 1) // OAB
             ->whereRaw("
                 id IN (
@@ -217,6 +231,12 @@ class Laporan_follow_upController extends Controller
             );
             $c = $this->OAB_excel_column_terapi_rehabilitasi($sheet, $c+1, $y,
                 $follow_up_detail_by_id[$laporan_follow_up->id] ?? null
+            );
+            $c = $this->OAB_excel_column_terapi_operatif($sheet, $c+1, $y,
+                $follow_up_detail_by_id[$laporan_follow_up->id] ?? null,
+                $follow_up_terapi_operatif_injeksi_botox_by_id[
+                    $laporan_follow_up->id
+                ] ?? null
             );
 
             $y += $y_max;
