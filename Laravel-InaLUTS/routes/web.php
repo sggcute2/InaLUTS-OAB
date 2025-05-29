@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::redirect('/', '/login');
 
 Route::redirect('/go/repository', function(){
-  return Redirect::to('https://github.com/sggcute2/InaLUTS-OAB');
+  return Redirect::to('https://github.com/sggcute2/InaLUTS-OAB/tree/master');
 });
 
 //require_once('web/auth.php');
