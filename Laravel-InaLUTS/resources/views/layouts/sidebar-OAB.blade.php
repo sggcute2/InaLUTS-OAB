@@ -13,8 +13,13 @@ if (isset($sistem_skor)) {
   if (isset($sistem_skor->c_oabss) && $sistem_skor->c_oabss) {
     $sidebar_details[] = ['OABSS', '_kuesioner_oabss'];
   }
+  /*
   if (isset($sistem_skor->c_qol) && $sistem_skor->c_qol) {
     $sidebar_details[] = ['QOL', '_kuesioner_qol'];
+  }
+  */
+  if (isset($sistem_skor->c_ipss) && $sistem_skor->c_ipss) {
+    $sidebar_details[] = ['IPSS', '_kuesioner_ipss'];
   }
   if (isset($sistem_skor->c_fsfi) && $sistem_skor->c_fsfi) {
     $sidebar_details[] = ['FSFI', '_kuesioner_fsfi'];
@@ -34,8 +39,8 @@ $sidebar_details[] = ['Pemeriksaan Laboratorium', '_pemeriksaan_laboratorium'];
 $sidebar_details[] = ['Penunjang - Uroflowmetri', '_penunjang_uroflowmetri'];
 $sidebar_details[] = ['Penunjang - Urodinamik', '_penunjang_urodinamik'];
 $sidebar_details[] = ['Pemeriksaan Imaging', '_pemeriksaan_imaging'];
-$sidebar_details[] = ['Diagnosis', '_diagnosis'];
 $sidebar_details[] = ['Penunjang', '_penunjang'];
+$sidebar_details[] = ['Diagnosis', '_diagnosis'];
 $sidebar_details[] = ['Terapi', '_terapi'];
 if (isset($terapi)) {
   if (isset($terapi->c_modifikasi_gaya_hidup) && $terapi->c_modifikasi_gaya_hidup) {
@@ -56,18 +61,36 @@ if (isset($terapi)) {
 }
 @endphp
 
-@foreach($sidebar_details as $sidebar_detail)
-  @if($sidebar_detail[1]=='_pemeriksaan_laboratorium')
+@if(defined('PAGE_IS_FOLLOW_UP'))
+  @foreach($sidebar_details as $sidebar_detail)
+    @if($sidebar_detail[1]=='_pemeriksaan_laboratorium')
+  <a
+    data-active-module-action_follow_up_v2___list_oab{{ $sidebar_detail[1] }}="1"
+    href="{{ route('follow_up_v2.list_oab'.$sidebar_detail[1], ['id' => $data_pasien->id, 'follow_up_id' => (int) Request::segment(3)]) }}"
+    title="{{ $sidebar_detail[0] }}"
+>{{ $sidebar_detail[0] }}</a>
+    @else
+<a
+    data-active-module-action_follow_up_v2___detail_oab{{ $sidebar_detail[1] }}="1"
+    href="{{ route('follow_up_v2.detail_oab'.$sidebar_detail[1], ['id' => $data_pasien->id, 'follow_up_id' => (int) Request::segment(3)]) }}"
+    title="{{ $sidebar_detail[0] }}"
+>{!! (strpos($sidebar_detail[1], 'kuesioner')) ? ' &nbsp; &nbsp; &nbsp; ' : '' !!}{{ $sidebar_detail[0] }}</a>
+    @endif
+  @endforeach
+@else
+  @foreach($sidebar_details as $sidebar_detail)
+    @if($sidebar_detail[1]=='_pemeriksaan_laboratorium')
   <a
     data-active-module-action_pasien___list_oab{{ $sidebar_detail[1] }}="1"
     href="{{ route('pasien.list_oab'.$sidebar_detail[1], $data_pasien->id) }}"
     title="{{ $sidebar_detail[0] }}"
 >{{ $sidebar_detail[0] }}</a>
-  @else
+    @else
 <a
     data-active-module-action_pasien___detail_oab{{ $sidebar_detail[1] }}="1"
     href="{{ route('pasien.detail_oab'.$sidebar_detail[1], $data_pasien->id) }}"
     title="{{ $sidebar_detail[0] }}"
->{{ $sidebar_detail[0] }}</a>
-  @endif
-@endforeach
+>{!! (strpos($sidebar_detail[1], 'kuesioner')) ? ' &nbsp; &nbsp; &nbsp; ' : '' !!}{{ $sidebar_detail[0] }}</a>
+    @endif
+  @endforeach
+@endif

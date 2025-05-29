@@ -80,6 +80,7 @@
         </ul>
       </li>
 
+{{--
       <li class="treeview"
         data-active-module_laporan_follow_up="1"
       >
@@ -96,6 +97,7 @@
           </li>
         </ul>
       </li>
+--}}
 
       @if (IS_DETAIL_PASIEN)
       <li style="color:white"><a href="{{ route('pasien.index') }}">{{ $data_pasien->rumah_sakit->name }}</a></li>

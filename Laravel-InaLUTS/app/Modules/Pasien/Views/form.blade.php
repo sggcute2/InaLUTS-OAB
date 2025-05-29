@@ -169,7 +169,7 @@
       ], false)
     );
     FORM::row2(
-      'Datang dengan',
+      'Status Rujukan',
       BS::select2([
         'name' => 'datang_id',
         'data' => $m_datang,

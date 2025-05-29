@@ -31,7 +31,8 @@ trait OAB_terapi_operatifTrait {
         $column[] = array('Tanggal', function($row){
             return FORMAT::date($row['injeksi_botox_date']);
         });
-        $column[] = array('Tindakan', 'injeksi_botox_tindakan');
+        $column[] = array('Dosis', 'injeksi_botox_dosis');
+        $column[] = array('Jumlah titik injeksi botox', 'injeksi_botox_jumlah_titik');
         $column[] = array('Action', function($row) {
             return
                 BS::button(
@@ -169,7 +170,8 @@ trait OAB_terapi_operatifTrait {
         $column[] = array('Tanggal', function($row){
             return FORMAT::date($row['injeksi_botox_date']);
         });
-        $column[] = array('Tindakan', 'injeksi_botox_tindakan');
+        $column[] = array('Dosis', 'injeksi_botox_dosis');
+        $column[] = array('Jumlah titik injeksi botox', 'injeksi_botox_jumlah_titik');
         $column[] = array('Action', function($row) {
             return
                 BS::button(

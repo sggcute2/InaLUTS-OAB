@@ -17,6 +17,7 @@ use App\Modules\Pasien\Controllers\Traits\OAB\{
     OAB_sistem_skorTrait,
     OAB_kuesioner_oabssTrait,
     OAB_kuesioner_qolTrait,
+    OAB_kuesioner_ipssTrait,
     OAB_kuesioner_fsfiTrait,
     OAB_kuesioner_iiefTrait,
     OAB_kuesioner_ehsTrait,
@@ -33,7 +34,7 @@ use App\Modules\Pasien\Controllers\Traits\OAB\{
     OAB_terapi_rehabilitasiTrait,
     OAB_terapi_non_operatifTrait,
     OAB_terapi_medikamentosaTrait,
-    OAB_terapi_operatifTrait,
+    OAB_terapi_operatifTrait
 };
 use BS;
 use DT;
@@ -52,6 +53,7 @@ trait OABTrait {
     use OAB_sistem_skorTrait;
     use OAB_kuesioner_oabssTrait;
     use OAB_kuesioner_qolTrait;
+    use OAB_kuesioner_ipssTrait;
     use OAB_kuesioner_fsfiTrait;
     use OAB_kuesioner_iiefTrait;
     use OAB_kuesioner_ehsTrait;

@@ -16,6 +16,8 @@ return new class extends Migration
 
             //===[ FIELDS ]=====================================================
             $table->integer('pasien_id')->default(0);
+            $table->integer('ke')->default(1);
+            $table->date('tgl_date')->nullable();
             $table->string('voided_volume', 5)->default('');
             $table->date('voided_volume_ya_date')->nullable();
             $table->string('voided_volume_ya', 10)->default('');

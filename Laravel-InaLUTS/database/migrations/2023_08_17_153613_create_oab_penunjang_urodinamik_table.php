@@ -16,6 +16,8 @@ return new class extends Migration
 
             //===[ FIELDS ]=====================================================
             $table->integer('pasien_id')->default(0);
+            $table->integer('ke')->default(1);
+            $table->date('tgl_date')->nullable();
             $table->string('pemeriksaan_urodinamik', 5)->default('');
             $table->date('pemeriksaan_urodinamik_ya_date')->nullable();
             $table->string('kapasitas_kandung_kemih_1', 10)->default('');

@@ -112,4 +112,8 @@ class BaseModel extends Model
     static public function base_update_by_pasien_id($data = [], $pasien_id = 0){
         return self::base_update($data, "pasien_id = $pasien_id");
     }
+
+    static public function base_update_by_pasien_id_and_follow_up_id($data = [], $pasien_id = 0, $follow_up_id = 0){
+        return self::base_update($data, "pasien_id = $pasien_id AND follow_up_id = $follow_up_id");
+    }
 }

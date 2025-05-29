@@ -125,6 +125,7 @@ class LaporanController extends Controller
     {
         $now = time();
         $req = request()->all();
+        //dd($req);
         $buffer_criteria = [];
 
         //===[ Begin : Data ]===================================================
@@ -143,6 +144,55 @@ class LaporanController extends Controller
         } else {
             $raw_jenis_kelamin = 'jenis_kelamin_id > -1';
         }
+        if (
+            (isset($req['usia_1']) && intval($req['usia_1']) > 0)
+            || (isset($req['usia_2']) && intval($req['usia_2']) > 0)
+        ) {
+            if (
+                isset($req['usia_1'])
+                && isset($req['usia_2'])
+                && intval($req['usia_1']) > 0
+                && intval($req['usia_2']) > 0
+                && intval($req['usia_1']) > intval($req['usia_2'])
+            ) {
+                // Swap
+                $temp_swap = intval($req['usia_1']);
+                $req['usia_1'] = intval($req['usia_2']);
+                $req['usia_2'] = $temp_swap;
+            }
+            $temp = [];
+            if (isset($req['usia_1']) && intval($req['usia_1']) > 0) $temp[] = 'TIMESTAMPDIFF(YEAR, lahir_date, CURDATE()) >= '.intval($req['usia_1']);
+            if (isset($req['usia_2']) && intval($req['usia_2']) > 0) $temp[] = 'TIMESTAMPDIFF(YEAR, lahir_date, CURDATE()) <= '.intval($req['usia_2']);
+            if (
+                isset($req['usia_1'])
+                && isset($req['usia_2'])
+                && intval($req['usia_1']) > 0
+                && intval($req['usia_2']) > 0
+            ) {
+                $buffer_criteria[] = 'Usia : antara '.intval($req['usia_1']).' dan '.intval($req['usia_2']);
+            } else if (isset($req['usia_1']) && intval($req['usia_1']) > 0) {
+                $buffer_criteria[] = 'Usia : lebih besar atau sama dengan '.intval($req['usia_1']);
+            } else if (isset($req['usia_2']) && intval($req['usia_2']) > 0) {
+                $buffer_criteria[] = 'Usia : lebih kecil atau sama dengan '.intval($req['usia_2']);
+            }
+            $raw_usia = "lahir_date IS NOT NULL";
+            if (count($temp) > 0) $raw_usia .= " AND ".implode(' AND ', $temp);
+        } else {
+            $raw_usia = "id > 0";
+        }
+        if (
+            (isset($req['diagnosis_basah']) && $req['diagnosis_basah'] == '1')
+            || (isset($req['diagnosis_kering']) && $req['diagnosis_kering'] == '1')
+        ) {
+            $temp = [];
+            if (isset($req['diagnosis_basah']) && $req['diagnosis_basah'] == '1') $temp[] = 'OAB Tipe Basah';
+            if (isset($req['diagnosis_kering']) && $req['diagnosis_kering'] == '1') $temp[] = 'OAB Tipe Kering';
+            $buffer_criteria[] = 'Diagnosa OAB : '.implode(', ', $temp);
+            if (count($temp) == 0) $temp[] = 'x';
+            $raw_diagnosa = "id IN (SELECT pasien_id FROM oab_diagnosis WHERE diagnosis IN ('".implode("','", $temp)."'))";
+        } else {
+            $raw_diagnosa = "id > 0";
+        }
         if (count($buffer_criteria) > 0) {
             $criteria = 'Kriteria = '.implode(', ', $buffer_criteria);
         } else {
@@ -151,15 +201,38 @@ class LaporanController extends Controller
 
         //dd($raw_rumah_sakit);
         //dd($raw_jenis_kelamin);
+        //dd($raw_usia);
+        //dd($raw_diagnosa);
+
+        /*
+        dump($raw_rumah_sakit);
+        dump($raw_jenis_kelamin);
+        dump($raw_usia);
+        dump($raw_diagnosa);
+        exit;
+        */
+
         $pasiens = Pasien::where('registry_id', 1) // OAB
             ->whereRaw($raw_rumah_sakit)
             ->whereRaw($raw_jenis_kelamin)
+            ->whereRaw($raw_usia)
+            ->whereRaw($raw_diagnosa)
             ->get();
+        /*
+        echo Pasien::where('registry_id', 1) // OAB
+            ->whereRaw($raw_rumah_sakit)
+            ->whereRaw($raw_jenis_kelamin)
+            ->whereRaw($raw_usia)
+            ->whereRaw($raw_diagnosa)
+            ->toSql();exit;
+        */
         //dd($pasiens);
         $in_pasien = "
             registry_id = 1
             AND $raw_rumah_sakit
             AND $raw_jenis_kelamin
+            AND $raw_usia
+            AND $raw_diagnosa
         ";
 
         $temp = OAB_anamnesis::whereRaw("
@@ -522,7 +595,7 @@ class LaporanController extends Controller
 
             $zc = $this->OAB_excel_column_terapi_operatif($sheet, $c+1, $y,
                 $terapi_operatif_by_pasien_id[$pasien->id] ?? null,
-                $terapi_operatif_injeksi_botox_by_pasien_id[$pasien->id] ?? null,
+                $terapi_operatif_injeksi_botox_by_pasien_id[$pasien->id] ?? [],
                 $pasien
             );
             //dd($zc);

@@ -14,21 +14,22 @@
 
     $temp = '
     Alergi/flu/hidung tersumbat;alergi
-    Penyakit paru
     Gangguan mood/afektif/jiwa;gangguan_mood
-    Diabetes (tipe 1/2/tidak tahu);diabetes
-    Penyakit jantung kongestif/P.J Koroner;penyakit_jantung_kongestif
-    Penyakit saluran cerna (dyspepsia, GERD, IBS);penyakit_saluran_cerna
-    Hipertensi
-    Menopause
-    Overdistensi buli
-    Kanker ginekologi
     Stroke
-    Spinal cord injury
+    <i>Spinal Cord Injury</i>
+    Spina Bifida
     Parkinson
-    Penyakit saraf tepi
     HNP
+    Penyakit saraf tepi
     Multiple sclerosis
+    Penyakit paru
+    Penyakit Jantung Kongestif atau Koroner;penyakit_jantung_kongestif
+    Penyakit saluran cerna (dyspepsia, GERD, IBS);penyakit_saluran_cerna
+    Menopause
+    Kelainan Ginekologi
+    Overdistensi buli
+    Hipertensi
+    Diabetes (tipe 1/2);diabetes
     MSA (multiple system atrophy);msa
     ';
     $x = explode("\n", $temp);
@@ -55,8 +56,8 @@
                         'spinal_cord_injury',
                     ]),
                     'tidak_tahu' => in_array($field, [
-                        'diabetes',
-                        'hipertensi',
+                        '--diabetes',
+                        '--hipertensi',
                     ]),
                 ], false)
             );
@@ -129,7 +130,7 @@
                 }
             }
 
-            if ($field == 'kanker_ginekologi') {
+            if ($field == 'kelainan_ginekologi') {
                 FORM::row(':merge',
                     '<div id="div_'.$field.'_ya" class="indent1">'
                     .BS::radio_array([

@@ -13,24 +13,25 @@
     FORM::set_var($default);
 
     $temp = '
-        Straining
-        Intermittency
-        Pancaran Lemah
-        Tidak Lampias
-        Hesitancy
-        Hematuria
-        Dysuria
-        Terminal dribbling
-        Post void dribbling
-        Urgensi
-        Frekuensi
+        <i>Frequency</i>
+        <i>Urgency</i>
         Nokturia
+        Inkontinensia Urine
+        Pancaran Lemah
+        <i>Hesitancy</i>
+        Tidak Lampias
+        <i>Straining</i>
+        <i>Intermittency</i>
+        <i>Terminal dribbling</i>
+        <i>Post void dribbling</i>
+        Hematuria
+        Disuria
     ';
     $x = explode("\n", $temp);
     foreach($x as $v){
         if (trim($v) != '') {
             $caption = trim($v);
-            $field = strtolower(str_replace(' ', '_', $caption));
+            $field = strtolower(str_replace(' ', '_', str_replace(array('<i>','</i>'), '', $caption)));
 
             FORM::row(
                 $caption,

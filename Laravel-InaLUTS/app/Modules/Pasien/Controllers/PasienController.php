@@ -311,6 +311,7 @@ class PasienController extends Controller
 
         $this->flash_success_update($page_title);
 
-        return redirect()->route(MODULE.'.detail_pilihan_penyakit', $id);
+        //return redirect()->route(MODULE.'.detail_pilihan_penyakit', $id);
+        return redirect()->route(MODULE.'.detail_oab_anamnesis', $id);
     }
 }

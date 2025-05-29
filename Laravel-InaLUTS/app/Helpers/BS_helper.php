@@ -3,6 +3,7 @@ class BS {
 
 private static $enable_show_name = false;
 private static $jquery_ready = [];
+private static $dropzone_loaded = [];
 
 # toArray
 static function toArray($obj){
@@ -162,8 +163,11 @@ static function number($p = array(), $echo = true){
   if (!isset($p['style'])) $p['style'] = 'width:90px';
   $ret = self::textbox($p, false);
   $ret = str_replace('type="text"', 'type="number"', $ret);
-  if (isset($p['step'])) {
+  if (isset($p['step']) && trim($p['step']) != '') {
     $ret = str_replace('type="number"', 'type="number" step="'.$p['step'].'"', $ret);
+  }
+  if (isset($p['disable_negative'])) {
+    $ret = str_replace('type="number"', 'type="number" min="0"', $ret);
   }
   if ($echo) {
     echo $ret;
@@ -320,11 +324,13 @@ static function radio_array($p = array(), $echo = true){
   }
   $vertical = $p['vertical'] ?? false;
   $no_text = $p['no_text'] ?? false;
+  $caption_italic = $p['caption_italic'] ?? false;
 
   $buffer = array();
   $no = 0;
   foreach ($data as $v) {
     $no++;
+    $label_append = $v['label_append'] ?? '';
     if (gettype($v) == 'string') {
       $v = array(
         $field_value => $v,
@@ -337,6 +343,10 @@ static function radio_array($p = array(), $echo = true){
       $checked = ($default_value == $v[$field_value]) ? ' checked="checked"' : '';
     }
     $temp  = '';
+    if ($vertical) {
+        $temp .= '<div style="display:flex;">'.PHP_EOL;
+        $temp .= '<div style="width:fit-content;">'.PHP_EOL;
+    }
     $temp .= '<input';
     $temp .= ' type="radio"';
     $temp .= ' class="iCheck"';
@@ -347,8 +357,16 @@ static function radio_array($p = array(), $echo = true){
     if ($fake_required) $temp .= ' fake_required="fake_required"';
     $temp .= $checked;
     $temp .= '> ';
+    if ($vertical) {
+        $temp .= '</div>'.PHP_EOL;
+        $temp .= '<div style="flex:1;padding-left:0.5em;">'.PHP_EOL;
+    }
     if (!$no_text) {
-      $temp .= '<label for="'.$name.'_'.$no.'">'.$v[$field_text].'</label>'.PHP_EOL;
+      $temp .= '<label for="'.$name.'_'.$no.'">'.($caption_italic?'<i>':'').$v[$field_text].($caption_italic?'<i>':'').'</label>'.$label_append.PHP_EOL;
+    }
+    if ($vertical) {
+        $temp .= '</div>'.PHP_EOL;
+        $temp .= '</div>'.PHP_EOL;
     }
 
     if (isset($toggle_div_by_value[$v[$field_value]])) {
@@ -572,6 +590,161 @@ static function back($caption = '', $url = '', $echo = true){
   } else {
     return $ret;
   }
+}
+
+# Dropzone
+static function dropzone($p = array(), $echo = true){
+  $name_old = $p['name'] ?? '';
+  $name = $name_old.'_'.str_shuffle('123456789123456789123456789');
+  $line = $p['line'] ?? 'NO-LINE';
+
+  if (in_array($name, self::$dropzone_loaded)) {
+    if ($echo) {
+      echo '';
+      //echo '<b>'.$name.' ('.$line.')</b>';
+      return;
+    } else {
+      return '';
+      //return '<b>'.$name.' ('.$line.')</b>';
+    }
+  }
+  self::$dropzone_loaded[] = $name;
+
+  $init_onSuccess = $p['init_onSuccess'] ?? '';
+  if (trim($init_onSuccess) != '') {
+    $init_onSuccess = "
+      this.on('success',
+        $init_onSuccess
+      );
+    ";
+  }
+  $acceptedFiles = $p['acceptedFiles'] ?? '.jpeg,.jpg,.png,.gif,.pdf,.doc,.docx,.xls,.xlsx,.txt';
+  $url = (isset($p['url']) && trim($p['url']) != '')
+    ? $p['url']
+    : route('dropzone.store');
+  $params = (isset($p['params']) && $p['params']) ? $p['params'] : [];
+  $uploadMultiple = true;
+  $preview = FORM::is_preview();
+  $default_value = FORM::get_var($name);
+  //dd($default_value);
+  $out = $default_value;
+  $out = htmlspecialchars($out, ENT_QUOTES);
+
+  $formData = '';
+  if ($params) {
+    foreach($params as $idx => $v){
+      $formData .= "formData.append('{$idx}', '{$v}');";
+      $formData .= PHP_EOL;
+    }
+  }
+
+  if ($preview) {
+    if ($echo) {
+      echo $out;
+      return;
+    } else {
+      return $out;
+    }
+  }
+
+  $ret = '<div'
+    .' class="dropzone dropzone-previews dropzone-previews_'.$name.'"'
+    .' id="bsdz'.$name.'"'
+    .' style="width:250px"'
+    .'></div>';
+  $ret .= '<input type="hidden" name="'.$name.'" id="'.$name.'">';
+  if ($uploadMultiple) {
+    $ret .= '<span>Max 5 files at once</span>';
+  }
+
+  self::jquery_ready("
+    $('#bsdz{$name}').dropzone({
+      url: '".$url."',
+      method: 'post',
+      timeout: 60 * 1000,
+      previewsContainer: '.dropzone-previews_{$name}',
+      maxFiles: ".($uploadMultiple ? 'null' : '1').",
+      ".($uploadMultiple?'uploadMultiple: true,':'')."
+      ".($uploadMultiple?'parallelUploads: 5,':'')."
+      maxFilesize: 100 * 1024 * 1024,
+      paramName: '{$name_old}',
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name=\"csrf-token\"]').attr('content')
+      },
+      acceptedFiles: '{$acceptedFiles}',
+      init: function() {
+        this.on('sending', function(file, xhr, formData){
+          {$formData}
+        });
+
+        this.on('maxfilesexceeded', function(file) {
+          ".(
+            $uploadMultiple
+            ?"alert('Maximum number of allowable file uploads has been exceeded.');"
+            :"this.removeAllFiles(true);this.addFile(file);"
+          )."
+        });
+
+        this.on('complete', function(file) {
+          this.removeAllFiles(true);
+        });
+
+        {$init_onSuccess}
+      }
+    });
+  ");
+
+  if ($echo) {
+    echo $ret;
+  } else {
+    return $ret;
+  }
+}
+
+static function dropzone_list_file($media_model, $p = []){
+    $class_media_model = class_basename($media_model);
+    $all_files = $media_model::where('table_reference', $p['table_reference'] ?? 0)
+        ->where('reference_id', $p['reference_id'] ?? 0)
+        ->where('custom_field_1', $p['custom_field_1'] ?? '')
+        ->get();
+    $html = '
+        <table border="1" cellpadding="2">
+            <tr>
+                <td style="background:#a2dafb"><div style="padding:0.5em"><b>Files</b></div></td>
+            </tr>
+    ';
+    if (count($all_files) > 0) {
+        $use_model = 'OAB_media';
+        if ($class_media_model == 'OAB_media_follow_up_v2') {
+            $use_model = 'OAB_media_follow_up_v2';
+        }
+        foreach($all_files as $file){
+            $url = route('dropzone.download', [
+                'id' => $file->id,
+                'token' => md5('SGG-'.$file->id),
+                'use_model' => $use_model,
+            ]);
+            $a1 = '<a href="'.$url.'">';
+            $a2 = '</a>';
+            $html .= '
+                <tr valign="top">
+                    <td><div style="padding:0.5em">'.$a1.$file['original_name'].$a2.'</div></td>
+                </tr>
+            ';
+        }
+    } else {
+        $html .= '
+            <tr valign="top">
+                <td><div style="padding:0.5em"><i>File not yet uploaded</i></div></td>
+            </tr>
+        ';
+    }
+    $html .= '
+        </table>
+        <br>
+    ';
+
+    return $html;
 }
 
 # Add jQuery Ready

@@ -38,20 +38,22 @@
                 '<div id="div_'.$field.'_ya" class="indent1">'
                 .'Lamanya : '
                 .BS::number(
-                    ['name' => $field.'_hari', 'inline' => true],
+                    ['name' => $field.'_tahun', 'inline' => true],
                     false
                 )
-                .' Hari &nbsp; &nbsp; '
+                .' Tahun &nbsp; &nbsp; '
                 .BS::number(
                     ['name' => $field.'_bulan', 'inline' => true],
                     false
                 )
                 .' Bulan &nbsp; &nbsp; '
+                /*
                 .BS::number(
-                    ['name' => $field.'_tahun', 'inline' => true],
+                    ['name' => $field.'_hari', 'inline' => true],
                     false
                 )
-                .' Tahun'
+                .' Hari'
+                */
                 .'</div>'
             );
             if (isset($default[$field]) && $default[$field] == 'Ya') {
@@ -83,10 +85,22 @@
                 '<div id="div_'.$field.'_ya" class="indent1">'
                 .'Lamanya : '
                 .BS::number(
+                    ['name' => $field.'_tahun', 'inline' => true],
+                    false
+                )
+                .' Tahun &nbsp; &nbsp; '
+                .BS::number(
                     ['name' => $field.'_bulan', 'inline' => true],
                     false
                 )
-                .' Bulan'
+                .' Bulan &nbsp; &nbsp; '
+                /*
+                .BS::number(
+                    ['name' => $field.'_hari', 'inline' => true],
+                    false
+                )
+                .' Hari'
+                */
                 .'</div>'
             );
             if (isset($default[$field]) && $default[$field] == 'Ya') {
@@ -113,31 +127,84 @@
                     'toggle_div' => true,
                 ], false)
             );
-            FORM::row(':merge',
-                '<div id="div_'.$field.'_ya" class="indent1">'
-                .'Tadalafil : '
-                .BS::radio_ya_tidak([
-                    'name' => 'tadalafil',
-                    'toggle_div' => true,
-                ], false)
-                .'<div id="div_tadalafil_ya" class="indent1">'
-                .'Lamanya : '
-                .BS::number(
-                    ['name' => 'tadalafil_bulan', 'inline' => true],
-                    false
-                )
-                .' Bulan'
-                .'</div>'
-                .'</div>'
-            );
-            if (isset($default['tadalafil']) && $default['tadalafil'] == 'Ya') {
-            } else {
-                BS::jquery_ready("$('#div_tadalafil_ya').hide();");
-            }
+            if ($field != '') {
+                FORM::row(':merge',
+                    '<div id="div_'.$field.'_ya" class="indent1">'
+                    .'Tadalafil : '
+                    .BS::radio_ya_tidak([
+                        'name' => $field.'_tadalafil',
+                        'toggle_div' => true,
+                    ], false)
+                    .'<div id="div_'.$field.'_tadalafil_ya" class="indent1">'
+                    .'Lamanya : '
+                    .BS::number(
+                        ['name' => $field.'_tahun', 'inline' => true],
+                        false
+                    )
+                    .' Tahun &nbsp; &nbsp; '
+                    .BS::number(
+                        ['name' => $field.'_bulan', 'inline' => true],
+                        false
+                    )
+                    .' Bulan &nbsp; &nbsp; '
+                    /*
+                    .BS::number(
+                        ['name' => $field.'_hari', 'inline' => true],
+                        false
+                    )
+                    .' Hari'
+                    */
+                    .'</div>'
+                    .'</div>'
+                );
+                if (isset($default[$field.'_tadalafil']) && $default[$field.'_tadalafil'] == 'Ya') {
+                } else {
+                    BS::jquery_ready("$('#div_{$field}_tadalafil_ya').hide();");
+                }
+                if (isset($default[$field]) && $default[$field] == 'Ya') {
+                } else {
+                    BS::jquery_ready("$('#div_{$field}_ya').hide();");
+                }
 
-            if (isset($default[$field]) && $default[$field] == 'Ya') {
-            } else {
-                BS::jquery_ready("$('#div_{$field}_ya').hide();");
+                // Sildenafil
+                $field = 'sildenafil'; // Override $field
+                FORM::row(':merge',
+                    '<div id="div_'.$field.'_ya" class="indent1">'
+                    .'Sildenafil : '
+                    .BS::radio_ya_tidak([
+                        'name' => $field.'_tadalafil',
+                        'toggle_div' => true,
+                    ], false)
+                    .'<div id="div_'.$field.'_tadalafil_ya" class="indent1">'
+                    .'Lamanya : '
+                    .BS::number(
+                        ['name' => $field.'_tahun', 'inline' => true],
+                        false
+                    )
+                    .' Tahun &nbsp; &nbsp; '
+                    .BS::number(
+                        ['name' => $field.'_bulan', 'inline' => true],
+                        false
+                    )
+                    .' Bulan &nbsp; &nbsp; '
+                    /*
+                    .BS::number(
+                        ['name' => $field.'_hari', 'inline' => true],
+                        false
+                    )
+                    .' Hari'
+                    */
+                    .'</div>'
+                    .'</div>'
+                );
+                if (isset($default[$field.'_tadalafil']) && $default[$field.'_tadalafil'] == 'Ya') {
+                } else {
+                    BS::jquery_ready("$('#div_{$field}_tadalafil_ya').hide();");
+                }
+                if (isset($default[$field]) && $default[$field] == 'Ya') {
+                } else {
+                    BS::jquery_ready("$('#div_{$field}_ya').hide();");
+                }
             }
         }
     }
@@ -149,6 +216,7 @@
         Tolterodine
         Propiverine
         Flavoxate
+        Oxybutinin
     ';
     $x = explode("\n", $temp);
     foreach($x as $v){
@@ -163,16 +231,45 @@
                     'toggle_div' => true,
                 ], false)
             );
-            FORM::row(':merge',
-                '<div id="div_'.$field.'_ya" class="indent1">'
-                .'Lamanya : '
-                .BS::number(
-                    ['name' => $field.'_bulan', 'inline' => true],
-                    false
-                )
-                .' Bulan'
-                .'</div>'
-            );
+            if (
+                $field == 'solifenacin'
+                || $field == 'imidafenacin'
+                || $field == 'oxybutinin'
+            ) {
+                FORM::row(':merge',
+                    '<div id="div_'.$field.'_ya" class="indent1">'
+                    .'Lamanya : '
+                    .BS::number(
+                        ['name' => $field.'_tahun', 'inline' => true],
+                        false
+                    )
+                    .' Tahun &nbsp; &nbsp; '
+                    .BS::number(
+                        ['name' => $field.'_bulan', 'inline' => true],
+                        false
+                    )
+                    .' Bulan &nbsp; &nbsp; '
+                    /*
+                    .BS::number(
+                        ['name' => $field.'_hari', 'inline' => true],
+                        false
+                    )
+                    .' Hari'
+                    */
+                    .'</div>'
+                );
+            } else {
+                FORM::row(':merge',
+                    '<div id="div_'.$field.'_ya" class="indent1">'
+                    .'Lamanya : '
+                    .BS::number(
+                        ['name' => $field.'_bulan', 'inline' => true],
+                        false
+                    )
+                    .' Bulan'
+                    .'</div>'
+                );
+            }
             if (isset($default[$field]) && $default[$field] == 'Ya') {
             } else {
                 BS::jquery_ready("$('#div_{$field}_ya').hide();");
@@ -183,6 +280,7 @@
     FORM::row(':header', 'Beta 3 agonis');
     $temp = '
         Mirabegron
+        Vibegron
     ';
     $x = explode("\n", $temp);
     foreach($x as $v){
@@ -197,6 +295,8 @@
                     'toggle_div' => true,
                 ], false)
             );
+
+/*
             FORM::row(':merge',
                 '<div id="div_'.$field.'_ya" class="indent1">'
                 .'Lamanya : '
@@ -207,6 +307,30 @@
                 .' Bulan'
                 .'</div>'
             );
+*/
+            FORM::row(':merge',
+                '<div id="div_'.$field.'_ya" class="indent1">'
+                .'Lamanya : '
+                .BS::number(
+                    ['name' => $field.'_tahun', 'inline' => true],
+                    false
+                )
+                .' Tahun &nbsp; &nbsp; '
+                .BS::number(
+                    ['name' => $field.'_bulan', 'inline' => true],
+                    false
+                )
+                .' Bulan &nbsp; &nbsp; '
+                /*
+                .BS::number(
+                    ['name' => $field.'_hari', 'inline' => true],
+                    false
+                )
+                .' Hari'
+                */
+                .'</div>'
+            );
+
             if (isset($default[$field]) && $default[$field] == 'Ya') {
             } else {
                 BS::jquery_ready("$('#div_{$field}_ya').hide();");

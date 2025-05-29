@@ -15,14 +15,15 @@
     //=================[ Begin Follow Up : Form OAB_kuesioner_bladder_diary ]===
     $ns = '';
     $a = [
-        ['Intake cairan / 24 jam', 'intake_cairan'],
-        ['Frekuensi kencing dalam 24 jam', 'frekuensi_kencing'],
+        ['Frekuensi berkemih dalam 24 jam', 'frekuensi_kencing'],
         ['Nocturia', 'nocturia'],
-        ['Porsi miksi', 'porsi_miksi'],
-        ['Produksi urin / 24 jam', 'produksi_urin'],
-        ['Urgency', 'urgency'],
         ['Inkontinensia urine', 'inkontinensia_urine'],
-        ['Poliuria nocturnal', 'poliuria_nocturnal'],
+        ['<i>Urgency</i>', 'urgency'],
+        ['Intake cairan / 24 jam', 'intake_cairan'],
+        ['Kapasitas Fungsional', 'kapasitas_fungsional'],
+        //['Porsi miksi', 'porsi_miksi'],
+        ['Produksi urin / 24 jam', 'produksi_urin'],
+        ['Nocturnal Poliuria', 'nocturnal_poliuria'],
     ];
     $UOM = [
         'intake_cairan' => 'ml',
@@ -30,6 +31,7 @@
         'produksi_urin' => 'ml',
         'urgency' => 'x',
         'inkontinensia_urine' => 'x',
+        'kapasitas_fungsional' => 'ml',
     ];
     $UOM2 = [
         'nocturia' => ' /malam',
@@ -43,8 +45,7 @@
             case 'nocturia':
             case 'porsi_miksi':
             case 'produksi_urin':
-            case 'urgency':
-            case 'inkontinensia_urine':
+            case 'kapasitas_fungsional':
                 $uom = (isset($UOM[$av[1]])) ? $UOM[$av[1]] : '';
                 $uom2 = (isset($UOM2[$av[1]])) ? $UOM2[$av[1]] : '';
                 $field = BS::number([
@@ -60,7 +61,9 @@
                     .$uom2;
                 break;
 
-            case 'poliuria_nocturnal':
+            case 'urgency':
+            case 'inkontinensia_urine':
+            case 'nocturnal_poliuria':
                 $field = BS::radio_ya_tidak([
                     'name' => $ns.$av[1],
                 ], false);

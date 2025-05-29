@@ -50,10 +50,8 @@
     }
 
     $temp = '
-        Cor
+        Jantung
         Pulmo
-        Bulbocavernosus refleks
-        Atrofi vagina
     ';
     $x = explode("\n", $temp);
     foreach($x as $v){
@@ -80,7 +78,7 @@
     }
 
     $temp = '
-        POP
+        Massa di daerah pelvis
     ';
     $x = explode("\n", $temp);
     foreach($x as $v){
@@ -92,7 +90,69 @@
                 $caption,
                 BS::radio_ya_tidak([
                     'name' => $field,
+                    ], false)
+            );
+        }
+    }
+
+    $field = 'genitalia_eksterna';
+    FORM::row(
+        'Genitalia eksterna',
+        BS::radio_array([
+            'name' => $field,
+            'data' => ['Normal', 'Tidak'],
+            'vertical' => true,
+            'toggle_div_by_value' => [
+                'Tidak' => [
+                    'id' => 'div_'.$field.'_tidak',
+                    'class' => 'indent1',
+                    'html' =>
+                        'Atrofi vagina : '.BS::radio_ya_tidak([
+                            'name' => 'genitalia_eksterna_atrofi_vagina',
+                        ], false)
+                        .'<br>'
+                        .'Lichen Schlerosis : '.BS::radio_ya_tidak([
+                            'name' => 'genitalia_eksterna_lichen_schlerosis',
+                        ], false),
+/*
+                        BS::checkbox([
+                            'name' => 'c_genitalia_eksterna_atrofi_vagina',
+                            'caption' => 'Atrofi vagina',
+                        ], false)
+                        .BS::checkbox([
+                            'name' => 'c_genitalia_eksterna_lichen_schlerosis',
+                            'caption' => 'Lichen Schlerosis',
+                        ], false),
+*/
+                ],
+            ],
+        ], false)
+    );
+    if (isset($default[$field]) && $default[$field] == 'Tidak') {
+    } else {
+        BS::jquery_ready("$('#div_{$field}_tidak').hide();");
+    }
+
+    $temp = '
+        POP
+    ';
+    $x = explode("\n", $temp);
+    foreach($x as $v){
+        if (trim($v) != '') {
+            $caption = trim($v);
+            $field = strtolower(str_replace(' ', '_', $caption));
+
+            FORM::row(
+                $caption,
+                /*
+                BS::radio_ya_tidak([
+                    'name' => $field,
                     'toggle_div' => true,
+                ], false)
+                */
+                BS::radio_array([
+                    'name' => $field,
+                    'data' => ['Ya', 'Tidak', 'N/A'],
                 ], false)
             );
             FORM::row(':merge',
@@ -110,24 +170,6 @@
             } else {
                 BS::jquery_ready("$('#div_{$field}_ya').hide();");
             }
-        }
-    }
-
-    $temp = '
-        Massa di daerah pelvis
-    ';
-    $x = explode("\n", $temp);
-    foreach($x as $v){
-        if (trim($v) != '') {
-            $caption = trim($v);
-            $field = strtolower(str_replace(' ', '_', $caption));
-
-            FORM::row(
-                $caption,
-                BS::radio_ya_tidak([
-                    'name' => $field,
-                    ], false)
-            );
         }
     }
 
@@ -161,8 +203,8 @@
     }
 
     $temp = '
-        Tonus spingter ani
-        Tonus levator ani
+        Tonus Sfingter Ani
+        Tonus Levator Ani
     ';
     $x = explode("\n", $temp);
     foreach($x as $v){
@@ -170,10 +212,10 @@
             $caption = trim($v);
             $field = strtolower(str_replace(array(' ', '-'), '_', $caption));
 
-            if ($field == 'tonus_spingter_ani') {
+            if ($field == 'tonus_sfingter_ani') {
                 $data = ['Normal', 'Melemah', 'Meningkat'];
             } else if ($field == 'tonus_levator_ani') {
-                $data = ['Normal', 'Tidak'];
+                $data = ['Normal', 'Tidak', 'NA'];
             }
 
             FORM::row(
@@ -187,11 +229,11 @@
     }
 
     FORM::row(
-        'Pelvic floor',
-            'OXFORD grading scale : '
+        '<i>Pelvic Floor</i>',
+            '<i>OXFORD grading scale</i> : '
             .BS::radio_array([
                 'name' => 'pelvic_floor',
-                'data' => ['0', '1', '2', '3', '4', '5'],
+                'data' => ['0', '1', '2', '3', '4', '5', 'NA'],
             ], false)
     );
 
@@ -224,6 +266,35 @@
     } else {
         BS::jquery_ready("$('#div_{$field}_tidak').hide();");
     }
+
+    $temp = '
+        Bulbocavernosus refleks
+        Atrofi vagina
+    ';
+    $x = explode("\n", $temp);
+    foreach($x as $v){
+        if (trim($v) != '') {
+            $caption = trim($v);
+            $field = strtolower(str_replace(array(' ', '-'), '_', $caption));
+
+            if ($field == 'bulbocavernosus_refleks') {
+                $data = ['Ada', 'Tidak'];
+            } else if ($field == 'atrofi_vagina') {
+                $data = ['Ya', 'Tidak', 'NA'];
+            } else {
+                $data = ['Normal', 'Tidak'];
+            }
+
+            FORM::row(
+                $caption,
+                BS::radio_array([
+                    'name' => $field,
+                    'data' => $data,
+                ], false)
+            );
+        }
+    }
+
     FORM::show();
   @endphp
   {{ BS::box_end() }}

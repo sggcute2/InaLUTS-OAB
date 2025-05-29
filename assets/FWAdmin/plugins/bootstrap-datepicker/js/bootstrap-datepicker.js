@@ -1708,7 +1708,7 @@
 		disableTouchKeyboard: false,
 		enableOnReadonly: true,
 		showOnFocus: true,
-		zIndexOffset: 10,
+		zIndexOffset: 8100,//10
 		container: 'body',
 		immediateUpdates: false,
 		title: '',

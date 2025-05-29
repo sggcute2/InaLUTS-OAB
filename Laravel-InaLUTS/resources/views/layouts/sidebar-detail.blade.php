@@ -1,7 +1,9 @@
 @php
 $sidebar_details = [];
-$sidebar_details[] = ['Identitas', ''];
-$sidebar_details[] = ['Pilihan Penyakit', '_pilihan_penyakit'];
+if (!defined('PAGE_IS_FOLLOW_UP')) {
+    $sidebar_details[] = ['Identitas', ''];
+    $sidebar_details[] = ['Pilihan Penyakit', '_pilihan_penyakit'];
+}
 @endphp
 
 @foreach($sidebar_details as $sidebar_detail)

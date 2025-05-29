@@ -71,9 +71,9 @@ class Follow_upController extends Controller
                         '&nbsp;'
                         .BS::button(
                             'Detail',
-                            route(MODULE.'.detail', [
-                                'pasien_id' => $row['pasien_id'],
-                                'id' => $row['id']
+                            route('follow_up_v2.detail_oab_anamnesis', [
+                                'id' => $row['pasien_id'],
+                                'follow_up_id' => $row['id']
                             ]),
                             false
                         );
@@ -357,7 +357,13 @@ class Follow_upController extends Controller
 
         //$this->flash_success_add();
 
+        /*
         return redirect()->route(MODULE.'.detail', [
+            'pasien_id' => $pasien_id,
+            'id' => $id,
+        ]);
+        */
+        return redirect()->route('follow_up_v2.detail_oab_anamnesis', [
             'pasien_id' => $pasien_id,
             'id' => $id,
         ]);

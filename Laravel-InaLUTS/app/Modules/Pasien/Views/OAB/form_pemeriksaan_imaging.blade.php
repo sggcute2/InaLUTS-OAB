@@ -40,14 +40,29 @@
 
     $field = 'ct_urografi';
     FORM::row(
-        'CT Urografi',
+        'CT Urografi / CT Abdomen',
         BS::radio_ya_tidak([
             'name' => $ns.$field,
+            'toggle_div' => true,
         ], false)
     );
+    FORM::row(':merge',
+        '<div id="div_'.$ns.$field.'_ya" class="indent1">'
+        .'Tanggal : '
+        .BS::datepicker([
+            'name' => $ns.$field.'_ya_date',
+            'required' => false,
+        ], false)
+        .'</div>'
+    );
+    if (isset($default[$ns.$field]) && $default[$ns.$field] == 'Ya') {
+    } else {
+        BS::jquery_ready("$('#div_{$ns}{$field}_ya').hide();");
+    }
 
     FORM::row(':header', 'Ginjal');
     FORM::row(':merge', '<b>Kanan</b>');
+/*
     FORM::row(
         '<div class="indent1">Hidronefrosis</div>',
         '<div class="indent1">'
@@ -57,6 +72,33 @@
         ], false)
         .'</div>'
     );
+*/
+    FORM::row(
+        '<div class="indent1">Hidronefrosis</div>',
+        '<div class="indent1">'
+        .BS::radio_array([
+            'name' => $ns.'ginjal__kanan__hidronefrosis',
+            'data' => ['Ada', 'Tidak Ada'],
+            'vertical' => true,
+            'toggle_div_by_value' => [
+                'Ada' => [
+                    'id' => 'div_'.$ns.'ginjal__kanan__hidronefrosis__ada',
+                    'class' => 'indent1',
+                    'html' =>
+                        BS::radio_array([
+                            'name' => $ns.'ginjal__kanan__hidronefrosis__ada',
+                            'data' => ['Ringan', 'Sedang', 'Berat'],
+                        ], false),
+                ],
+            ],
+        ], false)
+        .'</div>'
+    );
+    if (isset($default[$ns.'ginjal__kanan__hidronefrosis']) && $default[$ns.'ginjal__kanan__hidronefrosis'] == 'Ada') {
+    } else {
+        BS::jquery_ready("$('#div_".$ns."ginjal__kanan__hidronefrosis__ada').hide();");
+    }
+
     FORM::row(
         '<div class="indent1">Batu</div>',
         '<div class="indent1">'
@@ -66,7 +108,10 @@
         ], false)
         .'</div>'
     );
+
     FORM::row(':merge', '<b>Kiri</b>');
+
+/*
     FORM::row(
         '<div class="indent1">Hidronefrosis</div>',
         '<div class="indent1">'
@@ -76,6 +121,33 @@
         ], false)
         .'</div>'
     );
+*/
+    FORM::row(
+        '<div class="indent1">Hidronefrosis</div>',
+        '<div class="indent1">'
+        .BS::radio_array([
+            'name' => $ns.'ginjal__kiri__hidronefrosis',
+            'data' => ['Ada', 'Tidak Ada'],
+            'vertical' => true,
+            'toggle_div_by_value' => [
+                'Ada' => [
+                    'id' => 'div_'.$ns.'ginjal__kiri__hidronefrosis__ada',
+                    'class' => 'indent1',
+                    'html' =>
+                        BS::radio_array([
+                            'name' => $ns.'ginjal__kiri__hidronefrosis__ada',
+                            'data' => ['Ringan', 'Sedang', 'Berat'],
+                        ], false),
+                ],
+            ],
+        ], false)
+        .'</div>'
+    );
+    if (isset($default[$ns.'ginjal__kiri__hidronefrosis']) && $default[$ns.'ginjal__kiri__hidronefrosis'] == 'Ada') {
+    } else {
+        BS::jquery_ready("$('#div_".$ns."ginjal__kiri__hidronefrosis__ada').hide();");
+    }
+
     FORM::row(
         '<div class="indent1">Batu</div>',
         '<div class="indent1">'

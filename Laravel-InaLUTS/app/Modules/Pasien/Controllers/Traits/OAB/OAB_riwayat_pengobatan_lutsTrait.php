@@ -62,15 +62,43 @@ trait OAB_riwayat_pengobatan_lutsTrait {
         }
         if (isset($data['pde_5_inhibitor']) && $data['pde_5_inhibitor'] == 'Ya') {
             if (
-                isset($data['pde_5_inhibitor'])
-                && $data['pde_5_inhibitor'] != 'Ya'
+                isset($data['pde_5_inhibitor_tadalafil'])
+                && $data['pde_5_inhibitor_tadalafil'] != 'Ya'
             ) {
-                $data['tadalafil_bulan'] = 0;
+                $data['pde_5_inhibitor_tahun'] = 0;
+                $data['pde_5_inhibitor_bulan'] = 0;
+            }
+            if (
+                isset($data['sildenafil_tadalafil'])
+                && $data['sildenafil_tadalafil'] != 'Ya'
+            ) {
+                $data['sildenafil_tahun'] = 0;
+                $data['sildenafil_bulan'] = 0;
             }
         } else {
-            $data['tadalafil'] = '';
-            $data['tadalafil_bulan'] = 0;
+            $data['pde_5_inhibitor_tadalafil'] = '';
+            $data['pde_5_inhibitor_tahun'] = 0;
+            $data['pde_5_inhibitor_bulan'] = 0;
+            //
+            $data['sildenafil_tadalafil'] = '';
+            $data['sildenafil_tahun'] = 0;
+            $data['sildenafil_bulan'] = 0;
         }
+        /*
+        if (isset($data['sildenafil']) && $data['sildenafil'] == 'Ya') {
+            if (
+                isset($data['sildenafil_tadalafil'])
+                && $data['sildenafil_tadalafil'] != 'Ya'
+            ) {
+                $data['sildenafil_tahun'] = 0;
+                $data['sildenafil_bulan'] = 0;
+            }
+        } else {
+            $data['sildenafil_tadalafil'] = '';
+            $data['sildenafil_tahun'] = 0;
+            $data['sildenafil_bulan'] = 0;
+        }
+        */
         $a = [
             'finasteride',
             'dutasteride',

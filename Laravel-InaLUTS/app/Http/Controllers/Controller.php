@@ -11,9 +11,13 @@ use Illuminate\Support\Facades\View;
 use App\Modules\Pasien\Models\Pasien;
 use App\Modules\Rumah_sakit\Models\Rumah_sakit;
 use App\Modules\Pasien\Models\OAB\OAB_pemeriksaan_laboratorium;
+use App\Modules\Follow_up_v2\Models\OAB\OAB_pemeriksaan_laboratorium as follow_up_v2_OAB_pemeriksaan_laboratorium;
 use App\Modules\Pasien\Models\OAB\OAB_sistem_skor;
+use App\Modules\Follow_up_v2\Models\OAB\OAB_sistem_skor as follow_up_v2_OAB_sistem_skor;
 use App\Modules\Pasien\Models\OAB\OAB_terapi;
+use App\Modules\Follow_up_v2\Models\OAB\OAB_terapi as follow_up_v2_OAB_terapi;
 use App\Modules\Pasien\Models\OAB\OAB_terapi_operatif_injeksi_botox;
+use App\Modules\Follow_up_v2\Models\OAB\OAB_terapi_operatif_injeksi_botox as follow_up_v2_OAB_terapi_operatif_injeksi_botox;
 use Session;
 use Lang;
 
@@ -58,22 +62,46 @@ class Controller extends BaseController
             || ACTION == 'list_oab_pemeriksaan_laboratorium'
         );
 
-        if (IS_DETAIL_PASIEN && ID) {
+        if ((IS_DETAIL_PASIEN || defined('PAGE_IS_FOLLOW_UP')) && ID) {
             if (ACTION == 'detail_oab_pemeriksaan_laboratorium') {
-                $temp = OAB_pemeriksaan_laboratorium::find(ID);
+                if (defined('PAGE_IS_FOLLOW_UP')) {
+                    $temp = follow_up_v2_OAB_pemeriksaan_laboratorium::find(ID);
+                } else {
+                    $temp = OAB_pemeriksaan_laboratorium::find(ID);
+                }
                 $data_pasien = Pasien::find($temp->pasien_id);
             } else if (ACTION == 'detail_oab_terapi_operatif_injeksi_botox') {
-                $temp = OAB_terapi_operatif_injeksi_botox::find(ID);
-                $data_pasien = Pasien::find($temp->pasien_id);
+                if (defined('PAGE_IS_FOLLOW_UP')) {
+                    $temp = follow_up_v2_OAB_terapi_operatif_injeksi_botox::find(ID);
+                    $data_pasien = Pasien::find($temp->pasien_id);
+                } else {
+                    $temp = OAB_terapi_operatif_injeksi_botox::find(ID);
+                    $data_pasien = Pasien::find($temp->pasien_id);
+                }
             } else {
                 $data_pasien = Pasien::find(ID);
             }
-            $sistem_skor = OAB_sistem_skor::where(
-                'pasien_id', $data_pasien->id
-            )->first();
-            $terapi = OAB_terapi::where(
-                'pasien_id', $data_pasien->id
-            )->first();
+
+            if (defined('PAGE_IS_FOLLOW_UP')) {
+                $sistem_skor = follow_up_v2_OAB_sistem_skor::where(
+                    'pasien_id', $data_pasien->id
+                )
+                ->where('follow_up_id', (int) request()->segment(3))
+                ->first();
+                $terapi = follow_up_v2_OAB_terapi::where(
+                    'pasien_id', $data_pasien->id
+                )
+                ->where('follow_up_id', (int) request()->segment(3))
+                ->first();
+            } else {
+                $sistem_skor = OAB_sistem_skor::where(
+                    'pasien_id', $data_pasien->id
+                )->first();
+                $terapi = OAB_terapi::where(
+                    'pasien_id', $data_pasien->id
+                )->first();
+            }
+
             \View::share('data_pasien', $data_pasien);
             \View::share('sistem_skor', $sistem_skor);
             \View::share('terapi', $terapi);

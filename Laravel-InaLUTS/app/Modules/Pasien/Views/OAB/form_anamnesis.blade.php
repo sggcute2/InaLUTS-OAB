@@ -22,6 +22,25 @@
         ], false)
     );
 
+    FORM::row(
+        'Ada Sejak',
+        BS::number(
+            ['name' => 'ada_sejak_minggu', 'inline' => true],
+            false
+        )
+        .' Minggu &nbsp; &nbsp; '
+        .BS::number(
+            ['name' => 'ada_sejak_bulan', 'inline' => true],
+            false
+        )
+        .' Bulan &nbsp; &nbsp; '
+        .BS::number(
+            ['name' => 'ada_sejak_tahun', 'inline' => true],
+            false
+        )
+        .' Tahun'
+    );
+
     FORM::show();
   @endphp
   {{ BS::box_end() }}

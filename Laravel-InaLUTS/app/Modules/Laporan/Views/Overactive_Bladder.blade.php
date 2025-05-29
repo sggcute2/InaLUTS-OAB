@@ -36,6 +36,31 @@
       ], false)
     );
 
+    FORM::row(
+        'Usia',
+        BS::number([
+            'name' => 'usia_1',
+            'inline' => true,
+        ], false)
+        .' s/d '
+        .BS::number([
+            'name' => 'usia_2',
+            'inline' => true,
+        ], false)
+    );
+
+    FORM::row(
+        'Diagnosis OAB',
+        BS::checkbox([
+            'name' => 'diagnosis_basah',
+            'caption' => 'OAB Tipe Basah',
+        ], false)
+        .BS::checkbox([
+            'name' => 'diagnosis_kering',
+            'caption' => 'OAB Tipe Kering',
+        ], false)
+    );
+
     FORM::show();
   @endphp
   {{ BS::box_end() }}

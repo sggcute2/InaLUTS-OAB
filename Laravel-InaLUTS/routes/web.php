@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::redirect('/', '/inaluts/login');
+Route::redirect('/', '/login');
 
 //require_once('web/auth.php');
 $m = 'Auth';
@@ -25,6 +25,8 @@ $modules = [
   'dashboard',
   //'user',
 
+  'dropzone',
+
   // Master Data
   'kota',
   'rumah_sakit',
@@ -34,6 +36,7 @@ $modules = [
   'profile',
   'pasien',
   'follow_up',
+  'follow_up_v2',
   'laporan',
   'laporan_follow_up',
 ];

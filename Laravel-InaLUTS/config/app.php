@@ -5,6 +5,8 @@ use Illuminate\Support\ServiceProvider;
 
 return [
 
+    'APP_ENABLE_FOLLOW_UP_V2' => (bool) env('APP_ENABLE_FOLLOW_UP_V2', false),
+
     /*
     |--------------------------------------------------------------------------
     | Application Name
