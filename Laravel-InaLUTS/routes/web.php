@@ -15,6 +15,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/login');
 
+Route::redirect('/go/repository', function(){
+  return Redirect::to('https://github.com/sggcute2/InaLUTS-OAB');
+});
+
 //require_once('web/auth.php');
 $m = 'Auth';
 require_once(
