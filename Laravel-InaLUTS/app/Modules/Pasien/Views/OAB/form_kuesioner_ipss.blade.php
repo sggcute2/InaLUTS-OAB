@@ -17,7 +17,7 @@
         'Selama sebulan terakhir, seberapa sering Anda merasa tidak lampias saat selesai berkemih?',
         'Selama sebulan terakhir, seberapa sering Anda harus kembali kencing dalam waktu kurang dari 2 jam setelah selesai berkemih?',
         'Selama sebulan terakhir, seberapa sering Anda mendapatkan bahwa Anda sulit menahan kencing?',
-        'Selama sebulan terakhir, seberapa sering Anda mendapatkan bahwa Anda sulit menahan kencing?',
+        'Seberapa sering Anda berhenti dan mulai lagi beberapa kali saat buang air kecil (Intermitensi)?',
         'Selama sebulan terakhir, seberapa sering pancaran kencing Anda lemah?',
         'Selama sebulan terakhir, seberapa sering Anda harus mengejan untuk mulai berkemih?',
         'Selama sebulan terakhir, seberapa sering Anda harus bangun untuk berkemih sejak mulai tidur pada malam hari hingga bangun di pagi hari?',
